@@ -9,6 +9,7 @@ export interface NavItem {
 
 export const Navigation = (): React.ReactElement => {
   const history = useHistory();
+
   const tabs: Array<NavItem> = [
     {
       title: 'ГРР',
@@ -35,13 +36,15 @@ export const Navigation = (): React.ReactElement => {
       path: '/diagram-gant',
     },
   ];
+
   const currentTab = [
     tabs.find((element) => {
       return element.path === history.location.pathname;
     }) as NavItem,
   ];
+
   const [valueTab, setValueTab] = useState<Array<NavItem> | null>(currentTab);
-  // перемещение по исптории вперед/назад
+
   history.listen((location) => {
     const switchTab = [
       tabs.find((element) => {
