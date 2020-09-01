@@ -1,0 +1,72 @@
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { ChoiceGroup } from '@gpn-prototypes/vega-ui';
+
+export interface NavItem {
+  title: string;
+  path: string;
+}
+
+export const Navigation = (): React.ReactElement => {
+  const history = useHistory();
+
+  const tabs: Array<NavItem> = [
+    {
+      title: 'ГРР',
+      path: '/',
+    },
+    {
+      title: 'ОПР',
+      path: '/opr',
+    },
+    {
+      title: 'Инфраструктура',
+      path: '/infrastructure',
+    },
+    {
+      title: 'Экономика',
+      path: '/economic',
+    },
+    {
+      title: 'Общая логика',
+      path: '/logic',
+    },
+    {
+      title: 'Диаграмма ганта',
+      path: '/diagram-gant',
+    },
+  ];
+
+  const currentTab = [
+    tabs.find((element) => {
+      return element.path === history.location.pathname;
+    }) as NavItem,
+  ];
+
+  const [valueTab, setValueTab] = useState<Array<NavItem> | null>(currentTab);
+
+  history.listen((location) => {
+    const switchTab = [
+      tabs.find((element) => {
+        return element.path === location.pathname;
+      }),
+    ];
+    setValueTab(switchTab ? (switchTab as NavItem[]) : null);
+  });
+
+  return (
+    <ChoiceGroup
+      size="s"
+      view="primary"
+      form="default"
+      items={tabs}
+      value={valueTab}
+      getItemKey={(item) => item.title}
+      getItemLabel={(item) => item.title}
+      onChange={({ value }) => {
+        setValueTab(value);
+        history.push(value ? value[0].path : '/');
+      }}
+    />
+  );
+};
