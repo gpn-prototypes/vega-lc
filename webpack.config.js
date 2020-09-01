@@ -26,7 +26,7 @@ const commonWebpack = () => {
   };
 };
 
-const femFeWebpack = {
+const appWebpack = {
   devServer: {
     historyApiFallback: true,
     proxy: {
@@ -35,4 +35,4 @@ const femFeWebpack = {
   },
 };
 
-module.exports = merge(commonWebpack(), gpnWebpack, femFeWebpack);
+module.exports = merge(commonWebpack(), gpnWebpack, appWebpack);
