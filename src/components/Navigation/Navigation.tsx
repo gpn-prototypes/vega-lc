@@ -37,21 +37,17 @@ export const Navigation = (): React.ReactElement => {
     },
   ];
 
-  const currentTab = [
-    tabs.find((element) => {
-      return element.path === history.location.pathname;
-    }) as NavItem,
-  ];
+  const currentTab = tabs.find((element) => {
+    return element.path === history.location.pathname;
+  }) as NavItem;
 
-  const [valueTab, setValueTab] = useState<Array<NavItem> | null>(currentTab);
+  const [valueTab, setValueTab] = useState<NavItem | null>(currentTab);
 
   history.listen((location) => {
-    const switchTab = [
-      tabs.find((element) => {
-        return element.path === location.pathname;
-      }),
-    ];
-    setValueTab(switchTab ? (switchTab as NavItem[]) : null);
+    const switchTab = tabs.find((element) => {
+      return element.path === location.pathname;
+    });
+    setValueTab(switchTab || null);
   });
 
   return (
@@ -59,13 +55,14 @@ export const Navigation = (): React.ReactElement => {
       size="s"
       view="primary"
       form="default"
+      name="navigation"
+      multiple={false}
       items={tabs}
       value={valueTab}
-      getItemKey={(item) => item.title}
-      getItemLabel={(item) => item.title}
-      onChange={({ value }) => {
+      getLabel={(item: any) => item.title}
+      onChange={({ value }: { value: any }) => {
         setValueTab(value);
-        history.push(value ? value[0].path : '/');
+        history.push(value ? value.path : '/');
       }}
     />
   );
