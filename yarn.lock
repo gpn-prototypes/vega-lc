@@ -1212,7 +1212,7 @@
   dependencies:
     "@gpn-design/uikit" "^1.7.1"
 
-"@gpn-prototypes/vega-canvas@link:../../../vega-ui/packages/components/canvas":
+"@gpn-prototypes/vega-canvas@link:../../../../vega-ui/packages/components/canvas":
   version "0.0.0"
   uid ""
 
@@ -1241,7 +1241,7 @@
   dependencies:
     "@gpn-design/uikit" "^1.7.1"
 
-"@gpn-prototypes/vega-choice-group@link:../../../vega-ui/packages/components/choice-group":
+"@gpn-prototypes/vega-choice-group@link:../../../../vega-ui/packages/components/choice-group":
   version "0.0.0"
   uid ""
 
@@ -1314,6 +1314,10 @@
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-hooks/0.5.0/f0c7f5f4756409779a77813fcc8184f4ebb4fb60b6420cfdd474dedafeb1f4ee#8098a2e56fa1927a12815213d7cac80d79d1cd12"
   integrity sha512-vIG73kj+5RZ7+DGzlsGOVjeKzK6DoeWR7AzwZnSKBd6UP+Lu8kt0rOrqC2ebO4AB799sI5yRy6ev1lMEbY6lpg==
 
+"@gpn-prototypes/vega-hooks@link:../../../../vega-ui/packages/components/hooks":
+  version "0.0.0"
+  uid ""
+
 "@gpn-prototypes/vega-icons@^0.1.3", "@gpn-prototypes/vega-icons@^0.1.4", "@gpn-prototypes/vega-icons@^0.1.5":
   version "0.1.6"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-icons/0.1.6/0223563ff274b9237bb2f25a227c8be825c42be54b9d6ea3b7d0037d136355ed#488e247188d73e3a00a0c3563b336d487b13140d"
@@ -1328,7 +1332,7 @@
   dependencies:
     "@gpn-design/uikit" "^1.7.1"
 
-"@gpn-prototypes/vega-icons@link:../../../vega-ui/packages/components/icons":
+"@gpn-prototypes/vega-icons@link:../../../../vega-ui/packages/components/icons":
   version "0.0.0"
   uid ""
 
@@ -1350,6 +1354,10 @@
     "@gpn-prototypes/vega-navigation-list" "^1.0.1"
     "@gpn-prototypes/vega-root" "^0.1.0"
     bem-cn "^3.0.1"
+
+"@gpn-prototypes/vega-layout@link:../../../../vega-ui/packages/components/layout":
+  version "0.0.0"
+  uid ""
 
 "@gpn-prototypes/vega-loader@^0.1.5":
   version "0.1.5"
@@ -1441,6 +1449,10 @@
   integrity sha512-jxLAY7ysxwXa27A8FLIt3UO+0MTSpaVkuSVTUrM0CoPxODVySI2XR+A1d05z2EpyJBoduA5cJ2UVQTOR8lFg7w==
   dependencies:
     "@gpn-prototypes/vega-theme" "^0.0.5"
+
+"@gpn-prototypes/vega-root@link:../../../../vega-ui/packages/components/root":
+  version "0.0.0"
+  uid ""
 
 "@gpn-prototypes/vega-scale-panel@^0.1.4":
   version "0.1.4"
@@ -1556,7 +1568,7 @@
   dependencies:
     "@gpn-design/uikit" "^1.7.1"
 
-"@gpn-prototypes/vega-tree@link:../../../vega-ui/packages/components/tree":
+"@gpn-prototypes/vega-tree@link:../../../../vega-ui/packages/components/tree":
   version "0.0.0"
   uid ""
 
