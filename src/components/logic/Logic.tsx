@@ -1,39 +1,15 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
 import styled from '@emotion/styled';
-import { GridState, GridUpdate } from '@gpn-prototypes/vega-layout';
+import { GridState, GridUpdate, Layout } from '@gpn-prototypes/vega-layout';
 
 import { CanvasWidget } from './CanvasWidget';
 import { ProjectStructureWidget } from './ProjectStructureWidget';
 
 const widgets = [
-  { name: 'Widget one', component: 'vega-widget-one' },
-  { name: 'Widget two', component: 'vega-widget-two' },
+  { name: 'vega-widget-canvas', component: CanvasWidget },
+  { name: 'vega-widget-project-structure', component: ProjectStructureWidget },
 ];
-
-class WidgetOne extends HTMLElement {
-  static widgetName = 'vega-widget-one';
-
-  connectedCallback(): void {
-    this.innerHTML = '<h1>Widget One</h1>';
-  }
-}
-
-class WidgetTwo extends HTMLElement {
-  static widgetName = 'vega-widget-two';
-
-  connectedCallback(): void {
-    this.innerHTML = '<h1>Widget Two</h1>';
-  }
-}
-
-if (window.customElements.get(WidgetOne.widgetName) === undefined) {
-  window.customElements.define(WidgetOne.widgetName, WidgetOne);
-}
-
-if (window.customElements.get(WidgetTwo.widgetName) === undefined) {
-  window.customElements.define(WidgetTwo.widgetName, WidgetTwo);
-}
 
 const Container = styled.div`
   width: 100%;
@@ -41,15 +17,6 @@ const Container = styled.div`
   max-height: 900px;
   display: flex;
   box-sizing: border-box;
-`;
-
-const LeftContainer = styled.div`
-  width: 20%;
-`;
-
-const RightContainer = styled.div`
-  width: 80%;
-  overflow: auto;
 `;
 
 const state: GridState = {
@@ -63,14 +30,14 @@ const state: GridState = {
   1: {
     type: 'leaf',
     data: {
-      widget: 'vega-widget-one',
+      widget: 'vega-widget-project-structure',
       context: {},
     },
   },
   2: {
     type: 'leaf',
     data: {
-      widget: 'vega-widget-one',
+      widget: 'vega-widget-canvas',
       context: {},
     },
   },
@@ -83,12 +50,7 @@ export const Logic = (): React.ReactElement => {
 
   return (
     <Container>
-      <LeftContainer>
-        <ProjectStructureWidget />
-      </LeftContainer>
-      <RightContainer>
-        <CanvasWidget />
-      </RightContainer>
+      <Layout state={state} widgets={widgets} onChange={action} />
     </Container>
   );
 };
