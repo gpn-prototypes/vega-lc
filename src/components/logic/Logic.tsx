@@ -3,12 +3,14 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { GridState, GridUpdate, Layout } from '@gpn-prototypes/vega-layout';
 
+import { ActivitiesWidget } from './ActivitiesWidget';
 import { CanvasWidget } from './CanvasWidget';
 import { ProjectStructureWidget } from './ProjectStructureWidget';
 
 const widgets = [
   { name: 'vega-widget-canvas', component: CanvasWidget },
   { name: 'vega-widget-project-structure', component: ProjectStructureWidget },
+  { name: 'vega-widget-activities', component: ActivitiesWidget },
 ];
 
 const Container = styled.div`
@@ -38,6 +40,13 @@ const state: GridState = {
     type: 'leaf',
     data: {
       widget: 'vega-widget-canvas',
+      context: {},
+    },
+  },
+  3: {
+    type: 'leaf',
+    data: {
+      widget: 'vega-widget-activities',
       context: {},
     },
   },
