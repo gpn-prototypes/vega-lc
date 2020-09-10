@@ -1,22 +1,23 @@
 /* eslint-disable max-classes-per-file */
-import React from 'react';
+import React, {useRef} from 'react';
 import styled from '@emotion/styled';
 import { GridState, GridUpdate, Layout } from '@gpn-prototypes/vega-layout';
 
 import { ActivitiesWidget } from './ActivitiesWidget';
 import { CanvasWidget } from './CanvasWidget';
 import { ProjectStructureWidget } from './ProjectStructureWidget';
+import {ObjectsGroupingWidget} from "./ObjectsGroupingWidget";
 
 const widgets = [
-  { name: 'vega-widget-canvas', component: CanvasWidget },
-  { name: 'vega-widget-project-structure', component: ProjectStructureWidget },
-  { name: 'vega-widget-activities', component: ActivitiesWidget },
+  { name: 'Конструктор логики', component: CanvasWidget },
+  { name: 'Структура проекта', component: ProjectStructureWidget },
+  { name: 'Мероприятия', component: ActivitiesWidget },
+  { name: 'Группа объектов', component: ObjectsGroupingWidget },
 ];
 
 const Container = styled.div`
   width: 100%;
   height: 900px;
-  max-height: 900px;
   display: flex;
   box-sizing: border-box;
 `;
@@ -26,27 +27,48 @@ const state: GridState = {
     type: 'branch',
     data: {
       splitDirection: 'right',
-      breakpoint: 20,
+      breakpoint: 15,
     },
   },
   1: {
-    type: 'leaf',
+    type: 'branch',
     data: {
-      widget: 'vega-widget-project-structure',
-      context: {},
+      splitDirection: 'down',
+      breakpoint: 51,
     },
   },
   2: {
-    type: 'leaf',
+    type: 'branch',
     data: {
-      widget: 'vega-widget-canvas',
-      context: {},
+      splitDirection: 'right',
+      breakpoint: 75,
     },
   },
   3: {
     type: 'leaf',
     data: {
-      widget: 'vega-widget-activities',
+      widget: 'Структура проекта',
+      context: {},
+    },
+  },
+  4: {
+    type: 'leaf',
+    data: {
+      widget: 'Группа объектов',
+      context: {},
+    },
+  },
+  5: {
+    type: 'leaf',
+    data: {
+      widget: 'Конструктор логики',
+      context: {},
+    },
+  },
+  6: {
+    type: 'leaf',
+    data: {
+      widget: 'Мероприятия',
       context: {},
     },
   },

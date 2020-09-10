@@ -32,6 +32,7 @@ const events: Array<NodeItem> = [
   {
     name: 'Разведка',
     iconId: 'red-folder',
+    isDraggable: false,
     nodeList: [
       {
         name: 'Аэромагнитная съёмка',
@@ -50,6 +51,7 @@ const events: Array<NodeItem> = [
   {
     name: 'Обустройство',
     iconId: 'blue-folder',
+    isDraggable: false,
     nodeList: [
       {
         name: 'Разбивочные работы',
@@ -92,6 +94,7 @@ const events: Array<NodeItem> = [
   {
     name: 'Программа ОПР',
     iconId: 'green-folder',
+    isDraggable: false,
     nodeList: [],
   },
 ];
@@ -109,7 +112,6 @@ export const ActivitiesWidget = (): React.ReactElement => {
       withVisibilitySwitcher={false}
       nodeList={events}
       isShownLeftLines={false}
-      isDndEnable={false}
     />
   );
 };
