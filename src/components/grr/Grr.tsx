@@ -17,7 +17,7 @@ const widgets = [
 
 const Container = styled.div`
   width: 100%;
-  height: 900px;
+  height: calc(100vh - 55px);
   display: flex;
   box-sizing: border-box;
 `;
