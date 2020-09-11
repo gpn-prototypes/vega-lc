@@ -107,11 +107,6 @@ const icons = {
 
 export const ActivitiesWidget = (): React.ReactElement => {
   return (
-    <Tree
-      icons={icons}
-      withVisibilitySwitcher={false}
-      nodeList={events}
-      isShownLeftLines={false}
-    />
+    <Tree icons={icons} withVisibilitySwitcher={false} nodeList={events} isShownLeftLines={false} />
   );
 };

@@ -39,12 +39,12 @@
     "@gpn-design/uikit": "^1.7.1",
     "@gpn-prototypes/vega-canvas": "link:/../vega-ui/packages/components/canvas",
     "@gpn-prototypes/vega-choice-group": "link:/../vega-ui/packages/components/choice-group",
-    "@gpn-prototypes/vega-icons": "link:/../vega-ui/packages/components/icons",
-    "@gpn-prototypes/vega-root": "link:/../vega-ui/packages/components/root",
     "@gpn-prototypes/vega-hooks": "link:/../vega-ui/packages/components/hooks",
+    "@gpn-prototypes/vega-icons": "link:/../vega-ui/packages/components/icons",
+    "@gpn-prototypes/vega-layout": "link:/../vega-ui/packages/components/layout",
+    "@gpn-prototypes/vega-root": "link:/../vega-ui/packages/components/root",
     "@gpn-prototypes/vega-theme": "^0.0.2",
     "@gpn-prototypes/vega-tree": "link:/../vega-ui/packages/components/tree",
-    "@gpn-prototypes/vega-layout": "link:/../vega-ui/packages/components/layout",
     "@gpn-prototypes/vega-ui": "^2.0.0",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
@@ -52,6 +52,7 @@
     "@types/redux-logger": "^3.0.8",
     "@types/redux-thunk": "^2.1.0",
     "@types/uniqid": "^5.2.0",
+    "@types/uuid": "^8.3.0",
     "bem-cn": "^3.0.1",
     "konva": "^7.1.0",
     "lodash": "^4.17.19",
@@ -66,7 +67,8 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "uniqid": "^5.2.0"
+    "uniqid": "^5.2.0",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

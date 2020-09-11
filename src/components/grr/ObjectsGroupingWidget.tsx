@@ -110,5 +110,12 @@ const icons = {
 };
 
 export const ObjectsGroupingWidget = (): React.ReactElement => {
-  return <Tree icons={icons} nodeList={group} isShownLeftLines={false} />;
+  return (
+    <Tree
+      onDragEnd={(event) => console.log(event)}
+      icons={icons}
+      nodeList={group}
+      isShownLeftLines={false}
+    />
+  );
 };

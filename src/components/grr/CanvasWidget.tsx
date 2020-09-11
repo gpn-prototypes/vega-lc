@@ -8,6 +8,7 @@ import {
   entities,
 } from '@gpn-prototypes/vega-canvas';
 import { useInterval, useLocalStorage } from '@gpn-prototypes/vega-hooks';
+import { v4 as uuid } from 'uuid';
 
 const startNode = entities.Tree.of<CanvasData>({
   data: {
@@ -55,9 +56,33 @@ export const CanvasWidget = (): React.ReactElement => {
   });
 
   const updateTree = (change: Change): void => {
+    console.log(change);
     setChanges([...changes, change.update]);
     setLocalState(change.state);
   };
 
-  return <Canvas parentRef={ref} state={localState} onChange={updateTree} />;
+  const addNewTree = () => {
+    const newObject = Object.assign(Object.create(null), localState[0], {
+      id: uuid(),
+      childrenIds: [],
+      parentIds: [],
+      data: {
+        position: {
+          x: 300,
+          y: 100,
+        },
+        title: 'Шаг',
+        type: 'step',
+      },
+      __proto__: null,
+    });
+
+    setLocalState([...localState, newObject]);
+  };
+
+  return (
+    <div onDragOver={(event) => event.preventDefault()} onDrop={addNewTree}>
+      <Canvas parentRef={ref} state={localState} onChange={updateTree} />
+    </div>
+  );
 };
