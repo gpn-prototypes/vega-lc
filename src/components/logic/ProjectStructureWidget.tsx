@@ -58,19 +58,19 @@ const RedLineSvg = (
 
 const rootProps: RootProps = [
   {
-    name: 'Усть-Енисей',
+    name: 'Гринфилд',
     isDraggable: false,
     iconId: 'blue-line',
     id: 1,
     nodeList: [
       {
-        name: 'Поднятие 44-23',
+        name: 'Поднятие Боровое',
         iconId: 'orange-line',
         id: 2,
         isDraggable: false,
         nodeList: [
           {
-            name: 'Залежь - 78',
+            name: 'Залежь - AC10',
             iconId: 'blue-line',
             id: 10,
             nodeList: [
@@ -88,7 +88,7 @@ const rootProps: RootProps = [
             ],
           },
           {
-            name: 'Залежь - 79',
+            name: 'Залежь - AC11',
             iconId: 'blue-line',
             id: 30,
             nodeList: [
@@ -100,78 +100,78 @@ const rootProps: RootProps = [
             ],
           },
           {
-            name: 'Залежь - 56',
+            name: 'Залежь - 12',
             iconId: 'blue-line',
             id: 11,
           },
           {
-            name: 'Залежь - 11',
+            name: 'Залежь - 13',
             iconId: 'blue-line',
             id: 20,
           },
           {
-            name: 'Залежь - 1',
+            name: 'Залежь - 14',
             iconId: 'blue-line',
             id: 9,
           },
         ],
       },
       {
-        name: 'Поднятие 55-100',
+        name: 'Поднятие Мраморное',
         iconId: 'orange-line',
         id: 3,
         isDraggable: false,
         nodeList: [
           {
-            name: 'Залежь - 78',
+            name: 'Залежь - AC9-1',
             iconId: 'blue-line',
             id: 7,
           },
           {
-            name: 'Залежь - 79',
+            name: 'Залежь - AC9-2',
             iconId: 'blue-line',
             id: 17,
           },
           {
-            name: 'Залежь - 56',
+            name: 'Залежь - AC10',
             iconId: 'blue-line',
             id: 24,
           },
           {
-            name: 'Залежь - 11',
+            name: 'Залежь - AC11',
             iconId: 'blue-line',
             id: 25,
           },
           {
-            name: 'Залежь - 1',
+            name: 'Залежь - AC12',
             iconId: 'blue-line',
             id: 26,
           },
         ],
       },
       {
-        name: 'Поднятие 23-32',
+        name: 'Поднятие Кустовое',
         iconId: 'orange-line',
         isDraggable: false,
         id: 4,
         nodeList: [
           {
-            name: 'Залежь - 44',
+            name: 'Залежь - АС9',
             iconId: 'blue-line',
             id: 27,
           },
           {
-            name: 'Залежь - 79',
+            name: 'Залежь - АС10-1',
             iconId: 'blue-line',
             id: 31,
           },
           {
-            name: 'Залежь - 45',
+            name: 'Залежь - АС10-2',
             iconId: 'blue-line',
             id: 32,
           },
           {
-            name: 'Залежь - 46',
+            name: 'Залежь - АС10-3',
             iconId: 'blue-line',
             id: 33,
             nodeList: [
@@ -209,7 +209,7 @@ const rootProps: RootProps = [
             ],
           },
           {
-            name: 'Залежь - 1',
+            name: 'Залежь - АС11',
             iconId: 'blue-line',
             id: 47,
           },

@@ -26,15 +26,15 @@ const group: Array<NodeItem> = [
     id: 1,
     nodeList: [
       {
-        name: 'Залежь - 78',
+        name: 'Залежь - АС10',
         iconId: 'circle',
       },
       {
-        name: 'Залежь - 29',
+        name: 'Залежь - АС11',
         iconId: 'circle',
       },
       {
-        name: 'Залежь - 77',
+        name: 'Залежь - АС12',
         iconId: 'circle',
       },
     ],
@@ -47,15 +47,15 @@ const group: Array<NodeItem> = [
     id: 2,
     nodeList: [
       {
-        name: 'Залежь - 78',
+        name: 'Залежь - АС10',
         iconId: 'circle',
       },
       {
-        name: 'Залежь - 29',
+        name: 'Залежь - АС9',
         iconId: 'circle',
       },
       {
-        name: 'Залежь - 77',
+        name: 'Залежь - АС14',
         iconId: 'circle',
       },
     ],
@@ -68,15 +68,15 @@ const group: Array<NodeItem> = [
     id: 3,
     nodeList: [
       {
-        name: 'Залежь - 78',
+        name: 'Залежь - АС10',
         iconId: 'circle',
       },
       {
-        name: 'Залежь - 29',
+        name: 'Залежь - АС10-1',
         iconId: 'circle',
       },
       {
-        name: 'Залежь - 77',
+        name: 'Залежь - АС10-2',
         iconId: 'circle',
       },
     ],
@@ -89,15 +89,15 @@ const group: Array<NodeItem> = [
     id: 4,
     nodeList: [
       {
-        name: 'Залежь - 78',
+        name: 'Залежь - АС19',
         iconId: 'circle',
       },
       {
-        name: 'Залежь - 29',
+        name: 'Залежь - АС10-2',
         iconId: 'circle',
       },
       {
-        name: 'Залежь - 77',
+        name: 'Залежь - АС10-3',
         iconId: 'circle',
       },
     ],

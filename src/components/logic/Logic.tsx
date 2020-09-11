@@ -1,12 +1,12 @@
 /* eslint-disable max-classes-per-file */
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 import { GridState, GridUpdate, Layout } from '@gpn-prototypes/vega-layout';
 
 import { ActivitiesWidget } from './ActivitiesWidget';
 import { CanvasWidget } from './CanvasWidget';
+import { ObjectsGroupingWidget } from './ObjectsGroupingWidget';
 import { ProjectStructureWidget } from './ProjectStructureWidget';
-import {ObjectsGroupingWidget} from "./ObjectsGroupingWidget";
 
 const widgets = [
   { name: 'Конструктор логики', component: CanvasWidget },
@@ -17,7 +17,7 @@ const widgets = [
 
 const Container = styled.div`
   width: 100%;
-  height: 900px;
+  height: calc(100vh - 55px);
   display: flex;
   box-sizing: border-box;
 `;
