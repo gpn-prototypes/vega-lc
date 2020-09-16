@@ -30,7 +30,7 @@ const appWebpack = {
   devServer: {
     historyApiFallback: true,
     proxy: {
-      '/graphql': 'http://localhost:8080',
+      '/graphql': 'http://outsourcing.nat.tepkom.ru:38080',
     },
   },
 };
