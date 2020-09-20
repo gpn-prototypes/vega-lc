@@ -1,7 +1,7 @@
-import { NodeItem } from '@gpn-prototypes/vega-tree';
+import { TreeItem } from '@gpn-prototypes/vega-tree';
 
 const initialState = {
-  nodeList: [] as NodeItem[],
+  nodeList: [] as TreeItem[],
 };
 
 export default initialState;

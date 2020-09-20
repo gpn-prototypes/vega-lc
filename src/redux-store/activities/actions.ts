@@ -1,15 +1,15 @@
-import { NodeItem } from '@gpn-prototypes/vega-tree';
+import { TreeItem } from '@gpn-prototypes/vega-tree';
 
 import getHeaders from '../../utils/headers';
 
 import { ActivitiesActionTypes } from './action-types';
 
-const setActivitiesList = (nodeList: NodeItem[]) => ({
+const setActivitiesList = (nodeList: TreeItem[]) => ({
   type: ActivitiesActionTypes.SET_ACTIVITIES_LIST,
   nodeList,
 });
 
-const fetchActivitiesList = () => async (dispatch: any, getState: any) => {
+const fetchActivitiesList = () => async (dispatch: any) => {
   try {
     const response = await fetch(`graphql`, {
       method: 'POST',
@@ -45,13 +45,20 @@ const fetchActivitiesList = () => async (dispatch: any, getState: any) => {
         const { name } = activity.category;
 
         if (!collection[name]) {
-          collection[name] = {};
-          collection[name].name = name;
-          collection[name].id = activity.category.vid;
-          collection[name].nodeList = [];
+          collection[name] = {
+            name,
+            id: activity.category.vid,
+            nodeList: [],
+            isDropZone: false,
+            isDraggable: false,
+          };
         }
 
-        collection[name].nodeList.push({ name: activity.name, id: activity.vid });
+        collection[name].nodeList.push({
+          name: activity.name,
+          id: activity.vid,
+          iconId: 'blue-line',
+        });
       });
 
       const nodeList = Object.values(collection);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NodeItem, Tree } from '@gpn-prototypes/vega-tree';
+import { Tree, TreeItem } from '@gpn-prototypes/vega-tree';
 
 const SquareSvg = (
   <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,7 +18,7 @@ const CircleSvg = (
   </svg>
 );
 
-const group: NodeItem[] = [
+const group: TreeItem[] = [
   {
     name: 'Фаза-1',
     isDraggable: false,
@@ -34,5 +34,5 @@ const icons = {
 };
 
 export const ObjectsGroupingWidget = (): React.ReactElement => {
-  return <Tree icons={icons} nodeList={group} isShownLeftLines={false} />;
+  return <Tree icons={icons} nodeList={group} showIndentGuides={false} />;
 };

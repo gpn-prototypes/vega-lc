@@ -5,128 +5,28 @@ import { Tree } from '@gpn-prototypes/vega-tree';
 import { fetchActivitiesList } from '../../redux-store/activities/actions';
 import { getActivitiesNodeList } from '../../redux-store/activities/selectors';
 
-// const RedFolder = (
-//   <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-//     <path
-//       d="M1 0.5C0.447715 0.5 0 0.947715 0 1.5V9.5C0 10.0523 0.447715 10.5 1 10.5H11C11.5523 10.5 12 10.0523 12 9.5V2.5C12 1.94772 11.5523 1.5 11 1.5H5C5 0.947715 4.55228 0.5 4 0.5H1Z"
-//       fill="#FE4343"
-//     />
-//   </svg>
-// );
-//
-// const BlueFolder = (
-//   <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-//     <path
-//       d="M1 0.5C0.447715 0.5 0 0.947715 0 1.5V9.5C0 10.0523 0.447715 10.5 1 10.5H11C11.5523 10.5 12 10.0523 12 9.5V2.5C12 1.94772 11.5523 1.5 11 1.5H5C5 0.947715 4.55228 0.5 4 0.5H1Z"
-//       fill="#0AA5FF"
-//     />
-//   </svg>
-// );
-//
-// const GreenFolder = (
-//   <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-//     <path
-//       d="M1 0.5C0.447715 0.5 0 0.947715 0 1.5V9.5C0 10.0523 0.447715 10.5 1 10.5H11C11.5523 10.5 12 10.0523 12 9.5V2.5C12 1.94772 11.5523 1.5 11 1.5H5C5 0.947715 4.55228 0.5 4 0.5H1Z"
-//       fill="#22C38E"
-//     />
-//   </svg>
-// );
-//
-// const events: NodeItem[] = [
-//   {
-//     name: 'Разведка',
-//     iconId: 'red-folder',
-//     id: '1',
-//     isDraggable: false,
-//     nodeList: [
-//       {
-//         name: 'Аэромагнитная съёмка',
-//         id: '11',
-//       },
-//       {
-//         name: 'Гравиметрическая съёмка',
-//         id: '12',
-//       },
-//       {
-//         name: 'Сейсмика',
-//         id: '13',
-//       },
-//       {
-//         name: 'Гравиразведка',
-//         id: '14',
-//       },
-//     ],
-//   },
-//   {
-//     name: 'Обустройство',
-//     iconId: 'blue-folder',
-//     isDraggable: false,
-//     id: '2',
-//     nodeList: [
-//       {
-//         name: 'Разбивочные работы',
-//         id: '15',
-//       },
-//       {
-//         name: 'Геодезический контроль точности',
-//         id: '16',
-//       },
-//       {
-//         name: 'Дороги (временные)',
-//         id: '17',
-//       },
-//       {
-//         name: 'Площадки (временные)',
-//         id: '18',
-//       },
-//       {
-//         name: 'Рельсовые подкрановые пути',
-//         id: '19',
-//       },
-//       {
-//         name: 'Дороги',
-//         id: '20',
-//       },
-//       {
-//         name: 'Площадки',
-//         id: '21',
-//       },
-//       {
-//         name: 'Механизированная разработка грунта ',
-//         id: '22',
-//       },
-//       {
-//         name: 'Уплотнение грунта катками',
-//         id: '23',
-//       },
-//       {
-//         name: 'Механизированное рыхление',
-//         id: '24',
-//       },
-//       {
-//         name: 'Бурение',
-//         id: '25',
-//       },
-//       {
-//         name: 'Тампонажные работы',
-//         id: '26',
-//       },
-//     ],
-//   },
-//   {
-//     name: 'Программа ОПР',
-//     iconId: 'green-folder',
-//     id: '3',
-//     isDraggable: false,
-//     nodeList: [],
-//   },
-// ];
-//
-// const icons = {
-//   'blue-folder': BlueFolder,
-//   'green-folder': GreenFolder,
-//   'red-folder': RedFolder,
-// };
+export const BlueLineSvg = (
+  <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M0 3.5C0 3.5 3.5 0.5 7.5 0.5C11.5 0.5 12 3.5 12 3.5"
+      stroke="white"
+      strokeOpacity="0.2"
+    />
+    <path
+      d="M4.5 3.5C0.5 3.5 0 6.5 0 6.5V8.5C1.5 7.66667 3.5 6 7 6C9.5 6 11.1667 7.66667 12 8.5V6.5C12 6.5 8.5 3.5 4.5 3.5Z"
+      fill="#0AA5FF"
+    />
+    <path
+      d="M0 10.5C0 10.5 1.5 9.5 5.5 9.5C9.5 9.5 12 10.5 12 10.5"
+      stroke="white"
+      strokeOpacity="0.2"
+    />
+  </svg>
+);
+
+const icons = {
+  'blue-line': BlueLineSvg,
+};
 
 export const ActivitiesWidget = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -137,5 +37,12 @@ export const ActivitiesWidget = (): React.ReactElement => {
     dispatch(fetchActivitiesList());
   }, [dispatch]);
 
-  return <Tree withVisibilitySwitcher={false} nodeList={activities} isShownLeftLines={false} />;
+  return (
+    <Tree
+      icons={icons}
+      withVisibilitySwitcher={false}
+      nodeList={activities}
+      showIndentGuides={false}
+    />
+  );
 };

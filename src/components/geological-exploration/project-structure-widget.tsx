@@ -1,5 +1,5 @@
 import React from 'react';
-import { NodeItem, Tree } from '@gpn-prototypes/vega-tree';
+import { Tree, TreeItem } from '@gpn-prototypes/vega-tree';
 
 const OrangeLineSvg = (
   <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +56,7 @@ const RedLineSvg = (
   </svg>
 );
 
-const rootProps: NodeItem[] = [
+const rootProps: TreeItem[] = [
   {
     name: 'Усть-Енисей',
     isDraggable: false,

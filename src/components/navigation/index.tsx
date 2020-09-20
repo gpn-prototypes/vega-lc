@@ -58,8 +58,8 @@ const Navigation = (): React.ReactElement => {
       multiple={false}
       items={tabs}
       value={valueTab}
-      getLabel={(item) => item.title}
-      onChange={({ value }) => {
+      getLabel={(item): string => item.title}
+      onChange={({ value }): void => {
         setValueTab(value);
         history.push(value ? value.path : '/');
       }}

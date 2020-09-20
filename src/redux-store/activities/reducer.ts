@@ -3,7 +3,7 @@ import createReducer from '../../utils/create-reducer';
 import { ActivitiesActionTypes } from './action-types';
 import initialState from './initial-state';
 
-const setActivitiesNodeListStrategy = (state: any, { nodeList = [] }) => ({
+const setActivitiesNodeListStrategy = (state: any, { nodeList = [] }): any => ({
   ...state,
   nodeList,
 });
