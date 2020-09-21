@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { ActivitiesWidget } from './activities-widget';
+import { ActivitiesWidget } from '../activities';
 
 const Container = styled.div`
   width: 100%;

@@ -5,6 +5,10 @@ import { Tree } from '@gpn-prototypes/vega-tree';
 import { fetchActivitiesList } from '../../redux-store/activities/actions';
 import { getActivitiesNodeList } from '../../redux-store/activities/selectors';
 
+import { cnActivities } from './cn-activities';
+
+import './index.css';
+
 export const BlueLineSvg = (
   <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -38,11 +42,13 @@ export const ActivitiesWidget = (): React.ReactElement => {
   }, [dispatch]);
 
   return (
-    <Tree
-      icons={icons}
-      withVisibilitySwitcher={false}
-      nodeList={activities}
-      showIndentGuides={false}
-    />
+    <div className={cnActivities()}>
+      <Tree
+        icons={icons}
+        withVisibilitySwitcher={false}
+        nodeList={activities}
+        showIndentGuides={false}
+      />
+    </div>
   );
 };

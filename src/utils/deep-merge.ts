@@ -1,7 +1,9 @@
-function deepMerge(...args: any) {
-  const newObj: { [x: string]: any } = {};
+type mergedObject = { [x: string]: any };
 
-  const merge = (obj: any) => {
+function deepMerge(...args: any): mergedObject {
+  const newObj: mergedObject = {};
+
+  const merge = (obj: mergedObject): void => {
     Object.keys(obj).forEach((prop) => {
       if (typeof obj[prop] === 'object') {
         newObj[prop] = deepMerge(newObj[prop] || {}, obj[prop]);
