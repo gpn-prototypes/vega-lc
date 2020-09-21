@@ -4,6 +4,7 @@ import { Tree } from '@gpn-prototypes/vega-tree';
 
 import { fetchActivitiesList } from '../../redux-store/activities/actions';
 import { getActivitiesNodeList } from '../../redux-store/activities/selectors';
+import { fetchGroupObjectList } from '../../redux-store/group-objects/actions';
 
 import { cnActivities } from './cn-activities';
 
@@ -39,6 +40,7 @@ export const ActivitiesWidget = (): React.ReactElement => {
 
   useEffect(() => {
     dispatch(fetchActivitiesList());
+    dispatch(fetchGroupObjectList());
   }, [dispatch]);
 
   return (
