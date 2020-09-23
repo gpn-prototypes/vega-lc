@@ -40,7 +40,7 @@
     "@gpn-prototypes/vega-hooks": "^0.5.0",
     "@gpn-prototypes/vega-root": "^0.2.3",
     "@gpn-prototypes/vega-theme": "^0.0.2",
-    "@gpn-prototypes/vega-tree": "link:/../vega-ui/packages/components/tree",
+    "@gpn-prototypes/vega-tree": "^0.0.2",
     "@gpn-prototypes/vega-ui": "^2.8.0",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",

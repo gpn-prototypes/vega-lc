@@ -53,6 +53,7 @@ const fetchGroupObjectList = () => async (dispatch: any) => {
             name: object.name,
             id: object.vid,
             iconId: 'circle',
+            nodeList: [],
           });
         });
       });
