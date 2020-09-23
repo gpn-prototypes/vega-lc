@@ -1579,9 +1579,12 @@
   dependencies:
     "@gpn-design/uikit" "^1.7.1"
 
-"@gpn-prototypes/vega-tree@link:../../../../vega-ui/packages/components/tree":
-  version "0.0.0"
-  uid ""
+"@gpn-prototypes/vega-tree@^0.0.2":
+  version "0.0.2"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tree/0.0.2/d16899ca37f2d03aad482aa878c1f24b1a8a0361a748c209c3a8b09c1c3a14f0#908db7a74e736a687901b693c0fe0b6247f09ec2"
+  integrity sha512-nZ7Nryg3MeSou0orjv84XuRwABNrA3/QKxZSIvc5m39WDrg/UU6IrC4X+c0jicnquBcqMDACbSAOFKN7Azn9GA==
+  dependencies:
+    bem-cn "^3.0.1"
 
 "@gpn-prototypes/vega-ui@^2.8.0":
   version "2.12.3"

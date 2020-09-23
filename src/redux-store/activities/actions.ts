@@ -58,6 +58,7 @@ const fetchActivitiesList = () => async (dispatch: any) => {
           name: activity.name,
           id: activity.vid,
           iconId: 'blue-line',
+          nodeList: [],
         });
       });
 
