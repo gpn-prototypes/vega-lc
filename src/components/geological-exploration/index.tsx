@@ -4,7 +4,9 @@ import { GridState, GridUpdate, Layout, LayoutWidget } from '@gpn-prototypes/veg
 import { LayoutWidgetsOverrides } from '@gpn-prototypes/vega-layout/dist/src/LayoutDataView';
 
 import { ActivitiesWidget } from '../activities';
+import { CanvasWidget } from '../canvas';
 import { ObjectsGroupWidget } from '../objects-group';
+import { ProjectStructureWidget } from '../project-structure';
 
 const widgets: LayoutWidget[] = [
   { name: 'Мероприятия', component: 'vega-activities' },
@@ -12,10 +14,21 @@ const widgets: LayoutWidget[] = [
     name: 'Группа объектов',
     component: 'vega-group-objects',
   },
+  {
+    name: 'Структура проекта',
+    component: 'vega-project-structure',
+  },
+  {
+    name: 'Канвас',
+    component: 'vega-canvas',
+  },
 ];
+
 const widgetsOverrides: LayoutWidgetsOverrides = {
   'vega-activities': () => <ActivitiesWidget />,
   'vega-group-objects': () => <ObjectsGroupWidget />,
+  'vega-project-structure': () => <ProjectStructureWidget />,
+  'vega-canvas': () => <CanvasWidget />,
 };
 
 const state: GridState = {
@@ -23,20 +36,48 @@ const state: GridState = {
     type: 'branch',
     data: {
       splitDirection: 'right',
-      breakpoint: 50,
+      breakpoint: 15,
     },
   },
   1: {
-    type: 'leaf',
+    type: 'branch',
     data: {
-      widget: 'vega-activities',
-      context: {},
+      splitDirection: 'down',
+      breakpoint: 51,
     },
   },
   2: {
+    type: 'branch',
+    data: {
+      splitDirection: 'right',
+      breakpoint: 60,
+    },
+  },
+  3: {
+    type: 'leaf',
+    data: {
+      widget: 'vega-project-structure',
+      context: {},
+    },
+  },
+  4: {
     type: 'leaf',
     data: {
       widget: 'vega-group-objects',
+      context: {},
+    },
+  },
+  5: {
+    type: 'leaf',
+    data: {
+      widget: 'vega-canvas',
+      context: {},
+    },
+  },
+  6: {
+    type: 'leaf',
+    data: {
+      widget: 'vega-activities',
       context: {},
     },
   },

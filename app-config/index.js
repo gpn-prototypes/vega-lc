@@ -12,7 +12,7 @@ const getAppConfig = () => ({
   port: process.env.PORT || 3000,
   apiURL: process.env.API_URL || '',
   analyze: process.env.ANALYZE || 0,
-  VEGA_API_PROXY: process.env.VEGA_API_PROXY || 'http://outsourcing.nat.tepkom.ru:38080',
+  VEGA_API_PROXY: process.env.VEGA_API_PROXY || 'http://gpnhpevega2.tepkom:8181',
 });
 
 module.exports = getAppConfig;
