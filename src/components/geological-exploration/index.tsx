@@ -4,18 +4,26 @@ import { GridState, GridUpdate, Layout, LayoutWidget } from '@gpn-prototypes/veg
 import { LayoutWidgetsOverrides } from '@gpn-prototypes/vega-layout/dist/src/LayoutDataView';
 
 import { ActivitiesWidget } from '../activities';
+import { ObjectsGroupWidget } from '../objects-group';
 
-const widgets: LayoutWidget[] = [{ name: 'Мероприятия', component: 'vega-activities' }];
+const widgets: LayoutWidget[] = [
+  { name: 'Мероприятия', component: 'vega-activities' },
+  {
+    name: 'Группа объектов',
+    component: 'vega-group-objects',
+  },
+];
 const widgetsOverrides: LayoutWidgetsOverrides = {
   'vega-activities': () => <ActivitiesWidget />,
+  'vega-group-objects': () => <ObjectsGroupWidget />,
 };
 
 const state: GridState = {
   0: {
     type: 'branch',
     data: {
-      splitDirection: 'down',
-      breakpoint: 15,
+      splitDirection: 'right',
+      breakpoint: 50,
     },
   },
   1: {
@@ -28,7 +36,7 @@ const state: GridState = {
   2: {
     type: 'leaf',
     data: {
-      widget: 'vega-activities',
+      widget: 'vega-group-objects',
       context: {},
     },
   },
