@@ -7,6 +7,7 @@ export type AppConfig = {
   assetsPath: string;
   port: string | number;
   apiURL: string;
+  VEGA_API_PROXY: string;
 };
 
 export declare function getAppConfig(): AppConfig;

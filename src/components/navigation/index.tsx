@@ -37,15 +37,11 @@ const Navigation = (): React.ReactElement => {
     },
   ];
 
-  const currentTab = tabs.find((tab) => {
-    return tab.path === history.location.pathname;
-  }) as NavItem;
+  const currentTab = tabs.find((tab) => tab.path === history.location.pathname) as NavItem;
   const [valueTab, setValueTab] = useState<NavItem | null>(currentTab);
 
   history.listen((location) => {
-    const switchTab = tabs.find((element) => {
-      return element.path === location.pathname;
-    });
+    const switchTab = tabs.find((element) => element.path === location.pathname);
     setValueTab(switchTab || null);
   });
 

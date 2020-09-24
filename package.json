@@ -38,6 +38,7 @@
     "@emotion/styled": "^10.0.27",
     "@gpn-design/uikit": "^1.7.1",
     "@gpn-prototypes/vega-hooks": "^0.5.0",
+    "@gpn-prototypes/vega-layout": "^0.3.1",
     "@gpn-prototypes/vega-root": "^0.2.3",
     "@gpn-prototypes/vega-theme": "^0.0.2",
     "@gpn-prototypes/vega-tree": "^0.0.2",

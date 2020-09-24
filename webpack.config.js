@@ -5,6 +5,8 @@ const webpack = require('webpack');
 const appConfig = require('./app-config')();
 const postCssConfig = require('./postcss.config');
 
+dotenv.config();
+
 const gpnWebpack = require('@gpn-prototypes/frontend-configs/webpack.config')({
   appConfig,
   postCssConfig,
@@ -30,7 +32,7 @@ const appWebpack = {
   devServer: {
     historyApiFallback: true,
     proxy: {
-      '/graphql': 'http://outsourcing.nat.tepkom.ru:38080',
+      '/graphql': process.env.VEGA_API_PROXY,
     },
   },
 };
