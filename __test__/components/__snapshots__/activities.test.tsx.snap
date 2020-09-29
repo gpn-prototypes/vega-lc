@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Geological Exploration рендерится без ошибок 1`] = `
+<div
+  className="ActivitiesWidget"
+>
+  <div
+    className="VegaTree"
+  >
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <ul
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+        role="tree"
+        tabIndex={0}
+      >
+        <li
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+          draggable={true}
+          id="1"
+          onContextMenu={[Function]}
+          onDragStart={[Function]}
+          onKeyPress={[Function]}
+          role="treeitem"
+          tabIndex={0}
+        >
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            role="treeitem"
+            tabIndex={0}
+          >
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              mock
+            </div>
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+              style={
+                Object {
+                  "width": undefined,
+                }
+              }
+            />
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            />
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
