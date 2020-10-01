@@ -1,9 +1,5 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Tree } from '@gpn-prototypes/vega-tree';
-
-import { fetchGroupObjectList } from '../../redux-store/group-objects/actions';
-import { getGroupObjectsNodeList } from '../../redux-store/group-objects/selectors';
+import React from 'react';
+import { Tree, TreeItem } from '@gpn-prototypes/vega-tree';
 
 import { cnObjectGroup } from './cn-objects-group';
 import { CircleSvg, SquareSvg } from './icons';
@@ -15,18 +11,16 @@ const icons = {
   circle: CircleSvg,
 };
 
-export const ObjectsGroupWidget = (): React.ReactElement => {
-  const dispatch = useDispatch();
+type ObjectsGroupProps = {
+  objectsGroup: TreeItem[];
+};
 
-  const groupObjects = useSelector(getGroupObjectsNodeList);
-
-  useEffect(() => {
-    dispatch(fetchGroupObjectList());
-  }, [dispatch]);
-
+export const ObjectsGroupWidget: React.FC<ObjectsGroupProps> = ({
+  objectsGroup,
+}): React.ReactElement => {
   return (
     <div className={cnObjectGroup()}>
-      <Tree icons={icons} nodeList={groupObjects} showIndentGuides={false} />
+      <Tree icons={icons} nodeList={objectsGroup} showIndentGuides={false} />
     </div>
   );
 };
