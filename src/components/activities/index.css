@@ -1,3 +1,24 @@
 .ActivitiesWidget {
-  width: 100%;
+  position: absolute;
+
+  margin: 16px;
+  padding: 8px;
+
+  width: 40%;
+  max-width: 316px;
+  height: 840px;
+
+  background-color: var(--color-bg-default);
+
+  &__Title {
+    margin: 0;
+
+    font-size: 16px;
+    font-style: normal;
+    line-height: 150%;
+  }
+
+  & .VegaTree {
+    padding: 0;
+  }
 }

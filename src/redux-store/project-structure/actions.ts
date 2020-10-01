@@ -49,14 +49,16 @@ const fetchProjectStructureList = () => async (dispatch: any) => {
           };
         }
 
-        project.licensingRounds.forEach((object: any) => {
-          collection[vid].nodeList.push({
-            name: object.name,
-            id: object.vid,
-            iconId: 'orange-line',
-            nodeList: [],
+        if (Array.isArray(project.licensingRounds)) {
+          project.licensingRounds.forEach((object: any) => {
+            collection[vid].nodeList.push({
+              name: object.name,
+              id: object.vid,
+              iconId: 'orange-line',
+              nodeList: [],
+            });
           });
-        });
+        }
       });
 
       const nodeList = Object.values(collection);

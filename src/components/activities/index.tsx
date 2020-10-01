@@ -17,6 +17,7 @@ type ActivitiesProps = {
 export const ActivitiesWidget: React.FC<ActivitiesProps> = ({ activities }): React.ReactElement => {
   return (
     <div className={cnActivities()}>
+      <p className={cnActivities('Title')}>Мероприятия</p>
       <Tree
         icons={icons}
         withVisibilitySwitcher={false}
