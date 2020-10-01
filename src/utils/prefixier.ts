@@ -1,14 +1,14 @@
 class Prefixer {
-  private readonly prefix: any;
+  private readonly prefix: string;
 
-  private readonly delimiter: any;
+  private readonly delimiter: string;
 
-  constructor(prefix: string, { delimiter = '' }: any) {
+  constructor(prefix: string, { delimiter = '' }) {
     this.prefix = prefix;
     this.delimiter = delimiter;
   }
 
-  applyTo(value: any) {
+  applyTo(value: string): string {
     return `${this.prefix}${this.delimiter}${value}`;
   }
 }

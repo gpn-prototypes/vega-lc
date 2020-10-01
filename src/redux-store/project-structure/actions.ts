@@ -1,15 +1,25 @@
 import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { AnyAction } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 
+import { StoreLC } from '../../types/redux-store';
 import getHeaders from '../../utils/headers';
 
 import { ProjectStructureActionTypes } from './action-types';
 
-const setProjectStructureList = (nodeList: TreeItem[]) => ({
+type SetProjectStructureList = {
+  type: typeof ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST;
+  nodeList: TreeItem[];
+};
+
+const setProjectStructureList = (nodeList: TreeItem[]): SetProjectStructureList => ({
   type: ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST,
   nodeList,
 });
 
-const fetchProjectStructureList = () => async (dispatch: any) => {
+const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
+  dispatch,
+) => {
   try {
     const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
       method: 'POST',

@@ -5,7 +5,10 @@ import { GridState, GridUpdate, Layout, LayoutWidget } from '@gpn-prototypes/veg
 import { LayoutWidgetsOverrides } from '@gpn-prototypes/vega-layout/dist/src/LayoutDataView';
 
 import { fetchActivitiesList } from '../../redux-store/activities/actions';
-import { getActivitiesNodeList } from '../../redux-store/activities/selectors';
+import {
+  getActivitiesNodeList,
+  getSearchStringValue,
+} from '../../redux-store/activities/selectors';
 import { fetchGroupObjectList } from '../../redux-store/group-objects/actions';
 import { getGroupObjectsNodeList } from '../../redux-store/group-objects/selectors';
 import { fetchProjectStructureList } from '../../redux-store/project-structure/actions';
@@ -20,7 +23,7 @@ const Container = styled.div`
 `;
 
 export const GeologicalExploration = (): React.ReactElement => {
-  function action(change: { update: GridUpdate; state: GridState }) {
+  function action(change: { update: GridUpdate; state: GridState }): void {
     console.log(change);
   }
 
@@ -29,6 +32,7 @@ export const GeologicalExploration = (): React.ReactElement => {
   const objectsGroup = useSelector(getGroupObjectsNodeList);
   const activities = useSelector(getActivitiesNodeList);
   const projectStructure = useSelector(getProjectStructureNodeList);
+  const searchString = useSelector(getSearchStringValue);
 
   useEffect(() => {
     dispatch(fetchActivitiesList());
@@ -54,7 +58,9 @@ export const GeologicalExploration = (): React.ReactElement => {
   const widgetsOverrides: LayoutWidgetsOverrides = {
     'vega-group-objects': () => <ObjectsGroupWidget objectsGroup={objectsGroup} />,
     'vega-project-structure': () => <ProjectStructureWidget projectStructure={projectStructure} />,
-    'vega-canvas': () => <LogicConstructorWidget activities={activities} />,
+    'vega-canvas': () => (
+      <LogicConstructorWidget searchString={searchString} activities={activities} />
+    ),
   };
 
   const state: GridState = {
@@ -62,7 +68,7 @@ export const GeologicalExploration = (): React.ReactElement => {
       type: 'branch',
       data: {
         splitDirection: 'right',
-        breakpoint: 25,
+        breakpoint: 16,
       },
     },
     1: {

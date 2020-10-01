@@ -1,3 +1,8 @@
-const getCurrentState = (state: any) => state.projectStructure;
+import { TreeItem } from '@gpn-prototypes/vega-ui';
 
-export const getProjectStructureNodeList = (state: any) => getCurrentState(state).nodeList;
+import { ProjectStructureState, StoreLC } from '../../types/redux-store';
+
+const getCurrentState = (state: StoreLC): ProjectStructureState => state.projectStructure;
+
+export const getProjectStructureNodeList = (state: StoreLC): TreeItem[] | undefined =>
+  getCurrentState(state).nodeList;

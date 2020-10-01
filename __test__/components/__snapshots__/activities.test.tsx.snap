@@ -4,6 +4,20 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
 <div
   className="ActivitiesWidget"
 >
+  <p
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    Мероприятия
+  </p>
   <div
     className="VegaTree"
   >

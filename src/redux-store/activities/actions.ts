@@ -1,15 +1,45 @@
+import { Dispatch } from 'react';
 import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { AnyAction } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 
+import { StoreLC } from '../../types/redux-store';
 import getHeaders from '../../utils/headers';
 
 import { ActivitiesActionTypes } from './action-types';
 
-const setActivitiesList = (nodeList: TreeItem[]) => ({
+type SetIsAutoFocus = { type: typeof ActivitiesActionTypes.SET_IS_AUTO_FOCUS; autoFocus: boolean };
+type SetActivitiesList = {
+  type: typeof ActivitiesActionTypes.SET_ACTIVITIES_LIST;
+  nodeList: TreeItem[];
+};
+
+const setActivitiesList = (nodeList: TreeItem[]): SetActivitiesList => ({
   type: ActivitiesActionTypes.SET_ACTIVITIES_LIST,
   nodeList,
 });
 
-const fetchActivitiesList = () => async (dispatch: any) => {
+const setIsAutoFocus = (autoFocus: boolean): SetIsAutoFocus => ({
+  type: ActivitiesActionTypes.SET_IS_AUTO_FOCUS,
+  autoFocus,
+});
+
+const setSearchString = (searchString: string | null) => (
+  dispatch: Dispatch<unknown>,
+  getState: () => StoreLC,
+): void => {
+  const { activities } = getState();
+
+  if (!activities.autoFocus) {
+    dispatch(setIsAutoFocus(true));
+  }
+
+  dispatch({ type: ActivitiesActionTypes.SET_SEARCH_STRING, searchString });
+};
+
+const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
+  dispatch,
+): Promise<void> => {
   try {
     const response = await fetch(`graphql`, {
       method: 'POST',
@@ -73,4 +103,4 @@ const fetchActivitiesList = () => async (dispatch: any) => {
   }
 };
 
-export { fetchActivitiesList };
+export { fetchActivitiesList, setSearchString, setIsAutoFocus };

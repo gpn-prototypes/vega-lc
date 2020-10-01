@@ -1,4 +1,4 @@
-type mergedObject = { [x: string]: any };
+type mergedObject = { [x: string]: unknown };
 
 function deepMerge(...args: any): mergedObject {
   const newObj: mergedObject = {};

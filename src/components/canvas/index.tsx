@@ -20,7 +20,7 @@ export const CanvasWidget: React.FC<CanvasWidgetProps> = (props) => {
 
   const startNode = Tree.of<CanvasData>({
     data: {
-      position: { x: 10, y: 300 },
+      position: { x: 450, y: 400 },
       title: 'Начало',
       type: 'root',
     },
@@ -28,7 +28,7 @@ export const CanvasWidget: React.FC<CanvasWidgetProps> = (props) => {
 
   const endNode = Tree.of<CanvasData>({
     data: {
-      position: { x: 600, y: 300 },
+      position: { x: 900, y: 400 },
       title: 'Конец',
       type: 'end',
     },
