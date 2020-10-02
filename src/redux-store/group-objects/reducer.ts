@@ -10,7 +10,7 @@ const setGroupObjectsNodeListStrategy = (state: StoreLC, { nodeList = [] }): Gro
 });
 
 const strategyMap = {
-  [(GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST as unknown) as string]: setGroupObjectsNodeListStrategy,
+  [GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST]: setGroupObjectsNodeListStrategy,
 };
 
 const groupObjectsReducer = createReducer(strategyMap, initialState);

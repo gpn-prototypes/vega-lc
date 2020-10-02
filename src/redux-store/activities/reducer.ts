@@ -20,9 +20,9 @@ const setIsAutoFocusStrategy = (state: StoreLC, { autoFocus = false }): Activiti
 });
 
 const strategyMap = {
-  [(ActivitiesActionTypes.SET_ACTIVITIES_LIST as unknown) as string]: setActivitiesNodeListStrategy,
-  [(ActivitiesActionTypes.SET_SEARCH_STRING as unknown) as string]: setSearchStringStrategy,
-  [(ActivitiesActionTypes.SET_IS_AUTO_FOCUS as unknown) as string]: setIsAutoFocusStrategy,
+  [ActivitiesActionTypes.SET_ACTIVITIES_LIST]: setActivitiesNodeListStrategy,
+  [ActivitiesActionTypes.SET_SEARCH_STRING]: setSearchStringStrategy,
+  [ActivitiesActionTypes.SET_IS_AUTO_FOCUS]: setIsAutoFocusStrategy,
 };
 
 const activitiesReducer = createReducer(strategyMap, initialState);

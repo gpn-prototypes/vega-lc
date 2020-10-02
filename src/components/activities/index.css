@@ -9,6 +9,7 @@
   height: 840px;
 
   background-color: var(--color-bg-default);
+  border-radius: 4px;
 
   &__Title {
     margin: 0 0 8px;

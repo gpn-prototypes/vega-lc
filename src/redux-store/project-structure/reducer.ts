@@ -13,7 +13,7 @@ const setProjectStructureNodeListStrategy = (
 });
 
 const strategyMap = {
-  [(ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST as unknown) as string]: setProjectStructureNodeListStrategy,
+  [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST]: setProjectStructureNodeListStrategy,
 };
 
 const ProjectStructureReducer = createReducer(strategyMap, initialState);

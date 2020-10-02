@@ -21,3 +21,5 @@ export type StoreLC = {
   groupObjects: GroupObjectsState;
   projectStructure: ProjectStructureState;
 };
+
+export type ActionTypes = { [id: string]: string };
