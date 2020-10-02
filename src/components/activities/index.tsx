@@ -6,7 +6,7 @@ import { TextField, TextFieldOnChangeArguments } from '@gpn-design/uikit/TextFie
 import { Tree, TreeItem } from '@gpn-prototypes/vega-tree';
 
 import { setSearchString } from '../../redux-store/activities/actions';
-import { getIsAutoFocus } from '../../redux-store/activities/selectors';
+import { getIsAutoFocus, getSearchStringValue } from '../../redux-store/activities/selectors';
 
 import { cnActivities } from './cn-activities';
 import { BlueLineSvg } from './icons';
@@ -19,17 +19,14 @@ const icons = {
 
 type ActivitiesProps = {
   activities: TreeItem[];
-  searchString: string;
 };
 
-export const ActivitiesWidget: React.FC<ActivitiesProps> = ({
-  activities,
-  searchString,
-}): React.ReactElement => {
+export const ActivitiesWidget: React.FC<ActivitiesProps> = ({ activities }): React.ReactElement => {
   const dispatch = useDispatch();
   const ref = useRef<HTMLInputElement>(null);
 
   const autoFocus = useSelector(getIsAutoFocus);
+  const searchString = useSelector(getSearchStringValue);
 
   const handleSearch = (args: TextFieldOnChangeArguments): void => {
     dispatch(setSearchString(args.value));

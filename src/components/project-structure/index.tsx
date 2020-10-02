@@ -10,11 +10,11 @@ const icons = {
 };
 
 type ProjectStructureProps = {
-  projectStructure: TreeItem[];
+  projectStructure?: TreeItem[];
 };
 
 export const ProjectStructureWidget: React.FC<ProjectStructureProps> = ({
-  projectStructure,
+  projectStructure = [],
 }): React.ReactElement => {
   return <Tree icons={icons} isContextMenuEnable nodeList={projectStructure} />;
 };

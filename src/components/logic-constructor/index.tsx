@@ -9,17 +9,16 @@ import { cnLogicConstructor } from './cn-lc';
 import './index.css';
 
 type LogicConstructorProps = {
-  activities: TreeItem[];
-  searchString: string;
+  activities?: TreeItem[];
 };
 
 export const LogicConstructorWidget: React.FC<LogicConstructorProps> = (props) => {
-  const { activities, searchString } = props;
+  const { activities = [] } = props;
   const parentRef = useRef<HTMLDivElement>(null);
 
   return (
     <div ref={parentRef} className={cnLogicConstructor()}>
-      <ActivitiesWidget searchString={searchString} activities={activities} />
+      <ActivitiesWidget activities={activities} />
       <CanvasWidget parentRef={parentRef} />
     </div>
   );

@@ -12,11 +12,11 @@ const icons = {
 };
 
 type ObjectsGroupProps = {
-  objectsGroup: TreeItem[];
+  objectsGroup?: TreeItem[];
 };
 
 export const ObjectsGroupWidget: React.FC<ObjectsGroupProps> = ({
-  objectsGroup,
+  objectsGroup = [],
 }): React.ReactElement => {
   return (
     <div className={cnObjectGroup()}>
