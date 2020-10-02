@@ -5,6 +5,44 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
   className="ActivitiesWidget"
 >
   <div
+    className="Text text text_size_m text_view_primary ActivitiesWidget__Title"
+  >
+    Мероприятия
+  </div>
+  <div
+    className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_type_input ActivitiesWidget__Search"
+  >
+    <div
+      className="TextField-Side TextField-Side_position_left TextField-Side_type_icon"
+    >
+      <span
+        className="Icon Icon_size_s IconSearch TextField-Icon"
+      >
+        <svg
+          className="Icon-Svg"
+          viewBox="0 0 16 16"
+        >
+          <path
+            clipRule="evenodd"
+            d="M9.618 11.032a5.5 5.5 0 111.414-1.414l3.97 3.969L13.586 15l-3.97-3.97zM10 6.5a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0z"
+            fillRule="evenodd"
+          />
+        </svg>
+      </span>
+    </div>
+    <input
+      autoFocus={false}
+      className="TextField-Input"
+      id=""
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="Поиск"
+      type="input"
+      value=""
+    />
+  </div>
+  <div
     className="VegaTree"
   >
     <div

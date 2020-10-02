@@ -10,8 +10,7 @@ import { fetchGroupObjectList } from '../../redux-store/group-objects/actions';
 import { getGroupObjectsNodeList } from '../../redux-store/group-objects/selectors';
 import { fetchProjectStructureList } from '../../redux-store/project-structure/actions';
 import { getProjectStructureNodeList } from '../../redux-store/project-structure/selectors';
-import { ActivitiesWidget } from '../activities';
-import { CanvasWidget } from '../canvas';
+import { LogicConstructorWidget } from '../logic-constructor';
 import { ObjectsGroupWidget } from '../objects-group';
 import { ProjectStructureWidget } from '../project-structure';
 
@@ -21,7 +20,7 @@ const Container = styled.div`
 `;
 
 export const GeologicalExploration = (): React.ReactElement => {
-  function action(change: { update: GridUpdate; state: GridState }) {
+  function action(change: { update: GridUpdate; state: GridState }): void {
     console.log(change);
   }
 
@@ -38,7 +37,6 @@ export const GeologicalExploration = (): React.ReactElement => {
   }, [dispatch]);
 
   const widgets: LayoutWidget[] = [
-    { name: 'Мероприятия', component: 'vega-activities' },
     {
       name: 'Группа объектов',
       component: 'vega-group-objects',
@@ -54,10 +52,9 @@ export const GeologicalExploration = (): React.ReactElement => {
   ];
 
   const widgetsOverrides: LayoutWidgetsOverrides = {
-    'vega-activities': () => <ActivitiesWidget activities={activities} />,
     'vega-group-objects': () => <ObjectsGroupWidget objectsGroup={objectsGroup} />,
     'vega-project-structure': () => <ProjectStructureWidget projectStructure={projectStructure} />,
-    'vega-canvas': () => <CanvasWidget />,
+    'vega-canvas': () => <LogicConstructorWidget activities={activities} />,
   };
 
   const state: GridState = {
@@ -65,7 +62,7 @@ export const GeologicalExploration = (): React.ReactElement => {
       type: 'branch',
       data: {
         splitDirection: 'right',
-        breakpoint: 15,
+        breakpoint: 16,
       },
     },
     1: {
@@ -76,10 +73,10 @@ export const GeologicalExploration = (): React.ReactElement => {
       },
     },
     2: {
-      type: 'branch',
+      type: 'leaf',
       data: {
-        splitDirection: 'right',
-        breakpoint: 60,
+        widget: 'vega-canvas',
+        context: {},
       },
     },
     3: {
@@ -93,20 +90,6 @@ export const GeologicalExploration = (): React.ReactElement => {
       type: 'leaf',
       data: {
         widget: 'vega-group-objects',
-        context: {},
-      },
-    },
-    5: {
-      type: 'leaf',
-      data: {
-        widget: 'vega-canvas',
-        context: {},
-      },
-    },
-    6: {
-      type: 'leaf',
-      data: {
-        widget: 'vega-activities',
         context: {},
       },
     },

@@ -1,15 +1,19 @@
+import { ProjectStructureState, StoreLC } from '../../types/redux-store';
 import createReducer from '../../utils/create-reducer';
 
 import { ProjectStructureActionTypes } from './action-types';
 import initialState from './initial-state';
 
-const setProjectStructureNodeListStrategy = (state: any, { nodeList = [] }): any => ({
+const setProjectStructureNodeListStrategy = (
+  state: StoreLC,
+  { nodeList = [] },
+): ProjectStructureState => ({
   ...state,
   nodeList,
 });
 
 const strategyMap = {
-  [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST as any]: setProjectStructureNodeListStrategy,
+  [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST]: setProjectStructureNodeListStrategy,
 };
 
 const ProjectStructureReducer = createReducer(strategyMap, initialState);

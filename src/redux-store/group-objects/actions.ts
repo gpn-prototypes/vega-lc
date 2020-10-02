@@ -1,15 +1,25 @@
 import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { AnyAction } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 
+import { StoreLC } from '../../types/redux-store';
 import getHeaders from '../../utils/headers';
 
 import { GroupObjectsActionTypes } from './action-types';
 
-const setGroupObjectsList = (nodeList: TreeItem[]) => ({
+type SetGroupObjectsList = {
+  type: typeof GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST;
+  nodeList: TreeItem[];
+};
+
+const setGroupObjectsList = (nodeList: TreeItem[]): SetGroupObjectsList => ({
   type: GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST,
   nodeList,
 });
 
-const fetchGroupObjectList = () => async (dispatch: any) => {
+const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
+  dispatch,
+): Promise<void> => {
   try {
     const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
       method: 'POST',
