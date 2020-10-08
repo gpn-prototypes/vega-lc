@@ -2,14 +2,18 @@
   position: absolute;
 
   margin: 16px;
-  padding: 8px;
 
-  width: 40%;
-  max-width: 316px;
+  width: 20%;
+  min-width: 316px;
+
   height: 840px;
 
   background-color: var(--color-bg-default);
   border-radius: 4px;
+
+  &__Head {
+    padding: 8px;
+  }
 
   &__Title {
     margin: 0 0 8px;
@@ -20,16 +24,12 @@
   }
 
   &__Search {
-    z-index: 99;
+    z-index: 1;
 
     width: 100%;
 
     & > div {
       padding-right: 0;
     }
-  }
-
-  & .VegaTree {
-    padding: 0;
   }
 }

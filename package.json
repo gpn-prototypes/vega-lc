@@ -37,6 +37,7 @@
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@gpn-design/uikit": "^1.7.1",
+    "@gpn-prototypes/vega-tree": "^0.0.4",
     "@gpn-prototypes/vega-ui": "^2.14.0-alpha.0",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",

@@ -8,8 +8,15 @@ export type ActivitiesState = {
   autoFocus?: boolean;
 };
 
+export type NewGroupParams = {
+  isDynamic: boolean;
+  name: string;
+};
+
 export type GroupObjectsState = {
   nodeList?: NodeList;
+  isDialogOpened?: boolean;
+  newGroupParams?: NewGroupParams;
 };
 
 export type ProjectStructureState = {

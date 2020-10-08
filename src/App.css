@@ -18,3 +18,7 @@ body,
 
   background: var(--color-bg-default);
 }
+
+.Tooltip {
+  z-index: 99;
+}

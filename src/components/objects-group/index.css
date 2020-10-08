@@ -1,3 +1,91 @@
 .ObjectsGroupWidget {
-  width: 100%;
+  position: relative;
+
+  height: 100%;
+
+  &__GroupCreator {
+    position: absolute;
+    left: 0;
+    bottom: 16px;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  &__Dialog {
+    padding: 0;
+
+    width: 480px;
+    height: 173px;
+  }
+
+  &__DialogTitle {
+    margin: 0;
+    padding-top: 3px;
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: center;
+
+    color: var(--color-typo-primary);
+  }
+
+  &__DialogContent {
+    position: relative;
+
+    padding: 0 16px;
+  }
+
+  &__DialogInputLabel {
+    margin: 20px 0 4px;
+
+    font-size: 14px;
+    line-height: 150%;
+
+    color: var(--color-control-typo-placeholder);
+  }
+
+  &__DialogInput {
+    height: 32px;
+  }
+
+  &__DialogControllers {
+    margin-top: 24px;
+
+    display: flex;
+
+    height: 32px;
+  }
+
+  &__DialogDynamicGroupSwitcher {
+    display: flex;
+
+    width: 100%;
+  }
+
+  &__DialogButtons {
+    display: flex;
+
+    & > button:first-of-type {
+      margin-right: 12px;
+    }
+  }
+
+  &__DialogCloser {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    color: var(--color-typo-primary);
+    background-color: transparent;
+    border: none;
+    opacity: 0.4;
+  }
 }

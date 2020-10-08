@@ -34,22 +34,26 @@ export const ActivitiesWidget: React.FC<ActivitiesProps> = ({ activities }): Rea
 
   return (
     <div className={cnActivities()}>
-      <Text className={cnActivities('Title').toString()}>Мероприятия</Text>
-      <TextField
-        autoFocus={autoFocus}
-        className={cnActivities('Search').toString()}
-        leftSide={IconSearch}
-        size="s"
-        inputRef={ref}
-        type="input"
-        onChange={handleSearch}
-        value={searchString}
-        placeholder="Поиск"
-      />
+      <div className={cnActivities('Head')}>
+        <Text className={cnActivities('Title').toString()}>Мероприятия</Text>
+
+        <TextField
+          autoFocus={autoFocus}
+          className={cnActivities('Search').toString()}
+          leftSide={IconSearch}
+          size="s"
+          inputRef={ref}
+          type="input"
+          onChange={handleSearch}
+          value={searchString}
+          placeholder="Поиск"
+        />
+      </div>
+
       <Tree
         icons={icons}
-        withVisibilitySwitcher={false}
         nodeList={activities}
+        withVisibilitySwitcher={false}
         showIndentGuides={false}
       />
     </div>
