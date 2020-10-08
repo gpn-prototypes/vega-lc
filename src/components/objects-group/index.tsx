@@ -33,20 +33,19 @@ export const ObjectsGroupWidget: React.FC<ObjectsGroupProps> = ({
   return (
     <div className={cnObjectGroup()}>
       <Tree icons={icons} nodeList={objectsGroup} showIndentGuides={false} />
-      {objectsGroup?.length > 0 && (
-        <div className={cnObjectGroup('GroupCreator')}>
-          <Button
-            width="full"
-            type="button"
-            view="ghost"
-            size="l"
-            iconSize="s"
-            iconLeft={IconAdd}
-            onClick={handleOpenDialog}
-            label="Добавить группу"
-          />
-        </div>
-      )}
+
+      <div className={cnObjectGroup('GroupCreator')}>
+        <Button
+          width="full"
+          type="button"
+          view="ghost"
+          size="l"
+          iconSize="s"
+          iconLeft={IconAdd}
+          onClick={handleOpenDialog}
+          label="Добавить группу"
+        />
+      </div>
 
       <ObjectsGroupDialog />
     </div>

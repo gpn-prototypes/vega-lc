@@ -46,7 +46,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
       headers: getHeaders(),
       body: JSON.stringify({
         query:
-          '{domain{objectsGroupList{' +
+          '{domain{objectGroupList{' +
           'vid,' +
           'name,' +
           'objects{' +
@@ -61,11 +61,11 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
 
     if (response.ok) {
       const { domain } = body.data;
-      const { objectsGroupList } = domain;
+      const { objectGroupList } = domain;
 
       const collection: { [x: string]: any } = {};
 
-      objectsGroupList.forEach((objectsGroup: any) => {
+      objectGroupList.forEach((objectsGroup: any) => {
         const { vid } = objectsGroup;
 
         if (!collection[vid]) {
@@ -93,7 +93,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
 
       dispatch(setGroupObjectsList(nodeList));
     } else {
-      console.log(body);
+      dispatch(setGroupObjectsList([]));
     }
   } catch (e) {
     console.error(e);
