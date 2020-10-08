@@ -125,19 +125,22 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
                   }
                 }
                 onClick={[Function]}
+                onFocus={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
                 role="switch"
                 tabIndex={0}
                 type="button"
               >
                 <svg
                   fill="none"
-                  height="12"
-                  viewBox="0 0 12 12"
+                  height="8"
+                  viewBox="0 0 12 8"
                   width="12"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M6 2C3.27273 2 0.943636 3.65867 0 6C0.943636 8.34133 3.27273 10 6 10C8.72727 10 11.0564 8.34133 12 6C11.0564 3.65867 8.72727 2 6 2ZM6 8.66667C4.49455 8.66667 3.27273 7.472 3.27273 6C3.27273 4.528 4.49455 3.33333 6 3.33333C7.50545 3.33333 8.72727 4.528 8.72727 6C8.72727 7.472 7.50545 8.66667 6 8.66667ZM6 4.4C5.09455 4.4 4.36364 5.11467 4.36364 6C4.36364 6.88533 5.09455 7.6 6 7.6C6.90545 7.6 7.63636 6.88533 7.63636 6C7.63636 5.11467 6.90545 4.4 6 4.4Z"
+                    d="M6 0C3.27273 0 0.943636 1.65867 0 4C0.943636 6.34133 3.27273 8 6 8C8.72727 8 11.0564 6.34133 12 4C11.0564 1.65867 8.72727 0 6 0ZM6 6.66667C4.49455 6.66667 3.27273 5.472 3.27273 4C3.27273 2.528 4.49455 1.33333 6 1.33333C7.50545 1.33333 8.72727 2.528 8.72727 4C8.72727 5.472 7.50545 6.66667 6 6.66667ZM6 2.4C5.09455 2.4 4.36364 3.11467 4.36364 4C4.36364 4.88533 5.09455 5.6 6 5.6C6.90545 5.6 7.63636 4.88533 7.63636 4C7.63636 3.11467 6.90545 2.4 6 2.4Z"
                     fill="white"
                     fillOpacity="0.3"
                   />
@@ -148,6 +151,42 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
         </li>
       </ul>
     </div>
+  </div>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <button
+      className="Button Button_size_l Button_view_ghost Button_width_full Button_form_default Button_withIcon MixFocus"
+      onClick={[Function]}
+      type="button"
+    >
+      <span
+        className="Icon Icon_size_s IconAdd Button-Icon Button-Icon_position_left"
+      >
+        <svg
+          className="Icon-Svg"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M9 2H7v5H2v2h5v5h2V9h5V7H9V2z"
+          />
+        </svg>
+      </span>
+      <span
+        className="Button-Label"
+      >
+        Добавить группу
+      </span>
+    </button>
   </div>
 </div>
 `;
