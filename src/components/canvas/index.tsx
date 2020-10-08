@@ -10,6 +10,8 @@ import {
   useLocalStorage,
 } from '@gpn-prototypes/vega-ui';
 
+import './index.css';
+
 type CanvasWidgetProps = {
   parentRef: React.RefObject<HTMLElement>;
 };

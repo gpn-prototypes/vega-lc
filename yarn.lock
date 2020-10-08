@@ -1017,9 +1017,9 @@
     resolve-global "^1.0.0"
 
 "@consta/uikit@^1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@consta/uikit/-/uikit-1.9.0.tgz#1c3c3ad3e2f789aa22268e428cf8d5b5d6af4f52"
-  integrity sha512-9K5QdeM+Fx2Q3FBC9x2IJJXR17L54g0LqiGzc0Ps0nWDuQ8F5nAAyMNeyPkR106rs9H/orfXlAFDnooNXpiHSw==
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@consta/uikit/-/uikit-1.10.1.tgz#408b2a3cc7d096dc895184fae1a45c521f5a410e"
+  integrity sha512-VpiZZPamxZTgYkhpxYdgkomxWqP0UYtPhA5yfFNH2O/XjAyw2yqpvWfIxhf2m0kgZs6M1UwxkibDEMbhGU8J2Q==
   dependencies:
     "@bem-react/classname" "^1.5.8"
     "@bem-react/classnames" "^1.3.9"
@@ -1590,6 +1590,13 @@
   dependencies:
     bem-cn "^3.0.1"
 
+"@gpn-prototypes/vega-tree@^0.0.4":
+  version "0.0.4"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tree/0.0.4/1660cce3559735c657a27625b097d3b3ef1a4b991f9d0f6680635770f24a6342#6ef221620abc3b10b315928f0a129aff87190c7b"
+  integrity sha512-XLh26hDPF1iQv4jsPxWFVdzpbBgfMjasai2wbAsz1pWSEfuWH/IrrrFQp475TynLowaxMrU6/DtTM+RNTSVBZA==
+  dependencies:
+    bem-cn "^3.0.1"
+
 "@gpn-prototypes/vega-ui@^2.14.0-alpha.0":
   version "2.14.0-alpha.0"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-ui/2.14.0-alpha.0/8457cc14a457e7dd8db5c027cbd6244f15549c99d34f2288ad9d86e2969db9dd#038a0132d47313185e0d7e5741c9fa84ee0a982e"
@@ -2026,9 +2033,9 @@
     mkdirp "^1.0.4"
 
 "@popperjs/core@^2.4.0":
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.5.2.tgz#d3217d5f630766c0c92fbd55cf285ba64de0578b"
-  integrity sha512-tVkIU9JQw5fYPxLQgok/a7I6J1eEZ79svwQGpe2mb3jlVsPADOleefOnQBiS/takK7jQuNeswCUicMH1VWVziA==
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.5.3.tgz#4982b0b66b7a4cf949b86f5d25a8cf757d3cfd9d"
+  integrity sha512-RFwCobxsvZ6j7twS7dHIZQZituMIDJJNHS/qY6iuthVebxS3zhRY+jaC2roEKiAYaVuTcGmX6Luc6YBcf6zJVg==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.0"
@@ -9897,6 +9904,11 @@ requires-port@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
+
+resize-observer-polyfill@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
+  integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
 
 resolve-cwd@^2.0.0:
   version "2.0.0"

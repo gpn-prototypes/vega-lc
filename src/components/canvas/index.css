@@ -1,0 +1,5 @@
+.konvajs-content {
+  & canvas:nth-child(3) {
+    display: none !important;
+  }
+}
