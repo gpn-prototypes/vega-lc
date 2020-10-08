@@ -46,14 +46,14 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
       headers: getHeaders(),
       body: JSON.stringify({
         query:
-          '{domain{objectGroupList{' +
-          'vid,' +
-          'name,' +
-          'objects{' +
-          '...on GeoEconomicAppraisalProject_Type{' +
-          '__typename,' +
-          'name,' +
-          'vid}}}}}',
+          `{domain{objectGroupList{` +
+          `vid,` +
+          `name,` +
+          `objects{` +
+          `...on GeoEconomicAppraisalProject_Type{` +
+          `__typename,` +
+          `name,` +
+          `vid}}}}}`,
       }),
     });
 
