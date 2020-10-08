@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
 import { GridState, GridUpdate, Layout, LayoutWidget } from '@gpn-prototypes/vega-layout';
 import { LayoutWidgetsOverrides } from '@gpn-prototypes/vega-layout/dist/src/LayoutDataView';
 
 import { fetchActivitiesList } from '../../redux-store/activities/actions';
-import { getActivitiesNodeList } from '../../redux-store/activities/selectors';
 import { fetchGroupObjectList } from '../../redux-store/group-objects/actions';
-import { getGroupObjectsNodeList } from '../../redux-store/group-objects/selectors';
 import { fetchProjectStructureList } from '../../redux-store/project-structure/actions';
-import { getProjectStructureNodeList } from '../../redux-store/project-structure/selectors';
 import { LogicConstructorWidget } from '../logic-constructor';
 import { ObjectsGroupWidget } from '../objects-group';
 import { ProjectStructureWidget } from '../project-structure';
@@ -25,10 +22,6 @@ export const GeologicalExploration = (): React.ReactElement => {
   }
 
   const dispatch = useDispatch();
-
-  const objectsGroup = useSelector(getGroupObjectsNodeList);
-  const activities = useSelector(getActivitiesNodeList);
-  const projectStructure = useSelector(getProjectStructureNodeList);
 
   useEffect(() => {
     dispatch(fetchActivitiesList());
@@ -52,9 +45,9 @@ export const GeologicalExploration = (): React.ReactElement => {
   ];
 
   const widgetsOverrides: LayoutWidgetsOverrides = {
-    'vega-group-objects': () => <ObjectsGroupWidget objectsGroup={objectsGroup} />,
-    'vega-project-structure': () => <ProjectStructureWidget projectStructure={projectStructure} />,
-    'vega-canvas': () => <LogicConstructorWidget activities={activities} />,
+    'vega-group-objects': () => <ObjectsGroupWidget />,
+    'vega-project-structure': () => <ProjectStructureWidget />,
+    'vega-canvas': () => <LogicConstructorWidget />,
   };
 
   const state: GridState = {

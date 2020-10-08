@@ -1,5 +1,8 @@
 import React from 'react';
-import { Tree, TreeItem } from '@gpn-prototypes/vega-tree';
+import { useSelector } from 'react-redux';
+import { Tree } from '@gpn-prototypes/vega-tree';
+
+import { getProjectStructureNodeList } from '../../redux-store/project-structure/selectors';
 
 import { BlueLineSvg, OrangeLineSvg, RedLineSvg } from './icons';
 
@@ -9,12 +12,8 @@ const icons = {
   'red-line': RedLineSvg,
 };
 
-type ProjectStructureProps = {
-  projectStructure?: TreeItem[];
-};
+export const ProjectStructureWidget: React.FC = (): React.ReactElement => {
+  const projectStructure = useSelector(getProjectStructureNodeList);
 
-export const ProjectStructureWidget: React.FC<ProjectStructureProps> = ({
-  projectStructure = [],
-}): React.ReactElement => {
-  return <Tree icons={icons} isContextMenuEnable nodeList={projectStructure} />;
+  return <Tree icons={icons} isContextMenuEnable nodeList={projectStructure || []} />;
 };
