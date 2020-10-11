@@ -1,11 +1,11 @@
 .ActivitiesWidget {
   position: absolute;
+  z-index: 1;
 
   margin: 16px;
 
   width: 20%;
   min-width: 316px;
-
   height: 840px;
 
   background-color: var(--color-bg-default);
@@ -24,8 +24,6 @@
   }
 
   &__Search {
-    z-index: 1;
-
     width: 100%;
 
     & > div {

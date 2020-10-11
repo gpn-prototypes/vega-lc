@@ -1,7 +1,7 @@
 import { TreeItem } from '@gpn-prototypes/vega-tree';
 
 import { ProjectStructureActionTypes } from '../../src/redux-store/project-structure/action-types';
-import ProjectStructureReducer from '../../src/redux-store/project-structure/reducer';
+import projectStructureReducer from '../../src/redux-store/project-structure/reducer';
 
 describe('project structure reducer test', () => {
   let mockState: TreeItem[] = [];
@@ -18,7 +18,7 @@ describe('project structure reducer test', () => {
 
   test('set empty node list', () => {
     const action = { type: ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST };
-    const newState = ProjectStructureReducer(undefined, action);
+    const newState = projectStructureReducer(undefined, action);
     expect(newState.nodeList).toEqual([]);
   });
 
@@ -27,7 +27,7 @@ describe('project structure reducer test', () => {
       type: ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST,
       nodeList: mockState,
     };
-    const newState = ProjectStructureReducer({ nodeList: 'unexpected data type' }, action);
+    const newState = projectStructureReducer({ nodeList: 'unexpected data type' }, action);
     expect(newState.nodeList).toEqual(mockState);
   });
 });

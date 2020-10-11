@@ -16,6 +16,6 @@ const strategyMap = {
   [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST]: setProjectStructureNodeListStrategy,
 };
 
-const ProjectStructureReducer = createReducer(strategyMap, initialState);
+const projectStructureReducer = createReducer(strategyMap, initialState);
 
-export default ProjectStructureReducer;
+export default projectStructureReducer;

@@ -74,8 +74,6 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
             id: objectsGroup.vid,
             nodeList: [],
             iconId: 'square',
-            isDropZone: false,
-            isDraggable: false,
           };
         }
 
@@ -85,6 +83,8 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
             id: object.vid,
             iconId: 'circle',
             nodeList: [],
+            isDraggable: false,
+            isDropZone: false,
           });
         });
       });

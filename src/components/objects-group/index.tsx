@@ -29,7 +29,12 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
 
   return (
     <div className={cnObjectGroup()}>
-      <Tree icons={icons} nodeList={objectGroup || []} showIndentGuides={false} />
+      <Tree
+        icons={icons}
+        nodeList={objectGroup || []}
+        showIndentGuides={false}
+        onPasteItem={(transferringIds, receivingId) => console.log(receivingId)}
+      />
 
       <div className={cnObjectGroup('GroupCreator')}>
         <Button
