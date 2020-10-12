@@ -61,7 +61,7 @@ export const GeologicalExploration = (): React.ReactElement => {
       type: 'branch',
       data: {
         splitDirection: 'right',
-        breakpoint: 16,
+        breakpoint: 20,
       },
     },
     1: {
