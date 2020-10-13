@@ -1,11 +1,11 @@
-import { ProjectStructureState, StoreLC } from '../../types/redux-store';
+import { ProjectStructureState } from '../../types/redux-store';
 import createReducer from '../../utils/create-reducer';
 
 import { ProjectStructureActionTypes } from './action-types';
 import initialState from './initial-state';
 
 const setProjectStructureNodeListStrategy = (
-  state: StoreLC,
+  state: ProjectStructureState,
   { nodeList = [] },
 ): ProjectStructureState => ({
   ...state,

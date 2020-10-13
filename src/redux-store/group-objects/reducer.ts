@@ -1,21 +1,27 @@
-import { GroupObjectsState, StoreLC } from '../../types/redux-store';
+import { GroupObjectsState } from '../../types/redux-store';
 import createReducer from '../../utils/create-reducer';
 
 import { GroupObjectsActionTypes } from './action-types';
 import initialState from './initial-state';
 
-const setGroupObjectsNodeListStrategy = (state: StoreLC, { nodeList = [] }): GroupObjectsState => ({
+const setGroupObjectsNodeListStrategy = (
+  state: GroupObjectsState,
+  { nodeList = [] },
+): GroupObjectsState => ({
   ...state,
   nodeList,
 });
 
-const toggleDialogStrategy = (state: StoreLC, { isDialogOpened = false }): GroupObjectsState => ({
+const toggleDialogStrategy = (
+  state: GroupObjectsState,
+  { isDialogOpened = false },
+): GroupObjectsState => ({
   ...state,
   isDialogOpened,
 });
 
 const setNewGroupParamsStrategy = (
-  state: StoreLC,
+  state: GroupObjectsState,
   {
     newGroupParams = {
       isDynamic: false,

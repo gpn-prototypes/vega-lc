@@ -3,8 +3,15 @@
 
   height: 100%;
 
+  & > .VegaTree {
+    overflow-y: scroll;
+
+    height: 75%;
+  }
+
   &__GroupCreator {
     position: absolute;
+    z-index: 1;
     left: 0;
     bottom: 16px;
 

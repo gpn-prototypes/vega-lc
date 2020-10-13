@@ -6,10 +6,7 @@ import { LayoutWidgetsOverrides } from '@gpn-prototypes/vega-layout/dist/src/Lay
 
 import { fetchActivitiesList } from '../../redux-store/activities/actions';
 import { fetchGroupObjectList } from '../../redux-store/group-objects/actions';
-import {
-  fetchCanvasItemsData,
-  fetchScenarioList,
-} from '../../redux-store/logic-constructor/actions';
+import { fetchCanvasItemsData } from '../../redux-store/logic-constructor/actions';
 import { fetchProjectStructureList } from '../../redux-store/project-structure/actions';
 import { LogicConstructorWidget } from '../logic-constructor';
 import { ObjectsGroupWidget } from '../objects-group';
@@ -31,7 +28,6 @@ export const GeologicalExploration = (): React.ReactElement => {
     dispatch(fetchActivitiesList());
     dispatch(fetchGroupObjectList());
     dispatch(fetchProjectStructureList());
-    dispatch(fetchScenarioList());
     dispatch(fetchCanvasItemsData());
   }, [dispatch]);
 

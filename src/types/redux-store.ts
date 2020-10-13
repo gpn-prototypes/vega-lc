@@ -1,5 +1,5 @@
 import React from 'react';
-import { CanvasData, TreeItem } from '@gpn-prototypes/vega-ui';
+import { CanvasData, CanvasTree, TreeItem } from '@gpn-prototypes/vega-ui';
 
 type NodeList = TreeItem[];
 
@@ -27,7 +27,7 @@ export type CanvasElement = {
   data: CanvasData;
 };
 
-export type CanvasItemData = {
+export type CanvasElements = {
   vid: string;
   children?: { vid: string }[];
   parents?: { vid: string }[];
@@ -47,7 +47,7 @@ export type ActivitiesState = {
 
 export type LogicConstructorState = {
   scenarioList?: Step[];
-  canvasItemsData?: CanvasItemData[];
+  canvasElements?: CanvasTree[];
 };
 
 export type NewGroupParams = {

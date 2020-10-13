@@ -29,6 +29,7 @@ const commonWebpack = () => {
 };
 
 const appWebpack = {
+  devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : false,
   devServer: {
     historyApiFallback: true,
     proxy: {
