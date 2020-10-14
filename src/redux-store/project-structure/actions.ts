@@ -25,16 +25,15 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query:
-          `{domain{geoEconomicAppraisalProjectList{` +
-          `vid,` +
-          `name,` +
-          `licensingRounds{` +
-          `__typename,` +
-          `...on LicensingRound_A_Type{` +
-          `__typename,` +
-          `name,` +
-          `vid}}}}}`,
+        query: `{domain{geoEconomicAppraisalProjectList{
+          vid,
+          name,
+          licensingRounds{
+          __typename,
+          ...on LicensingRound_A_Type{
+          __typename,
+          name,
+          vid}}}}}`,
       }),
     });
 

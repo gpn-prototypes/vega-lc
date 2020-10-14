@@ -56,23 +56,22 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query:
-          `{activityList{` +
-          `vid,` +
-          `code,` +
-          `createdAt,` +
-          `editedAt,` +
-          `name,` +
-          `title,` +
-          `description,` +
-          `category{` +
-          `vid,` +
-          `code,` +
-          `name,` +
-          `parent{` +
-          `vid,` +
-          `code,` +
-          `name}}}}`,
+        query: `{activityList{
+          vid,
+          code,
+          createdAt,
+          editedAt,
+          name,
+          title,
+          description,
+          category{
+          vid,
+          code,
+          name,
+          parent{
+          vid,
+          code,
+          name}}}}`,
       }),
     });
 

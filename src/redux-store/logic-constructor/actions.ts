@@ -64,11 +64,10 @@ export const addCanvasElement = (
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify({
-      query:
-        `mutation { logic { canvas {` +
-        `create (title: "${title}", width: ${width}, nodeType: "domainObject", vid: "${id}", position: [${position.x}, ${position.y}]) {` +
-        `result {` +
-        `vid }}}}}`,
+      query: `mutation { logic { canvas {
+         create (title: "${title}", width: ${width}, nodeType: "domainObject", vid: "${id}", position: [${position.x}, ${position.y}]) {
+         result {
+        vid }}}}}`,
     }),
   });
 
@@ -90,19 +89,18 @@ const fetchScenarioList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => 
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query:
-          `{logic { stepList {` +
-          `vid,` +
-          `name,` +
-          `itemList {` +
-          `activity {` +
-          `vid,` +
-          `name}` +
-          `object {` +
-          `...on LicensingRound_A_Type { ` +
-          `vid,` +
-          `name,` +
-          `}}}}}}`,
+        query: `{logic { stepList {
+          vid,
+          name,
+          itemList {
+          activity {
+          vid,
+          name}
+          object {
+          ...on LicensingRound_A_Type {
+          vid,
+          name,
+          }}}}}}`,
       }),
     });
 
@@ -133,13 +131,12 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query:
-          `{ logic { canvas {` +
-          `vid, title, position, nodeRef, nodeType, width,` +
-          `children {` +
-          `vid }` +
-          `parents { ` +
-          `vid}}}}`,
+        query: `{ logic { canvas {
+          vid, title, position, nodeRef, nodeType, width,
+          children {
+          vid }
+          parents {
+          vid}}}}`,
       }),
     })
       .then(async (response) => {
@@ -161,18 +158,17 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query:
-          `{logic { stepList {` +
-          `vid,` +
-          `name,` +
-          `itemList {` +
-          `activity {` +
-          `name}` +
-          `object {` +
-          `...on LicensingRound_A_Type { ` +
-          `vid,` +
-          `name,` +
-          `}}}}}}`,
+        query: `{logic { stepList {
+          vid,
+          name,
+          itemList {
+          activity {
+          name}
+          object {
+          ...on LicensingRound_A_Type {
+          vid,
+          name,
+          }}}}}}`,
       }),
     })
       .then(async (response) => {
@@ -308,15 +304,14 @@ const createStep = (
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query:
-          `mutation { logic {` +
-          `scenarioStep{` +
-          `create(activity: "${activityId}", name: "${name}")` +
-          `{ result {` +
-          `vid,` +
-          `name,` +
-          `ok,` +
-          `}}}}}`,
+        query: `mutation { logic {
+          scenarioStep{
+          create(activity: "${activityId}", name: "${name}")
+          { result {
+          vid,
+          name,
+          ok,
+          }}}}}`,
       }),
     });
 
