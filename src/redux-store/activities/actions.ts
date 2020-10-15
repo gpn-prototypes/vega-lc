@@ -1,4 +1,4 @@
-import { Dispatch } from 'react';
+import React, { Dispatch } from 'react';
 import { TreeItem } from '@gpn-prototypes/vega-tree';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
@@ -9,6 +9,12 @@ import getHeaders from '../../utils/headers';
 import { ActivitiesActionTypes } from './action-types';
 
 type SetIsAutoFocus = { type: typeof ActivitiesActionTypes.SET_IS_AUTO_FOCUS; autoFocus: boolean };
+
+type SetActivitiesRef = {
+  type: typeof ActivitiesActionTypes.SET_ACTIVITIES_REF;
+  activitiesRef: React.RefObject<HTMLElement>;
+};
+
 type SetActivitiesList = {
   type: typeof ActivitiesActionTypes.SET_ACTIVITIES_LIST;
   nodeList: TreeItem[];
@@ -22,6 +28,11 @@ const setActivitiesList = (nodeList: TreeItem[]): SetActivitiesList => ({
 const setIsAutoFocus = (autoFocus: boolean): SetIsAutoFocus => ({
   type: ActivitiesActionTypes.SET_IS_AUTO_FOCUS,
   autoFocus,
+});
+
+const setActivitiesRef = (activitiesRef: React.RefObject<HTMLElement>): SetActivitiesRef => ({
+  type: ActivitiesActionTypes.SET_ACTIVITIES_REF,
+  activitiesRef,
 });
 
 const setSearchString = (searchString: string | null) => (
@@ -45,23 +56,22 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query:
-          `{activityList{` +
-          `vid,` +
-          `code,` +
-          `createdAt,` +
-          `editedAt,` +
-          `name,` +
-          `title,` +
-          `description,` +
-          `category{` +
-          `vid,` +
-          `code,` +
-          `name,` +
-          `parent{` +
-          `vid,` +
-          `code,` +
-          `name}}}}`,
+        query: `{activityList{
+          vid,
+          code,
+          createdAt,
+          editedAt,
+          name,
+          title,
+          description,
+          category{
+          vid,
+          code,
+          name,
+          parent{
+          vid,
+          code,
+          name}}}}`,
       }),
     });
 
@@ -103,4 +113,4 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
   }
 };
 
-export { fetchActivitiesList, setSearchString, setIsAutoFocus };
+export { fetchActivitiesList, setSearchString, setIsAutoFocus, setActivitiesRef };

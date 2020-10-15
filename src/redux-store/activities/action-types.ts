@@ -5,6 +5,7 @@ const ActivitiesActionTypes: ActionTypes = {
   SET_ACTIVITIES_LIST: '',
   SET_SEARCH_STRING: '',
   SET_IS_AUTO_FOCUS: '',
+  SET_ACTIVITIES_REF: '',
 };
 
 applyActionTypesNames(ActivitiesActionTypes, 'Activities');

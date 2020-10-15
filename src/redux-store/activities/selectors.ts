@@ -1,3 +1,4 @@
+import React from 'react';
 import { TreeItem } from '@gpn-prototypes/vega-ui';
 
 import { ActivitiesState, StoreLC } from '../../types/redux-store';
@@ -10,3 +11,5 @@ export const getSearchStringValue = (state: StoreLC): string | null | undefined 
   getCurrentState(state).searchString;
 export const getIsAutoFocus = (state: StoreLC): boolean | undefined =>
   getCurrentState(state).autoFocus;
+export const getActivitiesRef = (state: StoreLC): React.RefObject<HTMLElement> | null | undefined =>
+  getCurrentState(state).activitiesRef;

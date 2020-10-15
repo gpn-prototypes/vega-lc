@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IconSearch } from '@gpn-design/uikit/IconSearch';
 import { Text } from '@gpn-design/uikit/Text';
 import { TextField, TextFieldOnChangeArguments } from '@gpn-design/uikit/TextField';
 import { Tree, TreeItem } from '@gpn-prototypes/vega-tree';
 
-import { setSearchString } from '../../redux-store/activities/actions';
+import { setActivitiesRef, setSearchString } from '../../redux-store/activities/actions';
 import { getIsAutoFocus, getSearchStringValue } from '../../redux-store/activities/selectors';
 
 import { cnActivities } from './cn-activities';
@@ -23,7 +23,13 @@ type ActivitiesProps = {
 
 export const ActivitiesWidget: React.FC<ActivitiesProps> = ({ activities }): React.ReactElement => {
   const dispatch = useDispatch();
-  const ref = useRef<HTMLInputElement>(null);
+
+  const activitiesRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    dispatch(setActivitiesRef(activitiesRef));
+  }, [dispatch, activitiesRef]);
 
   const autoFocus = useSelector(getIsAutoFocus);
   const searchString = useSelector(getSearchStringValue);
@@ -33,7 +39,7 @@ export const ActivitiesWidget: React.FC<ActivitiesProps> = ({ activities }): Rea
   };
 
   return (
-    <div className={cnActivities()}>
+    <div ref={activitiesRef} className={cnActivities()}>
       <div className={cnActivities('Head')}>
         <Text className={cnActivities('Title').toString()}>Мероприятия</Text>
 
@@ -42,7 +48,7 @@ export const ActivitiesWidget: React.FC<ActivitiesProps> = ({ activities }): Rea
           className={cnActivities('Search').toString()}
           leftSide={IconSearch}
           size="s"
-          inputRef={ref}
+          inputRef={inputRef}
           type="input"
           onChange={handleSearch}
           value={searchString}
