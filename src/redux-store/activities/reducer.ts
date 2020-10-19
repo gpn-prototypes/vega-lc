@@ -36,11 +36,20 @@ const setActivitiesRefStrategy = (
   activitiesRef,
 });
 
+const setDraggingElementsStrategy = (
+  state: ActivitiesState,
+  { draggingElements = [] },
+): ActivitiesState => ({
+  ...state,
+  draggingElements,
+});
+
 const strategyMap = {
   [ActivitiesActionTypes.SET_ACTIVITIES_LIST]: setActivitiesNodeListStrategy,
   [ActivitiesActionTypes.SET_SEARCH_STRING]: setSearchStringStrategy,
   [ActivitiesActionTypes.SET_IS_AUTO_FOCUS]: setIsAutoFocusStrategy,
   [ActivitiesActionTypes.SET_ACTIVITIES_REF]: setActivitiesRefStrategy,
+  [ActivitiesActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
 };
 
 const activitiesReducer = createReducer(strategyMap, initialState);

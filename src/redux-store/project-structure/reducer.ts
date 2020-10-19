@@ -12,8 +12,17 @@ const setProjectStructureNodeListStrategy = (
   nodeList,
 });
 
+const setDraggingElementsStrategy = (
+  state: ProjectStructureState,
+  { draggingElements = [] },
+): ProjectStructureState => ({
+  ...state,
+  draggingElements,
+});
+
 const strategyMap = {
   [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST]: setProjectStructureNodeListStrategy,
+  [ProjectStructureActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
 };
 
 const projectStructureReducer = createReducer(strategyMap, initialState);

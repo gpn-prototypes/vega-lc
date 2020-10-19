@@ -1590,12 +1590,9 @@
   dependencies:
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-tree@^0.0.4":
-  version "0.0.4"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tree/0.0.4/1660cce3559735c657a27625b097d3b3ef1a4b991f9d0f6680635770f24a6342#6ef221620abc3b10b315928f0a129aff87190c7b"
-  integrity sha512-XLh26hDPF1iQv4jsPxWFVdzpbBgfMjasai2wbAsz1pWSEfuWH/IrrrFQp475TynLowaxMrU6/DtTM+RNTSVBZA==
-  dependencies:
-    bem-cn "^3.0.1"
+"@gpn-prototypes/vega-tree@link:../../../../vega-ui/packages/components/tree":
+  version "0.0.0"
+  uid ""
 
 "@gpn-prototypes/vega-ui@^2.14.0-alpha.0":
   version "2.14.0-alpha.0"

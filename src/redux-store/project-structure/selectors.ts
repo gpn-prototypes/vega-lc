@@ -1,3 +1,4 @@
+import { TargetData } from '@gpn-prototypes/vega-tree';
 import { TreeItem } from '@gpn-prototypes/vega-ui';
 
 import { ProjectStructureState, StoreLC } from '../../types/redux-store';
@@ -6,3 +7,6 @@ const getCurrentState = (state: StoreLC): ProjectStructureState => state.project
 
 export const getProjectStructureNodeList = (state: StoreLC): TreeItem[] | undefined =>
   getCurrentState(state).nodeList;
+
+export const getProjectStructureDraggingElements = (state: StoreLC): TargetData[] | undefined =>
+  getCurrentState(state).draggingElements;

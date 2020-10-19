@@ -1,5 +1,5 @@
 import React, { Dispatch } from 'react';
-import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { TargetData, TreeItem } from '@gpn-prototypes/vega-tree';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
@@ -9,6 +9,11 @@ import getHeaders from '../../utils/headers';
 import { ActivitiesActionTypes } from './action-types';
 
 type SetIsAutoFocus = { type: typeof ActivitiesActionTypes.SET_IS_AUTO_FOCUS; autoFocus: boolean };
+
+type SetDraggingElements = {
+  type: typeof ActivitiesActionTypes.SET_DRAGGING_ELEMENTS;
+  draggingElements: TargetData[];
+};
 
 type SetActivitiesRef = {
   type: typeof ActivitiesActionTypes.SET_ACTIVITIES_REF;
@@ -33,6 +38,11 @@ const setIsAutoFocus = (autoFocus: boolean): SetIsAutoFocus => ({
 const setActivitiesRef = (activitiesRef: React.RefObject<HTMLElement>): SetActivitiesRef => ({
   type: ActivitiesActionTypes.SET_ACTIVITIES_REF,
   activitiesRef,
+});
+
+const setActivitiesDraggingElements = (draggingElements: TargetData[]): SetDraggingElements => ({
+  type: ActivitiesActionTypes.SET_DRAGGING_ELEMENTS,
+  draggingElements,
 });
 
 const setSearchString = (searchString: string | null) => (
@@ -113,4 +123,10 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
   }
 };
 
-export { fetchActivitiesList, setSearchString, setIsAutoFocus, setActivitiesRef };
+export {
+  fetchActivitiesList,
+  setSearchString,
+  setIsAutoFocus,
+  setActivitiesRef,
+  setActivitiesDraggingElements,
+};
