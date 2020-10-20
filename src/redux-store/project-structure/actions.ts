@@ -1,4 +1,4 @@
-import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { TargetData, TreeItem } from '@gpn-prototypes/vega-tree';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
@@ -12,9 +12,21 @@ type SetProjectStructureList = {
   nodeList: TreeItem[];
 };
 
+type SetDraggingElements = {
+  type: typeof ProjectStructureActionTypes.SET_DRAGGING_ELEMENTS;
+  draggingElements: TargetData[];
+};
+
 const setProjectStructureList = (nodeList: TreeItem[]): SetProjectStructureList => ({
   type: ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST,
   nodeList,
+});
+
+const setProjectStructureDraggingElements = (
+  draggingElements: TargetData[],
+): SetDraggingElements => ({
+  type: ProjectStructureActionTypes.SET_DRAGGING_ELEMENTS,
+  draggingElements,
 });
 
 const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
@@ -82,4 +94,4 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
   }
 };
 
-export { fetchProjectStructureList, setProjectStructureList };
+export { fetchProjectStructureList, setProjectStructureList, setProjectStructureDraggingElements };

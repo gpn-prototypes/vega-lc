@@ -6,6 +6,7 @@ const ActivitiesActionTypes: ActionTypes = {
   SET_SEARCH_STRING: '',
   SET_IS_AUTO_FOCUS: '',
   SET_ACTIVITIES_REF: '',
+  SET_DRAGGING_ELEMENTS: '',
 };
 
 applyActionTypesNames(ActivitiesActionTypes, 'Activities');

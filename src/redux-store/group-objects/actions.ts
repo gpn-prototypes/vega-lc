@@ -45,12 +45,13 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query: `{domain{objectGroupList{
+        query: `query {domain{objectGroupList{
           vid,
           name,
           objects{
-          ...on GeoEconomicAppraisalProject_Type{
-          __typename,
+          vid,
+          name,
+          ...on LicensingRound_A_Type{
           name,
           vid}}}}}`,
       }),
@@ -82,7 +83,6 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
             id: object.vid,
             iconId: 'circle',
             nodeList: [],
-            isDraggable: false,
             isDropZone: false,
           });
         });
@@ -93,6 +93,46 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
       dispatch(setGroupObjectsList(nodeList));
     } else {
       dispatch(setGroupObjectsList([]));
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const updateGroupObject = (
+  groupObjectId: string,
+  objectsId: string[],
+): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState): Promise<void> => {
+  let isAlreadyExists = false;
+
+  const { nodeList } = getState().groupObjects;
+  const existingObjectsNodeList = nodeList?.find((object) => groupObjectId === object.id)?.nodeList;
+  const existingObjectsIds: string[] | undefined = existingObjectsNodeList?.map(
+    (object) => object.id,
+  );
+
+  if (existingObjectsIds?.length) {
+    isAlreadyExists = objectsId.some((id: string) => existingObjectsIds.includes(id));
+  }
+
+  if (isAlreadyExists) {
+    return;
+  }
+
+  const vids = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
+
+  try {
+    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        query: `mutation($vid: UUID!,$vids: [UUID]){domain{objectGroup{update(vid: $vid,vids: $vids){ok, name, vids}}}}`,
+        variables: { vids, vid: groupObjectId },
+      }),
+    });
+
+    if (response.ok) {
+      dispatch(fetchGroupObjectList());
     }
   } catch (e) {
     console.error(e);
@@ -119,4 +159,4 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
   }
 };
 
-export { fetchGroupObjectList, createNewGroup, toggleDialog, setNewGroupParams };
+export { fetchGroupObjectList, createNewGroup, toggleDialog, setNewGroupParams, updateGroupObject };

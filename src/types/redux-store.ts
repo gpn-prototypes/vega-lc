@@ -1,4 +1,5 @@
 import React from 'react';
+import { TargetData } from '@gpn-prototypes/vega-tree';
 import { CanvasData, CanvasTree, TreeItem } from '@gpn-prototypes/vega-ui';
 
 type NodeList = TreeItem[];
@@ -43,6 +44,7 @@ export type ActivitiesState = {
   searchString?: string | null;
   autoFocus?: boolean;
   activitiesRef?: React.RefObject<HTMLElement> | null;
+  draggingElements?: TargetData[] | [];
 };
 
 export type LogicConstructorState = {
@@ -59,10 +61,12 @@ export type GroupObjectsState = {
   nodeList?: NodeList;
   isDialogOpened?: boolean;
   newGroupParams?: NewGroupParams;
+  draggingElements?: TargetData[] | [];
 };
 
 export type ProjectStructureState = {
   nodeList?: NodeList;
+  draggingElements?: TargetData[] | [];
 };
 
 export type StoreLC = {
