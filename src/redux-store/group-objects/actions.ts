@@ -3,7 +3,6 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { NewGroupParams, StoreLC } from '../../types/redux-store';
-import createStringFromArray from '../../utils/create-string-from-array';
 import getHeaders from '../../utils/headers';
 
 import { GroupObjectsActionTypes } from './action-types';
@@ -120,16 +119,15 @@ const updateGroupObject = (
     return;
   }
 
-  const queryString = existingObjectsIds?.length
-    ? createStringFromArray(existingObjectsIds, objectsId)
-    : createStringFromArray(objectsId);
+  const vids = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
 
   try {
     const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query: `mutation{domain{objectGroup{update(vid: "${groupObjectId}",vids: [${queryString}]){ok, name, vids}}}}`,
+        query: `mutation($vid: UUID!,$vids: [UUID]){domain{objectGroup{update(vid: $vid,vids: $vids){ok, name, vids}}}}`,
+        variables: { vids, vid: groupObjectId },
       }),
     });
 
