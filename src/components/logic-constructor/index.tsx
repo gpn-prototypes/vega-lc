@@ -6,6 +6,7 @@ import { getActivitiesNodeList, getActivitiesRef } from '../../redux-store/activ
 import { addCanvasElement } from '../../redux-store/logic-constructor/actions';
 import { ActivitiesWidget } from '../activities';
 import { CanvasWidget } from '../canvas';
+import StepEditor from '../step-editor';
 
 import { cnLogicConstructor } from './cn-lc';
 
@@ -47,6 +48,7 @@ export const LogicConstructorWidget: React.FC = () => {
     >
       <ActivitiesWidget activities={activities || []} />
       <CanvasWidget parentRef={parentRef} />
+      <StepEditor />
     </div>
   );
 };

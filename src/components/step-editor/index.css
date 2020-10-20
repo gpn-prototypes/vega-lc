@@ -1,0 +1,54 @@
+:root {
+  --step-editor-content-height: calc(100% - 50px);
+}
+
+.StepEditor {
+  position: fixed;
+  top: 70px;
+  right: 30px;
+
+  width: 528px;
+  height: calc(100vh - 100px);
+
+  &__Tabs {
+    position: relative;
+
+    margin-bottom: 2px;
+    padding-left: 12px;
+
+    height: 35px;
+
+    background-color: var(--color-bg-default);
+
+    & > .Tabs {
+      position: absolute;
+
+      top: 1px;
+    }
+  }
+
+  &__Content {
+    padding: 24px 12px;
+
+    width: 100%;
+    height: var(--step-editor-content-height);
+
+    background-color: var(--color-bg-default);
+  }
+
+  &__ChanceSelect {
+    width: 100%;
+  }
+
+  &__DialogInputLabel {
+    margin: 20px 0 4px;
+
+    display: flex;
+    align-items: center;
+
+    font-size: 14px;
+    line-height: 120%;
+
+    color: var(--color-control-typo-placeholder);
+  }
+}
