@@ -3,6 +3,7 @@ module.exports = {
     require.resolve('@gpn-prototypes/frontend-configs/eslintrc')
   ],
   rules: {
+    '@typescript-eslint/no-empty-function': 'off',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
   },
