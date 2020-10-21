@@ -14,7 +14,7 @@ import { ProjectStructureWidget } from '../project-structure';
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - 33px);
+  height: calc(100vh - 34px);
 `;
 
 export const GeologicalExploration = (): React.ReactElement => {

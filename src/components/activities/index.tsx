@@ -3,10 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IconSearch } from '@gpn-design/uikit/IconSearch';
 import { Text } from '@gpn-design/uikit/Text';
 import { TextField, TextFieldOnChangeArguments } from '@gpn-design/uikit/TextField';
-import { Tree, TreeItem } from '@gpn-prototypes/vega-tree';
+import { TargetData, Tree } from '@gpn-prototypes/vega-tree';
 
-import { setActivitiesRef, setSearchString } from '../../redux-store/activities/actions';
-import { getIsAutoFocus, getSearchStringValue } from '../../redux-store/activities/selectors';
+import {
+  setActivitiesDraggingElements,
+  setActivitiesRef,
+  setSearchString,
+} from '../../redux-store/activities/actions';
+import {
+  getActivitiesNodeList,
+  getIsAutoFocus,
+  getSearchStringValue,
+} from '../../redux-store/activities/selectors';
 
 import { cnActivities } from './cn-activities';
 import { BlueLineSvg } from './icons';
@@ -17,11 +25,7 @@ const icons = {
   'blue-line': BlueLineSvg,
 };
 
-type ActivitiesProps = {
-  activities: TreeItem[];
-};
-
-export const ActivitiesWidget: React.FC<ActivitiesProps> = ({ activities }): React.ReactElement => {
+export const ActivitiesWidget: React.FC = (): React.ReactElement => {
   const dispatch = useDispatch();
 
   const activitiesRef = useRef(null);
@@ -31,11 +35,20 @@ export const ActivitiesWidget: React.FC<ActivitiesProps> = ({ activities }): Rea
     dispatch(setActivitiesRef(activitiesRef));
   }, [dispatch, activitiesRef]);
 
-  const autoFocus = useSelector(getIsAutoFocus);
   const searchString = useSelector(getSearchStringValue);
+  const activities = useSelector(getActivitiesNodeList(searchString));
+  const autoFocus = useSelector(getIsAutoFocus);
 
   const handleSearch = (args: TextFieldOnChangeArguments): void => {
     dispatch(setSearchString(args.value));
+  };
+
+  const handleDragStart = (transferringElems: TargetData[]): void => {
+    dispatch(setActivitiesDraggingElements(transferringElems));
+  };
+
+  const handleDragEnd = (): void => {
+    dispatch(setActivitiesDraggingElements([]));
   };
 
   return (
@@ -58,9 +71,12 @@ export const ActivitiesWidget: React.FC<ActivitiesProps> = ({ activities }): Rea
 
       <Tree
         icons={icons}
-        nodeList={activities}
+        nodeList={activities || []}
         withVisibilitySwitcher={false}
+        withDropZoneIndicator={false}
         showIndentGuides={false}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
       />
     </div>
   );

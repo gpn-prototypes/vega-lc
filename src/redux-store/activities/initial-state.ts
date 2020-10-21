@@ -5,6 +5,7 @@ const initialState = {
   searchString: '',
   autoFocus: false,
   activitiesRef: null,
+  draggingElements: [],
 };
 
 export default initialState;
