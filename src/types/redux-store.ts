@@ -75,5 +75,3 @@ export type StoreLC = {
   projectStructure: ProjectStructureState;
   logicConstructor: LogicConstructorState;
 };
-
-export type ActionTypes = { [id: string]: string };
