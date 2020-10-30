@@ -8,6 +8,8 @@ import {
 } from '../../redux-store/logic-constructor/actions';
 import { getCanvasElements } from '../../redux-store/logic-constructor/selectors';
 
+import './index.css';
+
 type CanvasWidgetProps = {
   parentRef: React.RefObject<HTMLElement>;
 };

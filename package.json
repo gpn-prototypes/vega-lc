@@ -37,6 +37,7 @@
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@gpn-design/uikit": "^1.7.1",
+    "@gpn-prototypes/vega-hooks": "^0.6.0-alpha.0",
     "@gpn-prototypes/vega-tree": "^0.0.5",
     "@gpn-prototypes/vega-ui": "^2.14.0-alpha.0",
     "@types/react-redux": "^7.1.9",
@@ -89,5 +90,8 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
+  },
+  "resolutions": {
+    "@gpn-prototypes/vega-hooks": "^0.6.0-alpha.0"
   }
 }
