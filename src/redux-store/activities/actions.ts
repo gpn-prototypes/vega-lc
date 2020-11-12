@@ -3,7 +3,7 @@ import { TargetData, TreeItem } from '@gpn-prototypes/vega-tree';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import client from '../../client';
+import client, { mainLink } from '../../client';
 import { StoreLC } from '../../types/redux-store';
 
 import { ActivitiesActionTypes } from './action-types';
@@ -62,6 +62,8 @@ const setSearchString = (searchString: string | null) => (
 const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
+  client.setLink(mainLink);
+
   client
     .query({
       query: ACTIVITY_LIST,
