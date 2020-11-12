@@ -4,11 +4,14 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { v4 as uuidv4 } from 'uuid';
 
+import client, { projectLink } from '../../client';
+import { Logic, Mutation, Query } from '../../generated/graphql-project';
 import { CanvasElement, CanvasElements, Step, StoreLC } from '../../types/redux-store';
 import debounce from '../../utils/debounce';
-import getHeaders from '../../utils/headers';
 
 import { LogicConstructorActionTypes } from './action-types';
+import { ADD_CANVAS_ELEMENT, CREATE_STEP, SYNC_CANVAS_STATE } from './mutations';
+import { FETCH_CANVAS_ITEMS_DATA, FETCH_SCENARIO_LIST } from './queries';
 
 const BASE_CANVAS_ELEMENTS_WIDTH = 65;
 const SET_CANVAS_ELEMENTS_DEBOUNCE_TIME = 500;
@@ -60,92 +63,75 @@ export const addCanvasElement = (
   const id = uuidv4();
   const { position, title, width } = canvasDataTree;
 
-  const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify({
-      query: `mutation { logic { canvas {
-         create (title: "${title}", width: ${width}, nodeType: "domainObject", vid: "${id}", position: [${position.x}, ${position.y}]) {
-         result {
-        vid }}}}}`,
-    }),
-  });
+  client.setLink(projectLink);
 
-  if (response.ok) {
-    const canvasElement = Tree.of<CanvasData>({ id, data: canvasDataTree });
+  client
+    .mutate<Mutation>({
+      mutation: ADD_CANVAS_ELEMENT,
+      variables: {
+        title,
+        width,
+        id,
+        x: position.x,
+        y: position.y,
+      },
+    })
+    .then(() => {
+      const canvasElement = Tree.of<CanvasData>({ id, data: canvasDataTree });
 
-    dispatch({
-      type: LogicConstructorActionTypes.ADD_CANVAS_ELEMENT,
-      canvasElement,
+      dispatch({
+        type: LogicConstructorActionTypes.ADD_CANVAS_ELEMENT,
+        canvasElement,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
     });
-  }
 };
 
 const fetchScenarioList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  try {
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `{logic { stepList {
-          vid,
-          name,
-          itemList {
-          activity {
-          vid,
-          name}
-          object {
-          ...on LicensingRound_A_Type {
-          vid,
-          name,
-          }}}}}}`,
-      }),
-    });
+  client.setLink(projectLink);
 
-    const body = await response.json();
+  client
+    .query<Query>({
+      query: FETCH_SCENARIO_LIST,
+      fetchPolicy: 'network-only',
+    })
+    .then((response) => {
+      if (!response.loading) {
+        const stepList = (response.data.logic as Logic)?.stepList;
 
-    if (response.ok) {
-      const { logic } = body.data;
-      const { stepList } = logic;
-
-      if (!stepList) {
-        return;
+        if (stepList) {
+          dispatch(setScenarioList(stepList as Step[]));
+        }
       }
-
-      dispatch(setScenarioList(stepList));
-    } else {
-      console.log(body);
-    }
-  } catch (e) {
-    console.error(e);
-  }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
+  client.setLink(projectLink);
   const canvasItemsPromise = new Promise<CanvasElements[]>((resolve, reject) => {
-    fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `{ logic { canvas {
-          vid, title, position, nodeRef, nodeType, width,
-          children {
-          vid }
-          parents {
-          vid}}}}`,
-      }),
-    })
+    client
+      .query<Query>({
+        query: FETCH_CANVAS_ITEMS_DATA,
+        fetchPolicy: 'network-only',
+      })
       .then(async (response) => {
-        if (response.ok) {
-          const body = await response.json();
-          const { logic } = body.data;
-          const { canvas } = logic;
+        if (!response.loading) {
+          const canvas = (response.data.logic as Logic)?.canvas;
 
-          resolve(canvas);
+          if (canvas) {
+            resolve(canvas as CanvasElements[]);
+          } else {
+            reject();
+          }
         }
 
         reject();
@@ -154,35 +140,20 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
   });
 
   const scenarioListPromise = new Promise<Step[]>((resolve, reject) => {
-    fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `{logic { stepList {
-          vid,
-          name,
-          itemList {
-          activity {
-          name}
-          object {
-          ...on LicensingRound_A_Type {
-          vid,
-          name,
-          }}}}}}`,
-      }),
-    })
+    client
+      .query<Query>({
+        query: FETCH_SCENARIO_LIST,
+        fetchPolicy: 'network-only',
+      })
       .then(async (response) => {
-        if (response.ok) {
-          const body = await response.json();
-
-          const { logic } = body.data;
-          const { stepList } = logic;
+        if (!response.loading) {
+          const stepList = (response.data.logic as Logic)?.stepList;
 
           if (!stepList) {
             reject();
           }
 
-          resolve(stepList);
+          resolve(stepList as Step[]);
         }
 
         reject();
@@ -260,38 +231,41 @@ const syncCanvasState = (
       return treeId === id;
     });
 
-  const getQueryString = (): string | undefined => {
+  type updatePositionVars = { position: number[] };
+  type updateChildrenVars = { childrenVids: string[] };
+
+  const getVariables = (): updateChildrenVars | updatePositionVars | undefined => {
     if (updateData.type === 'change' && 'position' in updateData.changes) {
-      return `position: [${updateData.changes.position?.x}, ${updateData.changes.position?.y}]`;
+      if (!updateData.changes.position) return undefined;
+
+      return { position: [updateData.changes.position?.x, updateData.changes.position?.y] };
     }
 
     if (updateData.type === 'update-children') {
-      return `childrenVids: ${getTreeById(updateData.id)?.getChildren()}`;
+      const tree = getTreeById(updateData.id);
+      if (!tree) return undefined;
+
+      return { childrenVids: tree.getChildren() };
     }
 
     return undefined;
   };
 
-  const queryString: string | undefined = getQueryString();
+  const variables = getVariables();
 
-  if ('id' in updateData && queryString) {
-    try {
-      const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-        method: 'POST',
-        headers: getHeaders(),
-        body: JSON.stringify({
-          query: `mutation { logic { canvas { update(vid: "${updateData.id}", ${queryString}){result { vid }} }}}`,
-        }),
+  if ('id' in updateData && variables) {
+    client.setLink(projectLink);
+    client
+      .mutate<Mutation>({
+        mutation: SYNC_CANVAS_STATE,
+        variables: {
+          vid: updateData.id,
+          ...variables,
+        },
+      })
+      .catch((error) => {
+        console.log(error);
       });
-
-      const body = await response.json();
-
-      if (response.ok) {
-        console.log(body);
-      }
-    } catch (e) {
-      console.error(e);
-    }
   }
 };
 
@@ -299,32 +273,19 @@ const createStep = (
   activityId: string,
   name: string,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
-  try {
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `mutation { logic {
-          scenarioStep{
-          create(activity: "${activityId}", name: "${name}")
-          { result {
-          vid,
-          name,
-          ok,
-          }}}}}`,
-      }),
-    });
+  client.setLink(projectLink);
 
-    const body = await response.json();
-
-    if (response.ok) {
+  client
+    .mutate<Mutation>({
+      mutation: CREATE_STEP,
+      variables: { activityId, name },
+    })
+    .then(() => {
       dispatch(fetchScenarioList());
-    } else {
-      console.log(body);
-    }
-  } catch (e) {
-    console.error(e);
-  }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 export { createStep, setScenarioList, fetchScenarioList, fetchCanvasItemsData, syncCanvasState };

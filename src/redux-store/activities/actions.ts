@@ -3,10 +3,11 @@ import { TargetData, TreeItem } from '@gpn-prototypes/vega-tree';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
+import client from '../../client';
 import { StoreLC } from '../../types/redux-store';
-import getHeaders from '../../utils/headers';
 
 import { ActivitiesActionTypes } from './action-types';
+import { ACTIVITY_LIST } from './queries';
 
 type SetIsAutoFocus = { type: typeof ActivitiesActionTypes.SET_IS_AUTO_FOCUS; autoFocus: boolean };
 
@@ -61,66 +62,45 @@ const setSearchString = (searchString: string | null) => (
 const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  try {
-    const response = await fetch(`graphql`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `{activityList{
-          vid,
-          code,
-          createdAt,
-          editedAt,
-          name,
-          title,
-          description,
-          category{
-          vid,
-          code,
-          name,
-          parent{
-          vid,
-          code,
-          name}}}}`,
-      }),
-    });
+  client
+    .query({
+      query: ACTIVITY_LIST,
+      fetchPolicy: 'network-only',
+    })
+    .then((response) => {
+      if (!response.loading) {
+        const { activityList } = response.data;
+        const collection: { [x: string]: any } = {};
 
-    const body = await response.json();
+        activityList.forEach((activity: any) => {
+          const { name } = activity.category;
 
-    if (response.ok) {
-      const { activityList } = body.data;
-      const collection: { [x: string]: any } = {};
+          if (!collection[name]) {
+            collection[name] = {
+              name,
+              id: activity.category.vid,
+              nodeList: [],
+              isDropZone: false,
+              isDraggable: false,
+            };
+          }
 
-      activityList.forEach((activity: any) => {
-        const { name } = activity.category;
-
-        if (!collection[name]) {
-          collection[name] = {
-            name,
-            id: activity.category.vid,
+          collection[name].nodeList.push({
+            name: activity.name,
+            id: activity.vid,
+            iconId: 'blue-line',
             nodeList: [],
-            isDropZone: false,
-            isDraggable: false,
-          };
-        }
-
-        collection[name].nodeList.push({
-          name: activity.name,
-          id: activity.vid,
-          iconId: 'blue-line',
-          nodeList: [],
+          });
         });
-      });
 
-      const nodeList = Object.values(collection);
+        const nodeList = Object.values(collection);
 
-      dispatch(setActivitiesList(nodeList));
-    } else {
-      console.log(body);
-    }
-  } catch (e) {
-    console.error(e);
-  }
+        dispatch(setActivitiesList(nodeList));
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
 export {

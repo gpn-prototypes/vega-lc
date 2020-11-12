@@ -2,10 +2,13 @@ import { TreeItem } from '@gpn-prototypes/vega-tree';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
+import client, { projectLink } from '../../client';
+import { Mutation, Query } from '../../generated/graphql-project';
 import { NewGroupParams, StoreLC } from '../../types/redux-store';
-import getHeaders from '../../utils/headers';
 
 import { GroupObjectsActionTypes } from './action-types';
+import { CREATE_NEW_GROUP, UPDATE_GROUP_OBJECT } from './mutations';
+import { OBJECT_GROUP_LIST } from './queries';
 
 type SetGroupObjectsList = {
   type: typeof GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST;
@@ -40,63 +43,56 @@ const setNewGroupParams = (newGroupParams: NewGroupParams): SetNewGroupParams =>
 const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  try {
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `query {domain{objectGroupList{
-          vid,
-          name,
-          objects{
-          vid,
-          name,
-          ...on LicensingRound_A_Type{
-          name,
-          vid}}}}}`,
-      }),
-    });
+  client.setLink(projectLink);
 
-    const body = await response.json();
+  client
+    .query<Query>({
+      query: OBJECT_GROUP_LIST,
+      fetchPolicy: 'network-only',
+    })
+    .then((response) => {
+      if (!response.loading) {
+        const { domain } = response.data;
 
-    if (response.ok) {
-      const { domain } = body.data;
-      const { objectGroupList } = domain;
+        const objectGroupList = domain?.objectGroupList;
 
-      const collection: { [x: string]: any } = {};
+        const collection: { [x: string]: any } = {};
 
-      objectGroupList.forEach((objectsGroup: any) => {
-        const { vid } = objectsGroup;
+        if (objectGroupList) {
+          objectGroupList.forEach((objectsGroup: any) => {
+            const { vid } = objectsGroup;
 
-        if (!collection[vid]) {
-          collection[vid] = {
-            name: objectsGroup.name,
-            id: objectsGroup.vid,
-            nodeList: [],
-            iconId: 'square',
-          };
+            if (!collection[vid]) {
+              collection[vid] = {
+                name: objectsGroup.name,
+                id: objectsGroup.vid,
+                nodeList: [],
+                iconId: 'square',
+              };
+            }
+
+            objectsGroup.objects.forEach((object: any) => {
+              collection[vid].nodeList.push({
+                name: object.name,
+                id: object.vid,
+                iconId: 'circle',
+                nodeList: [],
+                isDropZone: false,
+              });
+            });
+          });
         }
 
-        objectsGroup.objects.forEach((object: any) => {
-          collection[vid].nodeList.push({
-            name: object.name,
-            id: object.vid,
-            iconId: 'circle',
-            nodeList: [],
-            isDropZone: false,
-          });
-        });
-      });
+        const nodeList = Object.values(collection);
 
-      const nodeList = Object.values(collection);
-
-      dispatch(setGroupObjectsList(nodeList));
-    } else {
-      dispatch(setGroupObjectsList([]));
-    }
-  } catch (e) {
-    console.error(e);
-  }
+        dispatch(setGroupObjectsList(nodeList));
+      } else {
+        dispatch(setGroupObjectsList([]));
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 const updateGroupObject = (
@@ -121,42 +117,37 @@ const updateGroupObject = (
 
   const vids = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
 
-  try {
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `mutation($vid: UUID!,$vids: [UUID]){domain{objectGroup{update(vid: $vid,vids: $vids){ok, name, vids}}}}`,
-        variables: { vids, vid: groupObjectId },
-      }),
-    });
+  client.setLink(projectLink);
 
-    if (response.ok) {
+  client
+    .mutate<Mutation>({
+      mutation: UPDATE_GROUP_OBJECT,
+      variables: { vids, vid: groupObjectId },
+    })
+    .then(() => {
       dispatch(fetchGroupObjectList());
-    }
-  } catch (e) {
-    console.error(e);
-  }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  try {
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `mutation {domain{objectGroup{create(name: "${name}"){vid,ok,vids}}}}`,
-      }),
-    });
+  client.setLink(projectLink);
 
-    if (response.ok) {
+  client
+    .mutate<Mutation>({
+      mutation: CREATE_NEW_GROUP,
+      variables: { name },
+    })
+    .then(() => {
       dispatch(fetchGroupObjectList());
-    }
-  } catch (e) {
-    console.error(e);
-  }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 export { fetchGroupObjectList, createNewGroup, toggleDialog, setNewGroupParams, updateGroupObject };
