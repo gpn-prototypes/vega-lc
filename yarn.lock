@@ -909,10 +909,10 @@
     core-js-pure "^3.0.0"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.7":
-  version "7.11.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
-  integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
+  version "7.12.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
+  integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -920,6 +920,13 @@
   version "7.10.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.2.tgz#d103f21f2602497d38348a32e008637d506db839"
   integrity sha512-6sF3uQw2ivImfVIl62RZ7MXhO2tap69WeWK57vAaimT6AZbE4FbqjdEJIN1UqoD6wI6B+1n9UiagafH1sxjOtg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.7.2":
+  version "7.11.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
+  integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1016,10 +1023,10 @@
     resolve-from "^5.0.0"
     resolve-global "^1.0.0"
 
-"@consta/uikit@^1.10.4", "@consta/uikit@^1.9.0":
-  version "1.10.4"
-  resolved "https://registry.yarnpkg.com/@consta/uikit/-/uikit-1.10.4.tgz#9d56249efb7e7254d481a0765589e72d40c793af"
-  integrity sha512-693fxNHu4qS4mgEMi46H7ovpuEp2PyfVGXiGwA1KVYPtoKKX7ouFEbMbo21f6Oo1tkcYAYGqfzUcefyZQzWiiQ==
+"@consta/uikit@^1.10.4":
+  version "1.10.5"
+  resolved "https://registry.yarnpkg.com/@consta/uikit/-/uikit-1.10.5.tgz#7106f8ee04529edbb84acf2db1d68793e5f23fa5"
+  integrity sha512-aMfdm83gXolXSyrHUqHwNPJ4kZSPHjI2UuYFEikqaweA15jnfKcgvrJCQPaVAQSxksQVejXtMKxyUThnkxfshA==
   dependencies:
     "@bem-react/classname" "^1.5.8"
     "@bem-react/classnames" "^1.3.9"
@@ -1131,7 +1138,7 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@gpn-design/uikit@^1.1.2", "@gpn-design/uikit@^1.7.1":
+"@gpn-design/uikit@^1.7.1":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@gpn-design/uikit/-/uikit-1.7.1.tgz#bed2d152807681c6f42b3aa0ce7aff819910588e"
   integrity sha512-MZ+vI9F7JouWkMjdLWLWixNCak09QsWBrufwzzTQRJtmIbnnOuvHjpU5hQ5RWEOccOsG14b+4p10ikYnolLLvg==
@@ -1198,98 +1205,110 @@
   dependencies:
     react-transition-group "^4.4.1"
 
-"@gpn-prototypes/vega-attach@^0.1.5":
+"@gpn-prototypes/vega-attach@^0.1.6":
   version "0.1.6"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-attach/0.1.6/b94bacefc31f4656135d9ee891c597bc0ff18062ea8146dcbd5c930f86824dee#1240efcf0a1bcf25ae4ca2bdc641b5b7be4e5f20"
   integrity sha512-QHXN2MHhwsSO/ANcuFl3aXtS3eECihr1cqEbBh75X6HUnek/UqLxqMnPJgMSmX6flRhhRRe55RrBCGdB8y4ejA==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-avatar@^0.1.7":
+"@gpn-prototypes/vega-avatar@^0.1.8":
   version "0.1.8"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-avatar/0.1.8/e670ac3b55e2fafcbbc1bb6deea5b763bd7b6f52223720bcd6e5401fac515413#ee69c030e1b361d6038a107d5f93e83870ceabe2"
   integrity sha512-0IFdZl8NQSMm5uKEIKgkJYdqsgS/A3cjUw0eNwgMaje+deyv4rC/gPNheSOoz022jGLMEiT+YENmgxFM8q+13Q==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-badge@^0.1.8":
+"@gpn-prototypes/vega-badge@^0.1.9":
   version "0.1.9"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-badge/0.1.9/b5e69c924a3b075ef2df35c4894ae4569fce4924a3ea7bf76a67ee1fca799661#6930ff8fd84323cb6c1c90d578460ff4b8dac158"
   integrity sha512-ieCe8Nu0VlmlmBphhF7klzGHG4xXBd5Ob6KRLiJUMeWKdeeuzy4cQNjsfqwrZ/W0k38B3peBYDfZsHsvVi91xQ==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-button@^0.1.4":
-  version "0.1.4"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-button/0.1.4/a924473d4ccbcb03b5e076e3d9ff8d2e305808835dbd1dce65bc9e2d2f6650f2#120cc89cbf3f557dfe5548fc5b3873fd993d6e62"
-  integrity sha512-xhi5w2mRkKse5AmBqwhrb+KHg1hhBi+gSgkRgvPEfjZ1MvIn/Mb5x+Te+g9TapAibyIJFoWuhZHktZmneRXW1w==
+"@gpn-prototypes/vega-basic-select@^0.0.2":
+  version "0.0.2"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-basic-select/0.0.2/f717a0e419d648a4f897dd815471ccef8bf5b35263c34dca0054fe8a72fca333#ede22b640ce0c072fd0efe556d812ea33ff35089"
+  integrity sha512-0i2PrVOTZv9c5dKs3oBLiTRQ4MZzkODF5/p33SIt9BhPUgooHc9LB9vBzuYj8VDDu5MmXlpygV7k7CcpsPGecg==
   dependencies:
-    "@gpn-design/uikit" "^1.1.2"
+    "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-button@^0.2.2", "@gpn-prototypes/vega-button@^0.2.3":
+"@gpn-prototypes/vega-button@^0.2.1", "@gpn-prototypes/vega-button@^0.2.3":
   version "0.2.3"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-button/0.2.3/fdaa5d41af0e7c70e91c4cfa3459b83f43813878ab98cfd0d54cd097dd400a6a#b39334a4f8a7e8c31e81acca4e869ad3244c9094"
   integrity sha512-i/hEZXes81RT5euRfiDvHnMDTkqwFHHsDdOOlO6o5Z/Kl3kFXxF98XToOwR09NwMgVFBNb3dyCTuvP8cBg40CA==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-canvas@^0.1.0-alpha.0":
-  version "0.1.0-alpha.0"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-canvas/0.1.0-alpha.0/d517c0dd3ee15c6df70e6450cf36876d7e64cc3a6f1b0ca0880258858eab107f#fbedbe22281e25834ea5edfaa058d8e24c293493"
-  integrity sha512-Qrn2Q8PauQX2m0CvL9ZuA6ccGMlQUJM+8lPQurefF/6TGAupP5MKsUSrvgfyhDuxukTVb1rShVrYCB8ISry+ZQ==
+"@gpn-prototypes/vega-canvas@^0.1.2":
+  version "0.1.2"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-canvas/0.1.2/9bf78c36be3fa9f6541d9cb15d7b74188ac8b6b383f1df722d2ef5beaf948e9d#b25a357d4601c21d2af12bef7f12aac2deebe901"
+  integrity sha512-hBU3zR1EFlXWPHUNjc81v4iUFB2/DEQUeR9eb7gAKheU+IyOQWv1uwiUG6Y6hahIQmThvo2J12qbITwWN1nRNQ==
   dependencies:
+    "@gpn-prototypes/vega-button" "^0.2.1"
+    "@gpn-prototypes/vega-dropdown" "^1.2.11"
     "@gpn-prototypes/vega-hooks" "^0.6.0-alpha.0"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
+    "@gpn-prototypes/vega-navigation-list" "^1.0.1"
+    "@gpn-prototypes/vega-root" "^0.2.7"
     bem-cn "^3.0.1"
     konva "^7.0.6"
     react-konva "^16.13.0-6"
     uuid "^8.3.0"
 
-"@gpn-prototypes/vega-carousel@^0.0.9":
-  version "0.0.9"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-carousel/0.0.9/b5ab1e353de400625a31d67920b50a994dde538e195be87fed81edb901d88672#82f3e719c5870bb02335892bce9a6fcd7c91f968"
-  integrity sha512-HkrZ0yoGKfSoyJ/DXJo/nIA/hl1srA/cM2PP8l/MyKKuhX+25BGTxJ4RirU0+blW46/FNqZXQvyw2fWnkIPg1g==
+"@gpn-prototypes/vega-carousel@^0.0.13":
+  version "0.0.13"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-carousel/0.0.13/e11de16f5923781494b50e02b4d54361646ad8adb3c161236117f196b14ae7de#a553070670ee01198410c04b7535e884e4c8f510"
+  integrity sha512-fAd8qvfgDaPs2wVnTDYOUGCNSBeVZV49IoWaA2ULXm7RQpU+ekYpkvOVc4/JgeYQ85E45NY5u7uUd0p/WgWkHQ==
   dependencies:
-    "@gpn-prototypes/vega-button" "^0.2.2"
-    "@gpn-prototypes/vega-icons" "^0.2.2"
-    "@gpn-prototypes/vega-text" "^0.1.7"
+    "@gpn-prototypes/vega-button" "^0.2.3"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
+    "@gpn-prototypes/vega-text" "^0.1.8"
     bem-cn "^3.0.1"
     react-transition-group "^4.3.0"
 
-"@gpn-prototypes/vega-checkbox@^0.1.7":
+"@gpn-prototypes/vega-checkbox@^0.1.8":
   version "0.1.8"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-checkbox/0.1.8/a024e21ff366d1d04faa0b4028b745207824489ac57e3cacd342d1c0ef0aa86b#7bcdb1abac5b9f16df8c748333dd7d8e7f68bd49"
   integrity sha512-Clx91oWrh4aLJtJJADtoQc4wW18sW5f3PmrH5JUK/EooarBQLAXgc9zTk1chfMjjvgy0cmHAOWfnRu7OcGQBLQ==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-choice-group@^0.1.10":
+"@gpn-prototypes/vega-choice-group@^0.1.11":
   version "0.1.11"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-choice-group/0.1.11/11e016dd1096639d6f2633f5aec7f8893d72418b129f404c841a12a8d9e8cfd7#8da997545b6488fa18a483986375a8e18120e690"
   integrity sha512-4q9u9tg0+3bkvS2THCGldB5bu6mmG11oLVI5ihz7TPB3Qnqgl/+CvyJYiSUBMoA0vmEOiFnU7nhElQIz0Khk8g==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-dropdown@^1.2.10", "@gpn-prototypes/vega-dropdown@^1.2.8-alpha.0":
-  version "1.2.10"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-dropdown/1.2.10/06b0dd58a1e054f69ab4422c5d7af69fbc63b4755d6726f97bd30ae709ec1423#83b16d8f74940dbb4c266d7e0fefe9400c92243b"
-  integrity sha512-4vt8cgvOpSbQI4L114yd9bYSYfAju+ma1FQyjysgLMu5d8svwUNs0LsHK4FXPqvuroHOIU7gTXMuTiRIxUFhFg==
+"@gpn-prototypes/vega-combobox@^0.1.0":
+  version "0.1.0"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-combobox/0.1.0/623916b0d3ecf025f86910776a98e3bd42475c1f9a71add46e2b28d18090f86a#2ae5c4ef80b463cb7a48ec0d4a088f3d305043b0"
+  integrity sha512-kwBDds4FnNb7p+tmrSFxeN2HuCyczLhy1r5g9iQueELpkzS2M5x6Gvr4ueZ5YXaWZ6lGACjk0LDXHLvvcPpLmw==
   dependencies:
-    "@gpn-prototypes/vega-hooks" "^0.5.2"
-    "@gpn-prototypes/vega-root" "^0.2.6"
+    "@consta/uikit" "^1.10.4"
+
+"@gpn-prototypes/vega-dropdown@^1.2.11":
+  version "1.2.11"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-dropdown/1.2.11/aeb52eddf05f7521ab1fdfd9ef5082f26da957d499f99c0fa5cac02545156a72#a496ce5c1142de8ef95343c0b02dfe6db2183b05"
+  integrity sha512-zEd5V+o7IW984uAFWxrZeLl6vDvH/IPzdyFNq+mGS2gZX8IV3W/sm9+0VbENqeGQw2DxvGZbIs3Mqiv6bT2VxA==
+  dependencies:
+    "@gpn-prototypes/vega-hooks" "^0.5.3"
+    "@gpn-prototypes/vega-root" "^0.2.7"
     "@popperjs/core" "^2.4.0"
     bem-cn "^3.0.1"
     react-popper "^2.2.3"
 
-"@gpn-prototypes/vega-dropzone@^0.1.4":
-  version "0.1.5"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-dropzone/0.1.5/8919094332b29988db40eae37a9cdff5c4916ca6c2613e060164a1036c31af9f#bd7a20c94fc302b6800a56ebcab669678d543e35"
-  integrity sha512-XzrNymSdPdY4UsgAxlwFe/vabE5lM/JoBelAoRvcM5d1IKblySt3qfGGLZgKbmxJQJqnBUVOeXGfZMAsP2QIdA==
+"@gpn-prototypes/vega-dropzone@^0.1.6":
+  version "0.1.6"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-dropzone/0.1.6/14a764b567cbd6cfda7798e1dfea2b82ac485332744841e77a6ec859e712d9e1#0e7f26cf29fc7a33704481a19b100a7042d10718"
+  integrity sha512-Xcp5KHMJy7AAmnFv7df3YJ3NBn4h1byjv+FKs955DYT0r/3mtZMsnCFf00ZhrQekZCT3D6S2Lx7H4KE7X+eKog==
   dependencies:
     "@gpn-prototypes/vega-file-input" "^0.1.3"
-    "@gpn-prototypes/vega-hooks" "0.5.2"
+    "@gpn-prototypes/vega-hooks" "^0.5.3"
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-file-input@^0.1.2", "@gpn-prototypes/vega-file-input@^0.1.3":
+"@gpn-prototypes/vega-file-input@^0.1.3":
   version "0.1.3"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-file-input/0.1.3/a6867284393b89e0f94fcd6b7fa4a634d3d22b857480d90467dd82d17fba1cd8#0e7ff86d05e3124c17951bb6ae09ff72a848f61b"
   integrity sha512-Q/y9uCztYY9I6LjzD5dmvjkGnljOhE3reywQOfdsqrDe44u3SBMYav6hCeZQ0L+0I49WFut1mizNufV1pPG7jA==
@@ -1297,97 +1316,95 @@
     "@gpn-prototypes/vega-button" "^0.2.3"
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-file@^0.1.7":
+"@gpn-prototypes/vega-file@^0.1.8":
   version "0.1.8"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-file/0.1.8/781194461e5e487787324608a8de0186f08fa2f65e01547641d619ef19e92af0#bd2be44622b18087119092ee1eddeecc09029d71"
   integrity sha512-2apYYDlNd51i5u34WEg8SUVWX8J0CHwfV7zmgUaJgAQ/qZymIZ8ZpSMaDv9k/EIlHQr5ePEquOVQI+GzZPelzw==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-form@^0.1.8":
-  version "0.1.8"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-form/0.1.8/58366579855963119b5b6a277b2d9bf0e3be46a342f2317f51453db9ba1a92c5#56b7f4003d44336291c3a717e395ab6daed5ebe4"
-  integrity sha512-xNWZA7+D7ajqY4Sg0bqffsPTR2nGFqVsraRdHT7hz+usDdH78K1UAlHu6gceAIy4O8RVPYmnNynHLRJyailS2w==
+"@gpn-prototypes/vega-form@^0.1.9":
+  version "0.1.9"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-form/0.1.9/efe0f5ff8c36cf2c604242addbc6e37c0dbbaf99fc3c51b3b9e973eef06d2b34#1d24f628c26aab8cce8bfc9214fdf779bece8ac0"
+  integrity sha512-fwMyTN9uewnvRQaObMhBIYikxcrR0sCYT5iUxTBracKp3rvFKvsa1oCiTzNaQ/f/xbK/WS+Ep6Lz0Nz9fcL14A==
   dependencies:
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-header@^0.1.7-alpha.0":
-  version "0.1.9"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-header/0.1.9/8913f6ca90f3f2e8ba8fc74dccf56afc08f7031d013bebe0d76f2d6385b5f985#9477532f453b8e092757e6d6f178a21cb579cdd1"
-  integrity sha512-fHt3EKnQ444BHDoTqjAUOhr++KEqDKTVKjwJFlQwXEoAjxPv1yO9J1/Ft5YLysbdoxZWyFOxEYGd9owznjQVDA==
+"@gpn-prototypes/vega-header@^0.1.11":
+  version "0.1.11"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-header/0.1.11/83697bf038172ddb9f51db5c56eb93673651b1ea0a7c4f9f4e6dd648b3c90348#86538b4445560e8a4879230a3e89186503357e89"
+  integrity sha512-sIJUxfKPMyTTf7PF7vF2KGu+jTnyd0R0uzTlg0+rISz4/3AkrXwocPASGtJSU3W4yqFyPRCO8R0l6PcaO3lZ5g==
   dependencies:
     "@gpn-prototypes/vega-button" "^0.2.3"
-    "@gpn-prototypes/vega-dropdown" "^1.2.10"
-    "@gpn-prototypes/vega-icons" "^0.2.4"
-    "@gpn-prototypes/vega-tabs" "^0.0.18"
+    "@gpn-prototypes/vega-dropdown" "^1.2.11"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
+    "@gpn-prototypes/vega-tabs" "^0.0.20"
     "@gpn-prototypes/vega-text" "^0.1.8"
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-hooks@0.5.2", "@gpn-prototypes/vega-hooks@^0.5.2", "@gpn-prototypes/vega-hooks@^0.6.0-alpha.0":
+"@gpn-prototypes/vega-hooks@^0.5.3":
+  version "0.5.3"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-hooks/0.5.3/ef2823aff223932149088d23f74c775ec8b6c62ee36ab85231ac8ed95f90d95a#5249f8ff93d9e2a7cbf8c095475dc4130ca93ed8"
+  integrity sha512-PjAXWbxah6/KtpHbzEl8Yg+QyT5bEXPY4+HpoXk96pTRv+t3zXFNnRcAlfqgOpj+XG5v4fwOSNUF7AX+LsRptA==
+
+"@gpn-prototypes/vega-hooks@^0.6.0-alpha.0":
   version "0.6.0-alpha.0"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-hooks/0.6.0-alpha.0/1881683af04bc36145c9b7549c59f8a362b5c1035d4bff9a530e6bdb1212f865#53fb77b6b8a41c4cbf707a36d12457481860e71c"
   integrity sha512-JoGhj/3Z+lKzHZgJo3wGQBpuuM16IjXxC27P45be69nrbP/4R4eZLSvMVMOYAZCBlAWHTmwONaiaR0WIhsXJsA==
 
-"@gpn-prototypes/vega-icons@^0.1.3", "@gpn-prototypes/vega-icons@^0.1.4":
-  version "0.1.6"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-icons/0.1.6/0223563ff274b9237bb2f25a227c8be825c42be54b9d6ea3b7d0037d136355ed#488e247188d73e3a00a0c3563b336d487b13140d"
-  integrity sha512-1zDqZawD8J45KJRlsiEV8mrrvKGKAe888uFoj9Huivuwt2feQuZz2UjM3hglgqBoRloIdle41KYAImFOSqfz5g==
-  dependencies:
-    "@gpn-design/uikit" "^1.1.2"
-
-"@gpn-prototypes/vega-icons@^0.2.2", "@gpn-prototypes/vega-icons@^0.2.3", "@gpn-prototypes/vega-icons@^0.2.4":
-  version "0.2.4"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-icons/0.2.4/2a0594ba548481922c29a218795772730ab466257b51b521eafdfd6bea717ae6#1393409778e18fb991c2716ee55679e3b5ad7ae5"
-  integrity sha512-k0xiO1hUVbvcbT2Bs7PK/muKU+Z5yHe1vEmB4RvHHSfzRCHICNijeW5mxDl0OX+qJwqPUw5Eu/Fo+1q/DI8JKg==
+"@gpn-prototypes/vega-icons@^0.2.6":
+  version "0.2.6"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-icons/0.2.6/329452bb5c5e6403d5bf6fd3185d13496dc3f90671e8f875b8619f03aa97bbe1#6a873964f9b230a2d27bad48f28645a2bf5d8404"
+  integrity sha512-BvDvF7jQLwcj1BzWUVaM/6f1WONqICTm3FEkAaZcR4rJ/uG3kHJvdY10mdXmF8/GQLKwLdpFoC5FosdF7eEgwg==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-informer@^0.1.8":
+"@gpn-prototypes/vega-informer@^0.1.9":
   version "0.1.9"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-informer/0.1.9/471b6ce1e80383f225b04303d509078a89719f20a663c4f312673a6c2d952ce6#a13292f9c216d19bfb3468e7b644e1c70f460260"
   integrity sha512-zFBcXRptDajrItLqy7Q/IugYQ2Omi6vqEV2cDOMrqlEkZN+Af4boV8CFGDmRFb7s8p6cx9oondw4k46jsiRpWg==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-layout@^0.4.0-alpha.0":
-  version "0.4.0-alpha.0"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-layout/0.4.0-alpha.0/b0017fc691fe388c1f38d55a9788ff73d0f1ba87e4e2d6f115350ed5d9575789#19d9ef74a93c1f79bc52a66c57437917c1293994"
-  integrity sha512-ArDba/F/7h5lbfIS5USqktfG0LUPGASeQ6pO4xXlbFKfhuhFqje3iWYXdFnRcSnDUlUuS74xtuqAJFvyhwgVuA==
+"@gpn-prototypes/vega-layout@^0.3.8":
+  version "0.3.8"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-layout/0.3.8/3bcda295c481883e0fab91de1c270c3e9865c463b45c90132aa74bc871431eaf#a3c79b059d2a98ddf63b7a88d4e4476b98d85a6d"
+  integrity sha512-B7eYvUkZimnL8Zm59HV8TenwDdr0b8jgpqkv1dnFg9zSFc0GGBRj1FKdVQkj3CB8Pq0Z070qkdasGTZFkLaJ9w==
   dependencies:
-    "@gpn-prototypes/vega-button" "^0.1.4"
-    "@gpn-prototypes/vega-dropdown" "^1.2.8-alpha.0"
-    "@gpn-prototypes/vega-icons" "^0.1.4"
+    "@gpn-prototypes/vega-button" "^0.2.3"
+    "@gpn-prototypes/vega-dropdown" "^1.2.11"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
     "@gpn-prototypes/vega-navigation-list" "^1.0.4"
-    "@gpn-prototypes/vega-root" "^0.1.0"
+    "@gpn-prototypes/vega-root" "^0.2.7"
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-loader@^0.1.6":
+"@gpn-prototypes/vega-loader@^0.1.7":
   version "0.1.7"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-loader/0.1.7/7e19156e243e116e3a00111a19825ffaf2d281e4cfc64a46033d0175cc77420c#0bd079cb752ad0914c45ac58043796c0bad1f293"
   integrity sha512-3x9YW0azXU9PGu8Uaol5s2/z1YsjH8DiHmo/V1Cs8fYg4HhPMzf5CtwaVxjCVflUISFYH/0zc2rrahBN2raQAQ==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-logo@^0.0.6":
-  version "0.0.6"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-logo/0.0.6/8575ef6c6ea44c87d0c299818a54eafddf4e4637012e81c72abb1fff3e1c926d#fe52ca71d90097ae820f1b2c4b3c548d2740ba1d"
-  integrity sha512-iEba07GbVJkJ00/wyPHaLMlOtSncLM1ZOs2cRYPp0I/wDlXOZJUGxgmiFixV4SEu1NDv9a7Yer1If4maWNkxqw==
+"@gpn-prototypes/vega-logo@^0.0.7":
+  version "0.0.7"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-logo/0.0.7/c9f135f03a186c04c45f9b9829795f4ee58f8208c3e19e8c7095a5b887e598ec#4ee11c88b583d3c976ab7f3f15a33c95d0aa97a2"
+  integrity sha512-V20vzcxQ1NSmefvVpXTT0cQVu01AxrZ4/JDq1Q7ftMmgOhW+F89eoRQCO6wEZr+3tj/nAqC8kIVeHY19oaDWFw==
   dependencies:
-    "@consta/uikit" "^1.9.0"
+    "@consta/uikit" "^1.10.4"
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-modal@^0.3.9-alpha.0":
-  version "0.3.11"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-modal/0.3.11/c35b6e432ca051c2cea145757fdfcafa7780e487151c2f81981b0127fb04f25e#1f8e3507a340be8fd80a92905c3f518efe0026a8"
-  integrity sha512-+tbV35Tc7ts398z4F+g5m4+OANn2DbG4DZlXIwEi9LVkZIEqoaXIp38OmlGW/ZXEy10X2G1+vEO7vnSdV8R/+Q==
+"@gpn-prototypes/vega-modal@^0.3.13":
+  version "0.3.13"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-modal/0.3.13/1561a827fc80457a4a20248c87a116ec5aae496d9299cc690a764c195d282728#e37bd2101c569cc52c6eb12ae2ca48c5fd127172"
+  integrity sha512-oWJaA1OBZOhc+aRbcvoMNsoyNodWCLY0K0CPeTzEFLRuPP9kyw5KZjYvshwI/dKdIFJtRa4kb9OzW5e9odJw8A==
   dependencies:
     "@gpn-prototypes/vega-button" "^0.2.3"
-    "@gpn-prototypes/vega-hooks" "^0.5.2"
-    "@gpn-prototypes/vega-icons" "^0.2.4"
-    "@gpn-prototypes/vega-root" "^0.2.6"
+    "@gpn-prototypes/vega-hooks" "^0.5.3"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
+    "@gpn-prototypes/vega-root" "^0.2.7"
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-navigation-list@^1.0.4":
+"@gpn-prototypes/vega-navigation-list@^1.0.1", "@gpn-prototypes/vega-navigation-list@^1.0.4":
   version "1.0.4"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-navigation-list/1.0.4/279e467493ae069edbbcfcbd5da466b209c1810bad10e0cf1f1d48ba7eb65db6#6ee32bb3eb5e478ff49d82778e062553295db697"
   integrity sha512-yIKcoH+SM9u6BdMhJwNOV+qmPGqMuWjc2MT2JsSFxOb3x4onnmB2VJd2xO4ZJiRdAkaskW2+8yLVfctv7BZvGQ==
@@ -1408,150 +1425,126 @@
   dependencies:
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-popover@^0.0.4":
-  version "0.0.4"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-popover/0.0.4/77d5a9f0b73db6c9e31c32418a5047b101276f29fdeb4aeaa069d9f997bb7487#7595c76acab00969ffcbba6046280b1cc70711fa"
-  integrity sha512-BZlxpszsIGIpAj//bkhkjDFjR3ajdrN4ul2ADnPOjOKMS/IoQGcWVZdRswjCbN4Xe3xJ/C9rlQPnwH+4A/iiNQ==
+"@gpn-prototypes/vega-popover@^0.0.5":
+  version "0.0.5"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-popover/0.0.5/290bfbde8ca38e15e026b20c68d0667c0e5185a91630659c271c2b38420842a5#5b75450311cddbc33705855d304644d300ece705"
+  integrity sha512-HYYR3KLq21ZoWDQ0yhks5kdDMzk08RnGZKs3SgXtfQDB/53pA664fum6BrlvBMqQh42+7aukcR8Yei/I1syh+w==
   dependencies:
-    "@consta/uikit" "^1.9.0"
+    "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-progress-spin@^0.1.5":
+"@gpn-prototypes/vega-progress-spin@^0.1.6":
   version "0.1.6"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-progress-spin/0.1.6/3d8fad799bfbb183f3fb9c335fe76f54013ec0359213b75a89efbe0b4b87c18e#da53b569c1f11a46941a6c3b3e67e30648822b5d"
   integrity sha512-EZTk4cse0m5iWbPFVGcYmdlvCZQtEhIlpXEfvUJzBvJXWn6MKe5ShioZ+YXBnL7SNKSvDRYxeDjQPP0BZ8MFaA==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-radio-list@^0.0.5":
-  version "0.0.5"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-radio-list/0.0.5/7ae31e109a93dbc524abca82a58fbe829d369441c8c20f78dda51308bd7e140f#03eb72f0f288cb6f2bf2b267f42adef65243da17"
-  integrity sha512-oQZe1hapelMEg8EfLj3WC6xvz9QxQY8RSZaHJTKTB6hvLfUVie9gXV5QCU8HnPsht/FFtsmcc094cLqivGqkiA==
+"@gpn-prototypes/vega-radio-list@^0.0.8":
+  version "0.0.8"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-radio-list/0.0.8/6658d5afadd5dbde8b54e8d1deae8c5cb6b094d11be186d0257ab57c0b563741#8d8f7130d3d34a2270db784663257698b3bcbb9c"
+  integrity sha512-/3L5QRN0m/4E68seGsPlE1keii+tC+3vsoDdjTps/4hgxv/+hJo1p5nmp92f7jB4Q7Xb/itfAjOuKZxnsZKqjg==
   dependencies:
-    "@gpn-prototypes/vega-icons" "^0.1.3"
-    "@gpn-prototypes/vega-text" "^0.1.7"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
+    "@gpn-prototypes/vega-text" "^0.1.8"
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-radio@^0.1.7":
+"@gpn-prototypes/vega-radio@^0.1.8":
   version "0.1.8"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-radio/0.1.8/05337e47a0a652b637103e4bd25cb891b6ebe801455c72ed511d4b6e432bd3ba#80bf530058f3f40c09735cc19d5ccfc4d54f68dd"
   integrity sha512-FTH4BNV52R3wtwndwg3hBNmNY2n/AXbft4fQVMia8HKXeo2PvvnnbX/F7Gf4NL6AR0k/UvzoHp+CIOCtleXWkA==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-root@^0.1.0":
-  version "0.1.0"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-root/0.1.0/25c3ea059dec28670553664c016fcbe45541482de0c378fdb7ccc845ee032442#6a67bcb9cfc3695b4a5bd68f56031a2d007cf64d"
-  integrity sha512-jz7QdKiZgA6BJC82OkG66UMkHlJG77BpeuRbCTiv1bLIdZ6KzXqwNHHJiIgi3sUrEUuKYQwSixv/N6gr8PzNqQ==
+"@gpn-prototypes/vega-root@^0.2.7":
+  version "0.2.7"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-root/0.2.7/f82ab2aab35213423b62bd51db11bbc7bfbef6fc720326006d16c92454cf38d5#e50a74f975acca1aefd2b83e0c83bf07590255fb"
+  integrity sha512-QkO9TktMBBom1YhXklWbiR4VY9eKTaECNdeCBykYkzqMuToDcUzoEzzBMqxphNAQhT3Sz57polG7SXpSjTgefw==
   dependencies:
-    "@gpn-prototypes/vega-theme" "^0.0.3"
-
-"@gpn-prototypes/vega-root@^0.2.4", "@gpn-prototypes/vega-root@^0.2.6":
-  version "0.2.6"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-root/0.2.6/a4cb7cc9eb34e20e53939f6d8aeefd469006d612faf955ef5d5e7486925ae5ee#253b4dfb5a9c26865acee501d8add8aacae39607"
-  integrity sha512-1MX6kxTMaLNfz2W2vh4aWiUXlhQoFl/JeCVHW/B4ntz+PL10HqmZ+clpJaqeJ8fVNmZF2nQiN3KnZXo0ejK4pQ==
-  dependencies:
-    "@gpn-prototypes/vega-hooks" "^0.5.2"
+    "@gpn-prototypes/vega-hooks" "^0.5.3"
     "@gpn-prototypes/vega-theme" "^0.0.7"
 
-"@gpn-prototypes/vega-scale-panel@^0.1.5":
-  version "0.1.7"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-scale-panel/0.1.7/5058dff9b652cbef8a8ce6cbdf89ccb9b1f3a31477b50e609726020437e01b21#0d299acedd846803c0fef0346947a9c5e42c5a67"
-  integrity sha512-v/Wwm7q6xdBT9sU37E1q7rdQPU3dfOozuWIU4OwJMy6N1F5kXILNiZi3QfLP7D8C/fo8YGDEK5DrzOd0SzLmXQ==
+"@gpn-prototypes/vega-scale-panel@^0.1.9":
+  version "0.1.9"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-scale-panel/0.1.9/527aeb042c219634939aff3596261b9db2335370ff07615dfed3b0fb5bce886c#decf9c8eb5d4546fb012f39b73fece666d39f32e"
+  integrity sha512-8WafnK6L6cy/TJh+D/raCWbE19nU8zPoK0ULgHqgxrypMEp62iMf7m1chGqV+zGXNeKNLoT4Cj5K5tJZ8OF32w==
   dependencies:
     "@gpn-prototypes/vega-button" "^0.2.3"
-    "@gpn-prototypes/vega-icons" "^0.2.4"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
     "@gpn-prototypes/vega-text" "^0.1.8"
     "@gpn-prototypes/vega-text-field" "^0.1.9"
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-sidebar@^0.2.7":
-  version "0.2.11"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-sidebar/0.2.11/847b00967093a0250e6620feaf4419618084100254137d87c09f6467378d800b#bf64c8c55d40dc8ee758d2d66f15532eeec85eda"
-  integrity sha512-3+4oBB+1sikK2ByYOweUWIiu5YFknEHmINGNVjRJmWebbThI0iaYzGpnzgQgw617PhHhMawGRZvGTfYc1b6mog==
+"@gpn-prototypes/vega-sidebar@^0.2.13":
+  version "0.2.13"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-sidebar/0.2.13/3ecfb22c514307056d99c4c9b51e022a9142d8b065587b2d6f6d8e4457d8d403#b8efadfa237385dcf1882f290d6104c9e0c22f64"
+  integrity sha512-0r+qOj6CGXRuPwHwY+VJ8kvdtOEORg2HEaYi9o0/mH4Rmcaa6OqPAFT+ZKXB7CY3mfrqSRudS00lZjzRzPSbaw==
   dependencies:
     "@gpn-prototypes/vega-button" "^0.2.3"
-    "@gpn-prototypes/vega-hooks" "^0.5.2"
-    "@gpn-prototypes/vega-icons" "^0.2.4"
-    "@gpn-prototypes/vega-root" "^0.2.6"
+    "@gpn-prototypes/vega-hooks" "^0.5.3"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
+    "@gpn-prototypes/vega-root" "^0.2.7"
     "@gpn-prototypes/vega-text" "^0.1.8"
     bem-cn "^3.0.1"
     react-transition-group "^4.3.0"
 
-"@gpn-prototypes/vega-snack-bar@^0.1.5":
+"@gpn-prototypes/vega-snack-bar@^0.1.6":
   version "0.1.6"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-snack-bar/0.1.6/1eda671f6f6fabf67ebbc0faf7360fc8d63577457711f406c1283d9e55f9b74e#0949ceeaa530e41f01f9d8fda8f22a890cb5aa80"
   integrity sha512-Ckxs+2tHTKrzvzjHPjsRt7i+C9DuGjWunXMlb/iVbpS52O6E/zyT+kRgHKts5qpaJpdXtVXgJ5mDvhnKbCAc+Q==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-switch@^0.1.7":
+"@gpn-prototypes/vega-split-panes@^0.1.0":
+  version "0.1.0"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-split-panes/0.1.0/73b4b09c36f601c2c1108fb1b063fc9e13e33c8a17a7918daa0e9d7e8cbf42db#e45c40998299c8653fa82521a64b3d806a1b3309"
+  integrity sha512-cakrEf1ywsyqyEZwliNo3Rhxc2zmhMJPesII9YCSI2/BB7coH/0OWHlOgmSgn1XYpRdSPaXZfS9A7mdrctWvRg==
+  dependencies:
+    bem-cn "^3.0.1"
+
+"@gpn-prototypes/vega-switch@^0.1.8":
   version "0.1.8"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-switch/0.1.8/f2c5f4a82bde58aed1fff0b18f2c003f02113a9f6819085289cdd3cda48e4423#14787bf184a47cf152482ef5a0b8e592c0ff693d"
   integrity sha512-mxlYkjtU9fkcj3/4FruqKBwjQX5SUKQbvDVDPa7VADI3jQpw0G+M2sGAkKf7s/crPJBcLgO5P3Zaul3JisfS2A==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-table@^0.1.2":
+"@gpn-prototypes/vega-table@^0.1.3":
   version "0.1.3"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-table/0.1.3/364abc2f216d10de18041c31590347f5a3405807868ec3457319135b7a8cca7b#c63489f65cbf4289306b4dd9ff9a5081f5cb1fc5"
   integrity sha512-yXaVA1WQ+VAbe4t+9yiCtpB/hGfIvhAKFF4MIJNSR4G8natbnH1TjqJplJ+eHCcfaVh4lo3rgOJXUwAyCx39xw==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-tabs@^0.0.17-alpha.0":
-  version "0.0.17"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tabs/0.0.17/bd491f1dcd22c088c35e73f2cfbeba50031ae1b53eb2bc90d47a932b32f88deb#8d4e75c7edbe0d339c82596534c42d351694be8c"
-  integrity sha512-7hGd8N6Dq+twhVadAamqNixPAk+Mthk54rHVW7bXoP4auE5xbzdLXKTCHUArwsIbLMScyKdnJuDVMaCYkcCTjw==
-  dependencies:
-    "@consta/uikit" "^1.9.0"
-    "@gpn-prototypes/vega-hooks" "^0.5.2"
-    "@gpn-prototypes/vega-icons" "^0.2.3"
-    bem-cn "^3.0.1"
-
-"@gpn-prototypes/vega-tabs@^0.0.18":
-  version "0.0.18"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tabs/0.0.18/8b221e17b1226b6e2050b2943769deb5e51fd74c87146a7c7140a625e0c5dea5#a1163b8e993baf756918be6b0420f2348e1493e9"
-  integrity sha512-HrYJEhNaXtqIl7n0LLrrv0RfJch8JABxgWP6FQtR8viv793FYKBuNiScZwucWbnSe4NsrPnpEuPyMfa2OCCMhw==
+"@gpn-prototypes/vega-tabs@^0.0.20":
+  version "0.0.20"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tabs/0.0.20/0a49f49cd53b4aa81ef59fa31014a1a5ef62e31bca97a372b899b227237a332e#b1611ae23a2b0a79226a1b608bc964b623811e04"
+  integrity sha512-NvDbqCmzIVncuJLsvLP0saVXWQ0WG5bqGxrcMwymKRodvFL1cuzo1zYC0aOZGIbxyLiKf3wUnFiLXYsr6xvQoA==
   dependencies:
     "@consta/uikit" "^1.10.4"
-    "@gpn-prototypes/vega-hooks" "^0.5.2"
-    "@gpn-prototypes/vega-icons" "^0.2.4"
+    "@gpn-prototypes/vega-hooks" "^0.5.3"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-tag@^0.1.2":
+"@gpn-prototypes/vega-tag@^0.1.3":
   version "0.1.3"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tag/0.1.3/3d68b47fe9dbe7f166fb306cbd44f49be1cf1bdf8a5b9ddeb3e21bc2d5cc4572#47ab7c6a33a64c50b72ec0376a2710a25c696433"
   integrity sha512-hF9m9R1R7O7/YXIVfLzf2qwapCGDxRGXK7YIFK7E5pCcTXsTMsWMrlTpsUDy8g2hRWAfwA/Urms3UhvKTtBMhA==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-text-field@^0.1.8", "@gpn-prototypes/vega-text-field@^0.1.9":
+"@gpn-prototypes/vega-text-field@^0.1.9":
   version "0.1.9"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-text-field/0.1.9/1405004ddc498de48faf2ab4b8520402baa4b95973049be0a39a0faf2bcf2582#a148b69788e63c5fae3a5578da0211676b42d557"
   integrity sha512-ecT0CvBL6qViOVvIpQumHjnuwEmGXqMfhIs6pFKXSSogqMzvoDpj6qELM8DJdtSvYWzOimU+ZxefulG1G+Jw7w==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-text@^0.1.7", "@gpn-prototypes/vega-text@^0.1.8":
+"@gpn-prototypes/vega-text@^0.1.8":
   version "0.1.8"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-text/0.1.8/7dffdf82abf774edb2f48e472a65b8181ac3f459e1f03ed0ee0e4d08b6a571db#5e615b37cee46b3ad1a5835c7f988fda0d81640e"
   integrity sha512-StlQgfFcJ2zsBN3Ll5BjJgLH8cT03UV4MovR844w4d7XyfHBUiTNdFdkujaQ9YNy5rgAj1UWQGQF1+dlgvsmQQ==
   dependencies:
     "@consta/uikit" "^1.10.4"
-
-"@gpn-prototypes/vega-theme@^0.0.3":
-  version "0.0.3"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-theme/0.0.3/f05b0844f113c99ca88f83b7e8515c4b2dd6c4c9e86a7864fef8172cfe51529a#e5778fd07e67ca50390cbd46d074de790c37f54b"
-  integrity sha512-wdOWsbvIDq/3zKjHaR9IeCHwHp4qlsCyvaoMqafEIThraXTH93txHpelrlgFFqd12C6Ak/bjpxXREhq/5FKRxg==
-  dependencies:
-    "@gpn-design/uikit" "^1.1.2"
-
-"@gpn-prototypes/vega-theme@^0.0.6":
-  version "0.0.6"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-theme/0.0.6/05a917883d60b8a77cc691888eb26d290471c5b8a94b2e0f9bd1bd936ef65901#fbade44b39389f4ff616012cbe11831465e3d261"
-  integrity sha512-0fa6EZArtKKGD1KKQJmKBO719/Ak1hCRuxTf4mEXnZ8Z7Yxpwk60Dhy+PspY8fK/R1DdlYAAeSVHeEJWRE2YqQ==
-  dependencies:
-    "@consta/uikit" "^1.9.0"
 
 "@gpn-prototypes/vega-theme@^0.0.7":
   version "0.0.7"
@@ -1560,26 +1553,19 @@
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-timer@^0.1.5":
+"@gpn-prototypes/vega-timer@^0.1.6":
   version "0.1.6"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-timer/0.1.6/3d0a8a5daed82f516c301fc6868165aee1200119ab2e9d95a9e24eb4723adba8#e97b91d913e50e49b8b4c779940f4622991e104f"
   integrity sha512-VnTqij7A2Mbr6HOMGA9SsCUkZloQjy8J7u8uxqI1YD63QT3ukmHgxuDQ2G50XGtEkhqrgjP1LjYGAhE7TtuvmQ==
   dependencies:
     "@consta/uikit" "^1.10.4"
 
-"@gpn-prototypes/vega-tooltip@^0.0.2":
-  version "0.0.2"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tooltip/0.0.2/f7aa43a9eebfb4f8adf0aac54d08fdeb75fc83f3dba9a233083c40fe3ba069ef#bf7320f8b7074abca4f3542b86262aaa54748671"
-  integrity sha512-D/pvDLGl/bbnJGl7gd5Er9AaKyxZK/apVLopOYnt1YSRbadAC/GPlXX1SmDlBnLddKJg88gW9jA/r1hKDcOHcQ==
+"@gpn-prototypes/vega-tooltip@^0.0.3":
+  version "0.0.3"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tooltip/0.0.3/6a692e06f65d08cb638a24a57e83ca102079af2a37d8f5e677172369f5a76cc6#bfba1ebbfb31aff0e79ff0534f949f4a3bfbcf17"
+  integrity sha512-9j39IbWu8idNQQE5B4ypS3hzxD/CV+7sczoQBwsXyHgRQUZsG/3ttpK0eBbD5zgeAKWxDf/eV1wabsKpNJs+gA==
   dependencies:
-    "@consta/uikit" "^1.9.0"
-
-"@gpn-prototypes/vega-tree@^0.0.2":
-  version "0.0.2"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-tree/0.0.2/d16899ca37f2d03aad482aa878c1f24b1a8a0361a748c209c3a8b09c1c3a14f0#908db7a74e736a687901b693c0fe0b6247f09ec2"
-  integrity sha512-nZ7Nryg3MeSou0orjv84XuRwABNrA3/QKxZSIvc5m39WDrg/UU6IrC4X+c0jicnquBcqMDACbSAOFKN7Azn9GA==
-  dependencies:
-    bem-cn "^3.0.1"
+    "@consta/uikit" "^1.10.4"
 
 "@gpn-prototypes/vega-tree@^0.0.5":
   version "0.0.5"
@@ -1588,57 +1574,60 @@
   dependencies:
     bem-cn "^3.0.1"
 
-"@gpn-prototypes/vega-ui@^2.14.0-alpha.0":
-  version "2.14.0-alpha.0"
-  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-ui/2.14.0-alpha.0/8457cc14a457e7dd8db5c027cbd6244f15549c99d34f2288ad9d86e2969db9dd#038a0132d47313185e0d7e5741c9fa84ee0a982e"
-  integrity sha512-16oT1J/HA1Ty/+ueO6YUcJHD4QI2uMKP5W7tLD/0d43Bpi3t+RMKL9GccHzpVBs2l5bGHndyXzFZoK7Ggdr++A==
+"@gpn-prototypes/vega-ui@^2.15.1":
+  version "2.15.1"
+  resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-ui/2.15.1/bac8c6fd09b055b772a9a8d65323192bf5d589e92d89539b268f88282ec8a25d#ce14dbc31e332a59a5ce0a775fd1b281cce65a3c"
+  integrity sha512-CbEQtFrXD2E5Jveqi9H2+pQeQG5VCaftGoYyr8wnOHpt95YhgjnhcJEKuWTXaf+KS0vx5MFtz2Wgl1n3xu3Fmg==
   dependencies:
     "@gpn-prototypes/vega-animation" "^0.0.3"
-    "@gpn-prototypes/vega-attach" "^0.1.5"
-    "@gpn-prototypes/vega-avatar" "^0.1.7"
-    "@gpn-prototypes/vega-badge" "^0.1.8"
-    "@gpn-prototypes/vega-button" "^0.2.2"
-    "@gpn-prototypes/vega-canvas" "^0.1.0-alpha.0"
-    "@gpn-prototypes/vega-carousel" "^0.0.9"
-    "@gpn-prototypes/vega-checkbox" "^0.1.7"
-    "@gpn-prototypes/vega-choice-group" "^0.1.10"
-    "@gpn-prototypes/vega-dropdown" "^1.2.8-alpha.0"
-    "@gpn-prototypes/vega-dropzone" "^0.1.4"
-    "@gpn-prototypes/vega-file" "^0.1.7"
-    "@gpn-prototypes/vega-file-input" "^0.1.2"
-    "@gpn-prototypes/vega-form" "^0.1.8"
-    "@gpn-prototypes/vega-header" "^0.1.7-alpha.0"
-    "@gpn-prototypes/vega-hooks" "^0.6.0-alpha.0"
-    "@gpn-prototypes/vega-icons" "^0.2.2"
-    "@gpn-prototypes/vega-informer" "^0.1.8"
-    "@gpn-prototypes/vega-layout" "^0.4.0-alpha.0"
-    "@gpn-prototypes/vega-loader" "^0.1.6"
-    "@gpn-prototypes/vega-logo" "^0.0.6"
-    "@gpn-prototypes/vega-modal" "^0.3.9-alpha.0"
+    "@gpn-prototypes/vega-attach" "^0.1.6"
+    "@gpn-prototypes/vega-avatar" "^0.1.8"
+    "@gpn-prototypes/vega-badge" "^0.1.9"
+    "@gpn-prototypes/vega-basic-select" "^0.0.2"
+    "@gpn-prototypes/vega-button" "^0.2.3"
+    "@gpn-prototypes/vega-canvas" "^0.1.2"
+    "@gpn-prototypes/vega-carousel" "^0.0.13"
+    "@gpn-prototypes/vega-checkbox" "^0.1.8"
+    "@gpn-prototypes/vega-choice-group" "^0.1.11"
+    "@gpn-prototypes/vega-combobox" "^0.1.0"
+    "@gpn-prototypes/vega-dropdown" "^1.2.11"
+    "@gpn-prototypes/vega-dropzone" "^0.1.6"
+    "@gpn-prototypes/vega-file" "^0.1.8"
+    "@gpn-prototypes/vega-file-input" "^0.1.3"
+    "@gpn-prototypes/vega-form" "^0.1.9"
+    "@gpn-prototypes/vega-header" "^0.1.11"
+    "@gpn-prototypes/vega-hooks" "^0.5.3"
+    "@gpn-prototypes/vega-icons" "^0.2.6"
+    "@gpn-prototypes/vega-informer" "^0.1.9"
+    "@gpn-prototypes/vega-layout" "^0.3.8"
+    "@gpn-prototypes/vega-loader" "^0.1.7"
+    "@gpn-prototypes/vega-logo" "^0.0.7"
+    "@gpn-prototypes/vega-modal" "^0.3.13"
     "@gpn-prototypes/vega-navigation-list" "^1.0.4"
     "@gpn-prototypes/vega-page-banner" "^0.2.4"
     "@gpn-prototypes/vega-page-footer" "^0.2.7"
-    "@gpn-prototypes/vega-popover" "^0.0.4"
-    "@gpn-prototypes/vega-progress-spin" "^0.1.5"
-    "@gpn-prototypes/vega-radio" "^0.1.7"
-    "@gpn-prototypes/vega-radio-list" "^0.0.5"
-    "@gpn-prototypes/vega-root" "^0.2.4"
-    "@gpn-prototypes/vega-scale-panel" "^0.1.5"
-    "@gpn-prototypes/vega-sidebar" "^0.2.7"
-    "@gpn-prototypes/vega-snack-bar" "^0.1.5"
-    "@gpn-prototypes/vega-switch" "^0.1.7"
-    "@gpn-prototypes/vega-table" "^0.1.2"
-    "@gpn-prototypes/vega-tabs" "^0.0.17-alpha.0"
-    "@gpn-prototypes/vega-tag" "^0.1.2"
-    "@gpn-prototypes/vega-text" "^0.1.7"
-    "@gpn-prototypes/vega-text-field" "^0.1.8"
-    "@gpn-prototypes/vega-theme" "^0.0.6"
-    "@gpn-prototypes/vega-timer" "^0.1.5"
-    "@gpn-prototypes/vega-tooltip" "^0.0.2"
-    "@gpn-prototypes/vega-tree" "^0.0.2"
-    "@gpn-prototypes/vega-user" "^0.1.7"
+    "@gpn-prototypes/vega-popover" "^0.0.5"
+    "@gpn-prototypes/vega-progress-spin" "^0.1.6"
+    "@gpn-prototypes/vega-radio" "^0.1.8"
+    "@gpn-prototypes/vega-radio-list" "^0.0.8"
+    "@gpn-prototypes/vega-root" "^0.2.7"
+    "@gpn-prototypes/vega-scale-panel" "^0.1.9"
+    "@gpn-prototypes/vega-sidebar" "^0.2.13"
+    "@gpn-prototypes/vega-snack-bar" "^0.1.6"
+    "@gpn-prototypes/vega-split-panes" "^0.1.0"
+    "@gpn-prototypes/vega-switch" "^0.1.8"
+    "@gpn-prototypes/vega-table" "^0.1.3"
+    "@gpn-prototypes/vega-tabs" "^0.0.20"
+    "@gpn-prototypes/vega-tag" "^0.1.3"
+    "@gpn-prototypes/vega-text" "^0.1.8"
+    "@gpn-prototypes/vega-text-field" "^0.1.9"
+    "@gpn-prototypes/vega-theme" "^0.0.7"
+    "@gpn-prototypes/vega-timer" "^0.1.6"
+    "@gpn-prototypes/vega-tooltip" "^0.0.3"
+    "@gpn-prototypes/vega-tree" "^0.0.5"
+    "@gpn-prototypes/vega-user" "^0.1.8"
 
-"@gpn-prototypes/vega-user@^0.1.7":
+"@gpn-prototypes/vega-user@^0.1.8":
   version "0.1.8"
   resolved "https://npm.pkg.github.com/download/@gpn-prototypes/vega-user/0.1.8/968d4422595da60cc14653358bf8a190db987417077b3fc65d78fbdcd710012e#f62aaa89564caeb8d900c0d8dc43d577e1d198ec"
   integrity sha512-GFYCQm2/2TnEPOwClcvj98eEbMTR6IcLjrLsEnrZ4POhD9vTSVYuGyDRwY8S8gLYDa7W8rwvuUtohB4werjbTw==
@@ -2024,9 +2013,9 @@
     mkdirp "^1.0.4"
 
 "@popperjs/core@^2.4.0":
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.5.3.tgz#4982b0b66b7a4cf949b86f5d25a8cf757d3cfd9d"
-  integrity sha512-RFwCobxsvZ6j7twS7dHIZQZituMIDJJNHS/qY6iuthVebxS3zhRY+jaC2roEKiAYaVuTcGmX6Luc6YBcf6zJVg==
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.5.4.tgz#de25b5da9f727985a3757fd59b5d028aba75841a"
+  integrity sha512-ZpKr+WTb8zsajqgDkvCEWgp6d5eJT6Q63Ng2neTbzBO76Lbe91vX/iVIW9dikq+Fs3yEo+ls4cxeXABD2LtcbQ==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.0"
@@ -4159,9 +4148,9 @@ csstype@^2.5.7:
   integrity sha512-ul26pfSQTZW8dcOnD2iiJssfXw0gdNVX9IJDH/X3K5DGPfj+fUYe3kB+swUY6BF3oZDxaID3AJt+9/ojSAE05A==
 
 csstype@^3.0.2:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.3.tgz#2b410bbeba38ba9633353aff34b05d9755d065f8"
-  integrity sha512-jPl+wbWPOWJ7SXsWyqGRk3lGecbar0Cb0OvZF/r/ZU011R4YqiRehgkQ9p4eQfo9DSDLqLL3wHwfxeJiuIsNag==
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.4.tgz#b156d7be03b84ff425c9a0a4b1e5f4da9c5ca888"
+  integrity sha512-xc8DUsCLmjvCfoD7LTGE0ou2MIWLx0K9RCZwSHMOdynqRsP4MtUcLeqh1HcQ2dInwDTqn+3CE0/FZh1et+p4jA==
 
 cyclist@^1.0.1:
   version "1.0.1"
@@ -7603,9 +7592,9 @@ known-css-properties@^0.19.0:
   integrity sha512-eYboRV94Vco725nKMlpkn3nV2+96p9c3gKXRsYqAJSswSENvBhN7n5L+uDhY58xQa0UukWsDMTGELzmD8Q+wTA==
 
 konva@^7.0.6:
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/konva/-/konva-7.1.4.tgz#2ec92cac04a40e5aff4f1cb063091958b06b9c44"
-  integrity sha512-YnouWYg14hrrIk987QCYP20HPu9OXfIDYs3jEX2ywhuGDAPP1RPF9xIJgY3odmWTpBXsa22YE+8txiKT+Fiwdw==
+  version "7.1.6"
+  resolved "https://registry.yarnpkg.com/konva/-/konva-7.1.6.tgz#7c8e4dd2c3a9c8bc392d0be040a4b1c65aa120e7"
+  integrity sha512-9g+T1oBj2jGVybTfHUdOJ/H+NIrTIlMi13rjpwIw8aAgsHfoRcCr/ZF6muzRzoZjRd5XeTD7UbFYhZM42hJ9ZA==
 
 lcid@^2.0.0:
   version "2.0.0"
@@ -9453,9 +9442,9 @@ react-konva@^16.13.0-6:
     scheduler "^0.19.1"
 
 react-popper@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.2.3.tgz#33d425fa6975d4bd54d9acd64897a89d904b9d97"
-  integrity sha512-mOEiMNT1249js0jJvkrOjyHsGvqcJd3aGW/agkiMoZk3bZ1fXN1wQszIQSjHIai48fE67+zwF8Cs+C4fWqlfjw==
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.2.4.tgz#d2ad3d2474ac9f1abf93df3099d408e5aa6a2e22"
+  integrity sha512-NacOu4zWupdQjVXq02XpTD3yFPSfg5a7fex0wa3uGKVkFK7UN6LvVxgcb+xYr56UCuWiNPMH20tntdVdJRwYew==
   dependencies:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
@@ -11264,10 +11253,15 @@ tsconfig-paths@^3.4.0, tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@^1.10.0, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
   integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
+
+tslib@^1.13.0:
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
+  integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
 tsutils@^3.17.1:
   version "3.17.1"

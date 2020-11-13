@@ -1,4 +1,4 @@
-import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { TreeItem } from '@gpn-prototypes/vega-ui';
 
 const initialState = {
   nodeList: [] as TreeItem[],
@@ -7,6 +7,7 @@ const initialState = {
     isDynamic: false,
     name: '',
   },
+  draggingElements: [],
 };
 
 export default initialState;

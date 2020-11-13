@@ -1,7 +1,6 @@
 import React from 'react';
-import { BasicSelect } from '@gpn-design/uikit/BasicSelect';
 import { IconAdd } from '@gpn-prototypes/vega-icons';
-import { Button } from '@gpn-prototypes/vega-ui';
+import { BasicSelect, Button } from '@gpn-prototypes/vega-ui';
 
 import { cnStepEditor } from './cn-lc';
 
@@ -14,10 +13,21 @@ const CommonInfo: React.FC = () => {
   const chanceItems = [{ label: 'Обстановка осадконакопления, Морская', value: '1' }];
 
   const startActivityItems = [
-    {
-      label: 'август, 2020',
-      value: '1',
-    },
+    { label: 'август, 2020', value: '1' },
+    { label: 'август, 2021', value: '2' },
+    { label: 'август, 2023', value: '3' },
+  ];
+
+  const continuousItems = [
+    { label: '1 год', value: '1' },
+    { label: '2 года', value: '2' },
+    { label: '3 года', value: '3' },
+  ];
+
+  const costItems = [
+    { label: '1 000 000 рублей', value: '1' },
+    { label: '5 000 000 рублей', value: '2' },
+    { label: '10 000 000 рублей', value: '3' },
   ];
 
   const getItemLabel = (option: Option): string => option.label;
@@ -43,11 +53,8 @@ const CommonInfo: React.FC = () => {
 
             <BasicSelect
               size="s"
-              value={{
-                label: 'август, 2020',
-                value: '1',
-              }}
               options={startActivityItems}
+              value={{ label: 'август, 2020', value: '1' }}
               id="common-info-start-date"
               getOptionLabel={getItemLabel}
               className={cnStepEditor('DatePointSelect').toString()}
@@ -59,12 +66,9 @@ const CommonInfo: React.FC = () => {
 
             <BasicSelect
               size="s"
-              value={{
-                label: 'август, 2021',
-                value: '1',
-              }}
               options={startActivityItems}
               id="common-info-end-date"
+              value={{ label: 'август, 2023', value: '3' }}
               getOptionLabel={getItemLabel}
               className={cnStepEditor('DatePointSelect').toString()}
             />
@@ -76,11 +80,8 @@ const CommonInfo: React.FC = () => {
 
           <BasicSelect
             size="s"
-            value={{
-              label: '1 год',
-              value: '1',
-            }}
-            options={startActivityItems}
+            options={continuousItems}
+            value={{ label: '3 года', value: '3' }}
             id="common-info-continuous"
             getOptionLabel={getItemLabel}
             className={cnStepEditor('ContinuousSelect').toString()}
@@ -93,11 +94,8 @@ const CommonInfo: React.FC = () => {
 
         <BasicSelect
           size="s"
-          value={{
-            label: '1 000 000 рублей',
-            value: '1',
-          }}
-          options={startActivityItems}
+          options={costItems}
+          value={{ label: '10 000 000 рублей', value: '3' }}
           id="common-info-cost"
           getOptionLabel={getItemLabel}
           className={cnStepEditor('CostSelect').toString()}

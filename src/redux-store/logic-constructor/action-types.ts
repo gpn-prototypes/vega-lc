@@ -6,7 +6,8 @@ type LogicConstructorActions =
   | 'ADD_CANVAS_ELEMENT'
   | 'CREATE_STEP'
   | 'UPDATE_STEP'
-  | 'SYNC_CANVAS_STATE';
+  | 'SYNC_CANVAS_STATE'
+  | 'TOGGLE_STEP_EDITOR';
 
 const LogicConstructorActionTypes: Record<LogicConstructorActions, string> = {
   SET_SCENARIO_LIST: '',
@@ -15,6 +16,7 @@ const LogicConstructorActionTypes: Record<LogicConstructorActions, string> = {
   CREATE_STEP: '',
   UPDATE_STEP: '',
   SYNC_CANVAS_STATE: '',
+  TOGGLE_STEP_EDITOR: '',
 };
 
 applyActionTypesNames(LogicConstructorActionTypes, 'LogicConstructor');

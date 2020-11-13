@@ -26,3 +26,7 @@ body,
 .Tooltip {
   z-index: var(--tooltip-z-index);
 }
+
+.SelectDropdown {
+  z-index: 1;
+}

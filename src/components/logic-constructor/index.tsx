@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CanvasData } from '@gpn-prototypes/vega-ui';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   getActivitiesDraggingElements,
   getActivitiesRef,
 } from '../../redux-store/activities/selectors';
 import { addCanvasElement } from '../../redux-store/logic-constructor/actions';
+import { getIsStepEditorOpened } from '../../redux-store/logic-constructor/selectors';
 import { ActivitiesWidget } from '../activities';
 import { CanvasWidget } from '../canvas';
 import StepEditor from '../step-editor';
@@ -19,25 +21,31 @@ export const LogicConstructorWidget: React.FC = () => {
   const dispatch = useDispatch();
   const activitiesRef = useSelector(getActivitiesRef);
   const activitiesDraggingElements = useSelector(getActivitiesDraggingElements);
+  const isStepEditorOpened = useSelector(getIsStepEditorOpened);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
   const handleDrop = (e: React.DragEvent): void => {
-    const isCreatingStep = activitiesDraggingElements?.length;
-
-    if (isCreatingStep) {
+    if (activitiesDraggingElements?.length) {
       const isAccessibleForDrop =
         e.target instanceof HTMLElement && !activitiesRef?.current?.contains(e.target);
 
       if (isAccessibleForDrop && parentRef.current instanceof HTMLElement) {
         const boundingClientRect = parentRef.current.getBoundingClientRect();
-        const { left, top } = boundingClientRect;
+        const { top } = boundingClientRect;
+
+        const targetRef = activitiesDraggingElements[0].ref?.current;
 
         const canvasData: CanvasData = {
-          position: { x: e.clientX - left, y: e.clientY - top },
+          position: { x: e.clientX, y: e.clientY - top },
           type: 'step',
-          title: 'Шаг',
+          title: targetRef?.innerText || 'Шаг',
           width: 250,
+          stepData: {
+            id: uuidv4(),
+            name: targetRef?.innerText || 'Шаг',
+            events: [],
+          },
         };
 
         dispatch(addCanvasElement(canvasData));
@@ -53,8 +61,9 @@ export const LogicConstructorWidget: React.FC = () => {
       className={cnLogicConstructor()}
     >
       <ActivitiesWidget />
-      <CanvasWidget parentRef={parentRef} />
-      <StepEditor />
+      <CanvasWidget />
+
+      {isStepEditorOpened && <StepEditor />}
     </div>
   );
 };
