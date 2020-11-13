@@ -16,7 +16,7 @@ export const projectLink = new HttpLink({
 });
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: 'graphql', headers, fetch }),
+  link: mainLink,
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

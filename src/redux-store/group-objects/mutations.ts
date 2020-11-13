@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client';
 
 export const UPDATE_GROUP_OBJECT = gql`
-  mutation($vid: UUID!, $vids: [UUID]) {
+  mutation($vid: UUID!, $objects: [UUID]) {
     domain {
       objectGroup {
-        update(vid: $vid, vids: $vids) {
+        update(vid: $vid, objects: $objects) {
           __typename
           ... on DomainObjectsGroup {
             vid

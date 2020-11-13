@@ -115,14 +115,14 @@ const updateGroupObject = (
     return;
   }
 
-  const vids = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
+  const objects = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
 
   client.setLink(projectLink);
 
   client
     .mutate<Mutation>({
       mutation: UPDATE_GROUP_OBJECT,
-      variables: { vids, vid: groupObjectId },
+      variables: { objects, vid: groupObjectId },
     })
     .then(() => {
       dispatch(fetchGroupObjectList());
