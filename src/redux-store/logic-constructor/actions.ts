@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CanvasElement, CanvasElements, Step, StoreLC } from '../../types/redux-store';
 import debounce from '../../utils/debounce';
 import getHeaders from '../../utils/headers';
+import { getCurrentVersion, incrementVersion } from '../../utils/version';
 
 import { LogicConstructorActionTypes } from './action-types';
 
@@ -60,18 +61,22 @@ export const addCanvasElement = (
   const id = uuidv4();
   const { position, title, width } = canvasDataTree;
 
+  const version = getCurrentVersion();
+
   const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify({
       query: `mutation { logic { canvas {
-         create (title: "${title}", width: ${width}, nodeType: "domainObject", vid: "${id}", position: [${position.x}, ${position.y}]) {
+         create (title: "${title}", width: ${width}, nodeType: "domainObject", vid: "${id}", position: [${position.x}, ${position.y}], version: ${version}) {
          result {
         vid }}}}}`,
     }),
   });
 
   if (response.ok) {
+    incrementVersion();
+
     const canvasElement = Tree.of<CanvasData>({ id, data: canvasDataTree });
 
     dispatch({
@@ -276,17 +281,20 @@ const syncCanvasState = (
 
   if ('id' in updateData && queryString) {
     try {
+      const version = getCurrentVersion();
+
       const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify({
-          query: `mutation { logic { canvas { update(vid: "${updateData.id}", ${queryString}){result { vid }} }}}`,
+          query: `mutation { logic { canvas { update(vid: "${updateData.id}", version: ${version}, ${queryString}){result { vid }} }}}`,
         }),
       });
 
       const body = await response.json();
 
       if (response.ok) {
+        incrementVersion();
         console.log(body);
       }
     } catch (e) {
@@ -300,13 +308,14 @@ const createStep = (
   name: string,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
   try {
+    const version = getCurrentVersion();
     const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
         query: `mutation { logic {
           scenarioStep{
-          create(activity: "${activityId}", name: "${name}")
+          create(activity: "${activityId}", name: "${name}", version: ${version})
           { result {
           vid,
           name,
@@ -318,6 +327,7 @@ const createStep = (
     const body = await response.json();
 
     if (response.ok) {
+      incrementVersion();
       dispatch(fetchScenarioList());
     } else {
       console.log(body);
