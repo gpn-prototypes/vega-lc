@@ -8,12 +8,14 @@ import activitiesReducer from './activities/reducer';
 import groupObjectsReducer from './group-objects/reducer';
 import logicConstructorReducer from './logic-constructor/reducer';
 import projectStructureReducer from './project-structure/reducer';
+import versionReducer from './version/reducer';
 
 const rootReducer = combineReducers({
   activities: activitiesReducer,
   groupObjects: groupObjectsReducer,
   projectStructure: projectStructureReducer,
   logicConstructor: logicConstructorReducer,
+  version: versionReducer,
 });
 
 const getStore = (initialState?: StoreLC): Store =>

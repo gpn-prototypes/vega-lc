@@ -69,6 +69,10 @@ export type ProjectStructureState = {
   draggingElements?: TargetData[] | [];
 };
 
+export type VersionState = {
+  version: number;
+};
+
 export type StoreLC = {
   activities: ActivitiesState;
   groupObjects: GroupObjectsState;
