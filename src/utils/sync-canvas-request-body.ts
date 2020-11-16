@@ -1,4 +1,5 @@
 import getHeaders from './headers';
+import { getCurrentVersion, incrementVersion } from './version';
 
 type QueryBody = {
   query: string;
@@ -16,8 +17,9 @@ export const syncCanvasRequest = async (
 ): Promise<void> => {
   const method = options?.method || 'update';
   const dataOnResult = options?.responseFields || '{result { vid }}';
+  const version = getCurrentVersion();
   const queryBody: QueryBody = {
-    query: `mutation { logic { canvas { ${method}(vid: "${targetId}", ${queryString}, version: 1) ${dataOnResult} }}}`,
+    query: `mutation { logic { canvas { ${method}(vid: "${targetId}", ${queryString}, version: ${version}) ${dataOnResult} }}}`,
   };
 
   if (options?.variables) {
@@ -34,6 +36,8 @@ export const syncCanvasRequest = async (
     })
       .then(async (response) => {
         if (response.ok) {
+          incrementVersion();
+
           const body = await response.json();
 
           resolve(body);

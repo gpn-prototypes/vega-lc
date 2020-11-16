@@ -9,6 +9,7 @@ import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '../../utils/get-tree-node-by-id';
 import getHeaders from '../../utils/headers';
 import { syncCanvasRequest } from '../../utils/sync-canvas-request-body';
+import { getCurrentVersion, incrementVersion } from '../../utils/version';
 
 import { LogicConstructorActionTypes } from './action-types';
 
@@ -74,18 +75,22 @@ const addCanvasElement = (
 
   const nodeType = canvasNodeTypes[type];
 
+  const version = getCurrentVersion();
+
   const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify({
       query: `mutation { logic { canvas {
-         create (title: "${stepData?.name}", width: ${width}, nodeType: "${nodeType}", vid: "${stepData?.id}", position: [${position.x}, ${position.y}]) {
+         create (title: "${stepData?.name}", width: ${width}, nodeType: "${nodeType}", vid: "${stepData?.id}", position: [${position.x}, ${position.y}], version: ${version}) {
          result {
         vid }}}}}`,
     }),
   });
 
   if (response.ok) {
+    incrementVersion();
+
     const canvasElement = Tree.of<CanvasData>({
       id: stepData?.id,
       data: canvasDataTree,
@@ -398,13 +403,14 @@ const createStep = (
   name: string,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
   try {
+    const version = getCurrentVersion();
     const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
         query: `mutation { logic {
           scenarioStep{
-          create(activity: "${activityId}", name: "${name}")
+          create(activity: "${activityId}", name: "${name}", version: ${version})
           { result {
           vid,
           name,
@@ -416,6 +422,8 @@ const createStep = (
     const body = await response.json();
 
     if (response.ok) {
+      incrementVersion();
+
       dispatch(fetchScenarioList());
     } else {
       console.log(body);
