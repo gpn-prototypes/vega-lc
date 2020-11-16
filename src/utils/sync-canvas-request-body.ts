@@ -3,14 +3,18 @@ import { getCurrentVersion, incrementVersion } from './version';
 
 type QueryBody = {
   query: string;
-  variables?: unknown;
+  variables?: {
+    [key: string]: unknown;
+  };
 };
 
 export const syncCanvasRequest = async (
   targetId: string,
   queryString: string,
   options?: {
-    variables?: unknown;
+    variables?: {
+      [key: string]: unknown;
+    };
     method?: 'update' | 'create' | 'delete';
     responseFields?: string;
   },
@@ -24,7 +28,7 @@ export const syncCanvasRequest = async (
 
   if (options?.variables) {
     queryBody.query = `mutation($vids: [UUID])
-     { logic { canvas { ${method}(vid: "${targetId}", ${queryString}, version: 1){result { vid }} }}}`;
+     { logic { canvas { ${method}(vid: "${targetId}", ${queryString}, version: ${version}){result { vid }} }}}`;
     queryBody.variables = options.variables;
   }
 

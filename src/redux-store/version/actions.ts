@@ -41,6 +41,7 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
 
     if (response.status === 200) {
       setCurrentVersion(body.data?.project.version);
+
       dispatch(SetVersionSuccess(body.data?.project.version));
     } else {
       console.log(body.message);

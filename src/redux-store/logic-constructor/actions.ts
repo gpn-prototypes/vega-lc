@@ -288,27 +288,19 @@ const syncCanvasState = (
     }
 
     if (updateData.type === 'change-multiple') {
-      const promises = updateData.ids.map((id: string, index: number) => {
+      const multipleData = updateData.ids.map((id: string, index: number) => {
         const { position } = updateData.changes[index];
 
         const queryString = `position: [${position?.x}, ${position?.y}]`;
 
-        return syncCanvasRequest(id, queryString);
+        return { id, queryString };
       });
 
-      await Promise.all(promises);
-    }
-
-    if (updateData.type === 'update-children') {
-      const variables = {
-        vids: getCanvasTreeById(canvasElements, updateData.id)?.getChildren(),
-      };
-
-      const queryString = `childrenVids: $vids`;
-
-      await syncCanvasRequest(updateData.id, queryString, { variables });
-
-      return;
+      await multipleData.reduce((promise, update) => {
+        return promise
+          .then(() => syncCanvasRequest(update.id, update.queryString))
+          .catch(console.error);
+      }, Promise.resolve());
     }
 
     if (updateData.type === 'connect-tree' || updateData.type === 'disconnect-tree') {
@@ -329,16 +321,15 @@ const syncCanvasState = (
         },
       };
 
-      const response = await Promise.all([
-        syncCanvasRequest(child.targetId, child.queryString, {
-          variables: child.variables,
-        }),
-        syncCanvasRequest(parent.targetId, parent.queryString, {
-          variables: parent.variables,
-        }),
-      ]);
-
-      console.log(response);
+      await syncCanvasRequest(child.targetId, child.queryString, {
+        variables: child.variables,
+      })
+        .then(() => {
+          syncCanvasRequest(parent.targetId, parent.queryString, {
+            variables: parent.variables,
+          });
+        })
+        .catch(console.error);
     }
 
     if (updateData.type === 'add-tree') {
@@ -354,11 +345,18 @@ const syncCanvasState = (
     }
 
     if (updateData.type === 'remove-trees') {
-      const promises = updateData.ids.map((id: string) => {
-        return syncCanvasRequest(id, ``, { method: 'delete', responseFields: '{ ok }' });
+      const multipleData = updateData.ids.map((id: string): {
+        id: string;
+        options: { method: 'delete'; responseFields: string };
+      } => {
+        return { id, options: { method: 'delete', responseFields: '{ ok }' } };
       });
 
-      await Promise.all(promises);
+      await multipleData.reduce((promise, update) => {
+        return promise
+          .then(() => syncCanvasRequest(update.id, '', update.options))
+          .catch(console.error);
+      }, Promise.resolve());
     }
   };
 };
