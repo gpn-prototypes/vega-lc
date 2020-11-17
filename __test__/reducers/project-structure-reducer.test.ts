@@ -1,4 +1,4 @@
-import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { TreeItem } from '@gpn-prototypes/vega-ui';
 
 import { ProjectStructureActionTypes } from '../../src/redux-store/project-structure/action-types';
 import projectStructureReducer from '../../src/redux-store/project-structure/reducer';

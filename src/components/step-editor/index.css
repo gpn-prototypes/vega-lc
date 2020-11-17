@@ -1,0 +1,103 @@
+:root {
+  --step-editor-content-height: calc(100% - 50px);
+  --step-editor-height: calc(100vh - 170px);
+  --step-editor-select-top-indent: 12px;
+  --step-editor-min-width: 528px;
+}
+
+.StepEditor {
+  position: absolute;
+
+  z-index: 1;
+  top: 16px;
+  right: 16px;
+
+  min-width: var(--step-editor-min-width);
+  height: var(--step-editor-height);
+
+  &__Tabs {
+    position: relative;
+
+    margin-bottom: 2px;
+    padding-left: 12px;
+
+    height: 35px;
+
+    background-color: var(--color-bg-default);
+
+    & > .Tabs {
+      position: absolute;
+
+      top: 2px;
+    }
+  }
+
+  &__Content {
+    padding: 24px var(--step-editor-select-top-indent);
+
+    width: 100%;
+    height: var(--step-editor-content-height);
+
+    background-color: var(--color-bg-default);
+  }
+
+  &__ChanceSelect {
+    width: 100%;
+  }
+
+  &__SelectLabel {
+    margin: 0 0 8px;
+
+    display: flex;
+    align-items: center;
+
+    font-size: 14px;
+    line-height: 120%;
+
+    color: var(--color-typo-secondary);
+  }
+
+  &__TimeFrames {
+    margin-top: var(--step-editor-select-top-indent);
+
+    width: 100%;
+  }
+
+  &__ExtremePoints {
+    display: flex;
+
+    width: 100%;
+
+    & > div {
+      width: 50%;
+    }
+
+    & > div:first-of-type {
+      margin-right: 12px;
+    }
+  }
+
+  &__DatePointSelect {
+    width: 100%;
+  }
+
+  &__Continuous {
+    margin-top: var(--step-editor-select-top-indent);
+  }
+
+  &__ContinuousSelect {
+    width: calc(50% - 6px);
+  }
+
+  &__Cost {
+    margin-top: var(--step-editor-select-top-indent);
+  }
+
+  &__CostSelect {
+    width: calc(50% - 6px);
+  }
+
+  &__ParameterAppender {
+    margin-top: calc(var(--step-editor-select-top-indent) * 2);
+  }
+}

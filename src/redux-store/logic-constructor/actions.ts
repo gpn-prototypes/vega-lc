@@ -1,17 +1,20 @@
-import { CanvasTree } from '@gpn-prototypes/vega-canvas/dist/src/types';
-import { CanvasData, CanvasUpdate, entities } from '@gpn-prototypes/vega-ui';
+import { CanvasData, CanvasTree, CanvasUpdate, entities } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { v4 as uuidv4 } from 'uuid';
 
-import { CanvasElement, CanvasElements, Step, StoreLC } from '../../types/redux-store';
+import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '../../types/redux-store';
+import { canvasNodeTypes } from '../../utils/constants/canvas-node-types';
 import debounce from '../../utils/debounce';
+import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
+import { getTreeNodeById } from '../../utils/get-tree-node-by-id';
 import getHeaders from '../../utils/headers';
+import { syncCanvasRequest } from '../../utils/sync-canvas-request-body';
 import { getCurrentVersion, incrementVersion } from '../../utils/version';
 
 import { LogicConstructorActionTypes } from './action-types';
 
-const BASE_CANVAS_ELEMENTS_WIDTH = 65;
+const CANVAS_BASE_ELEMENTS_WIDTH = 67;
+const CANVAS_STEP_WIDTH = 250;
 const SET_CANVAS_ELEMENTS_DEBOUNCE_TIME = 500;
 
 type SetScenarioList = {
@@ -24,6 +27,11 @@ type SetCanvasElements = {
   canvasElements: CanvasTree[];
 };
 
+type ToggleStepEditor = {
+  type: typeof LogicConstructorActionTypes.TOGGLE_STEP_EDITOR;
+  isStepEditorOpened: boolean;
+};
+
 // type AddCanvasElement = {
 //   type: typeof LogicConstructorActionTypes.ADD_CANVAS_ELEMENT;
 //   canvasElement: CanvasTree | [];
@@ -34,9 +42,14 @@ const setScenarioList = (scenarioList: Step[]): SetScenarioList => ({
   scenarioList,
 });
 
-export const setCanvasElements = (canvasElements: CanvasTree[]): SetCanvasElements => ({
+const setCanvasElements = (canvasElements: CanvasTree[]): SetCanvasElements => ({
   type: LogicConstructorActionTypes.SET_CANVAS_ELEMENTS,
   canvasElements,
+});
+
+const toggleStepEditor = (isStepEditorOpened: boolean): ToggleStepEditor => ({
+  type: LogicConstructorActionTypes.TOGGLE_STEP_EDITOR,
+  isStepEditorOpened,
 });
 
 let debouncedSetCanvasElements: Function;
@@ -53,13 +66,14 @@ export const setDebouncedCanvasElements = (
   debouncedSetCanvasElements(canvasElements);
 };
 
-export const addCanvasElement = (
+const addCanvasElement = (
   canvasDataTree: CanvasData,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
   const { Tree } = entities;
 
-  const id = uuidv4();
-  const { position, title, width } = canvasDataTree;
+  const { position, width, stepData, type } = canvasDataTree;
+
+  const nodeType = canvasNodeTypes[type];
 
   const version = getCurrentVersion();
 
@@ -67,17 +81,31 @@ export const addCanvasElement = (
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify({
-      query: `mutation { logic { canvas {
-         create (title: "${title}", width: ${width}, nodeType: "domainObject", vid: "${id}", position: [${position.x}, ${position.y}], version: ${version}) {
-         result {
-        vid }}}}}`,
+      query: `mutation($nodeType: String!, $version: Int!, $title: String, $vid: UUID, $width: Float, $x: Float, $y: Float) {
+        logic { canvas {
+         create (title: $title, width: $width, nodeType: $nodeType, vid: $vid,
+          position: [$x, $y], version: $version) {
+          result {
+          vid }}}}}`,
+      variables: {
+        title: stepData?.name,
+        vid: stepData?.id,
+        width,
+        nodeType,
+        version,
+        x: position.x,
+        y: position.y,
+      },
     }),
   });
 
   if (response.ok) {
     incrementVersion();
 
-    const canvasElement = Tree.of<CanvasData>({ id, data: canvasDataTree });
+    const canvasElement = Tree.of<CanvasData>({
+      id: stepData?.id,
+      data: canvasDataTree,
+    });
 
     dispatch({
       type: LogicConstructorActionTypes.ADD_CANVAS_ELEMENT,
@@ -153,7 +181,7 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
           resolve(canvas);
         }
 
-        reject();
+        reject(response);
       })
       .catch(reject);
   });
@@ -184,13 +212,13 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
           const { stepList } = logic;
 
           if (!stepList) {
-            reject();
+            reject(response);
           }
 
           resolve(stepList);
         }
 
-        reject();
+        reject(response);
       })
       .catch(reject);
   });
@@ -214,8 +242,8 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
           if (!canvasElementsMap[item.vid]) {
             canvasElementsMap[item.vid] = {
               id: item.vid,
-              childrenIds: item.children?.forEach((child) => child.vid) || [],
-              parentIds: item.parents?.forEach((parent) => parent.vid) || [],
+              childrenIds: item.children?.map((child) => child.vid) || [],
+              parentIds: item.parents?.map((parent) => parent.vid) || [],
               data: {
                 position: {
                   x: item.position[0],
@@ -227,9 +255,9 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
             };
 
             if (item.nodeType === 'domainObject') {
-              canvasElementsMap[item.vid].data.width = item.width;
+              canvasElementsMap[item.vid].data.width = CANVAS_STEP_WIDTH;
             } else {
-              canvasElementsMap[item.vid].data.width = BASE_CANVAS_ELEMENTS_WIDTH;
+              canvasElementsMap[item.vid].data.width = CANVAS_BASE_ELEMENTS_WIDTH;
             }
           }
         });
@@ -255,50 +283,139 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
 };
 
 const syncCanvasState = (
-  currentState: CanvasTree[],
   updateData: CanvasUpdate,
-): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
-  const getTreeById = (id: string): CanvasTree | undefined =>
-    currentState.find((tree) => {
-      const treeId = tree.getId();
+): ThunkAction<void, StoreLC, unknown, AnyAction> => {
+  return async (dispatch, getState): Promise<void> => {
+    const { canvasElements } = getState().logicConstructor;
 
-      return treeId === id;
-    });
+    if (!canvasElements) return;
 
-  const getQueryString = (): string | undefined => {
     if (updateData.type === 'change' && 'position' in updateData.changes) {
-      return `position: [${updateData.changes.position?.x}, ${updateData.changes.position?.y}]`;
+      const queryString = `position: [${updateData.changes.position?.x}, ${updateData.changes.position?.y}]`;
+
+      await syncCanvasRequest(updateData.id, queryString);
+
+      return;
     }
 
-    if (updateData.type === 'update-children') {
-      return `childrenVids: ${getTreeById(updateData.id)?.getChildren()}`;
-    }
+    if (updateData.type === 'change-multiple') {
+      const multipleData = updateData.ids.map((id: string, index: number) => {
+        const { position } = updateData.changes[index];
 
-    return undefined;
-  };
+        const queryString = `position: [${position?.x}, ${position?.y}]`;
 
-  const queryString: string | undefined = getQueryString();
-
-  if ('id' in updateData && queryString) {
-    try {
-      const version = getCurrentVersion();
-
-      const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-        method: 'POST',
-        headers: getHeaders(),
-        body: JSON.stringify({
-          query: `mutation { logic { canvas { update(vid: "${updateData.id}", version: ${version}, ${queryString}){result { vid }} }}}`,
-        }),
+        return { id, queryString };
       });
 
-      const body = await response.json();
+      await multipleData.reduce((promise, update) => {
+        return promise
+          .then(() => syncCanvasRequest(update.id, update.queryString))
+          .catch(console.error);
+      }, Promise.resolve());
+    }
 
-      if (response.ok) {
-        incrementVersion();
-        console.log(body);
+    if (updateData.type === 'connect-tree' || updateData.type === 'disconnect-tree') {
+      const { parentId, childId } = updateData;
+      const child = {
+        targetId: parentId,
+        queryString: `childrenVids: $vids`,
+        variables: {
+          pattern: '$vids: [UUID]',
+          vids: getCanvasTreeById(canvasElements, parentId)?.getChildren(),
+        },
+      };
+
+      const parent = {
+        targetId: childId,
+        queryString: `parentVids: $vids`,
+        variables: {
+          pattern: '$vids: [UUID]',
+          vids: getCanvasTreeById(canvasElements, childId)?.getParents(),
+        },
+      };
+
+      await syncCanvasRequest(child.targetId, child.queryString, {
+        variables: child.variables,
+      })
+        .then(() => {
+          syncCanvasRequest(parent.targetId, parent.queryString, {
+            variables: parent.variables,
+          });
+        })
+        .catch(console.error);
+    }
+
+    if (updateData.type === 'add-tree') {
+      const tree = getCanvasTreeById(canvasElements, updateData.id);
+
+      if (tree) {
+        const { type, position: pos, title } = tree.getData();
+        const nodeType = type === 'step' ? 'domainObject' : type;
+        const treeWidth = type === 'step' ? CANVAS_STEP_WIDTH : CANVAS_BASE_ELEMENTS_WIDTH;
+        const queryString = `title: "${title}", nodeType: "${nodeType}", width: ${treeWidth}, position: [${pos.x},${pos.y}]`;
+        await syncCanvasRequest(updateData.id, queryString, { method: 'create' });
       }
-    } catch (e) {
-      console.error(e);
+    }
+
+    if (updateData.type === 'remove-trees') {
+      const multipleData = updateData.ids.map((id: string): {
+        id: string;
+        options: { method: 'delete'; responseFields: string };
+      } => {
+        return { id, options: { method: 'delete', responseFields: '{ ok }' } };
+      });
+
+      await multipleData.reduce((promise, update) => {
+        return promise
+          .then(() => syncCanvasRequest(update.id, '', update.options))
+          .catch(console.error);
+      }, Promise.resolve());
+    }
+  };
+};
+
+const addGroupObjectsToCanvasElement = (
+  CanvasTreeId: string,
+): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
+  const { logicConstructor, groupObjects } = getState();
+  const { nodeList, draggingElements } = groupObjects;
+  const { canvasElements } = logicConstructor;
+
+  if (canvasElements && nodeList && draggingElements) {
+    const tree = getCanvasTreeById(canvasElements, CanvasTreeId);
+    const domainObjects = getTreeNodeById(draggingElements[0].id, nodeList)?.nodeList.map(
+      (node) => ({
+        id: node.id,
+        name: node.name,
+        type: 'domain',
+      }),
+    );
+
+    let stepData: StepData = {
+      id: '0',
+      name: 'Шаг 1',
+      events: [
+        {
+          id: '0',
+          name: 'Мероприятие',
+          content: domainObjects || [],
+        },
+      ],
+    };
+
+    const treeData = tree?.getData();
+
+    if (treeData?.stepData) {
+      stepData = { ...treeData.stepData };
+
+      const event = { ...stepData.events[0] };
+      event.content = domainObjects || [];
+
+      stepData.events[0] = event;
+    }
+
+    if (tree) {
+      tree.setData({ stepData });
     }
   }
 };
@@ -328,6 +445,7 @@ const createStep = (
 
     if (response.ok) {
       incrementVersion();
+
       dispatch(fetchScenarioList());
     } else {
       console.log(body);
@@ -337,4 +455,14 @@ const createStep = (
   }
 };
 
-export { createStep, setScenarioList, fetchScenarioList, fetchCanvasItemsData, syncCanvasState };
+export {
+  createStep,
+  syncCanvasState,
+  setScenarioList,
+  toggleStepEditor,
+  addCanvasElement,
+  setCanvasElements,
+  fetchScenarioList,
+  fetchCanvasItemsData,
+  addGroupObjectsToCanvasElement,
+};

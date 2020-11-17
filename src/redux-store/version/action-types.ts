@@ -1,7 +1,8 @@
-import { ActionTypes } from '../../types/redux-store';
 import { applyActionTypesNames } from '../../utils/apply-action-types-names';
 
-const VersionActionTypes: ActionTypes = {
+type VersionActions = 'SET_VERSION_SUCCESS';
+
+const VersionActionTypes: Record<VersionActions, string> = {
   SET_VERSION_SUCCESS: '',
 };
 

@@ -1,8 +1,23 @@
 import React from 'react';
-import { TargetData } from '@gpn-prototypes/vega-tree';
-import { CanvasData, CanvasTree, TreeItem } from '@gpn-prototypes/vega-ui';
+import { CanvasData, CanvasTree, TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 
 type NodeList = TreeItem[];
+
+export declare type Content = {
+  type: string;
+  id: string;
+  name: string;
+};
+export declare type Event = {
+  id: string;
+  name: string;
+  content: Content[];
+};
+export declare type StepData = {
+  id: string;
+  name: string;
+  events: Event[];
+};
 
 export type StepContent = {
   activity?: {
@@ -50,6 +65,7 @@ export type ActivitiesState = {
 export type LogicConstructorState = {
   scenarioList?: Step[];
   canvasElements?: CanvasTree[];
+  isStepEditorOpened?: boolean;
 };
 
 export type NewGroupParams = {
@@ -70,7 +86,7 @@ export type ProjectStructureState = {
 };
 
 export type VersionState = {
-  version: number;
+  version?: number;
 };
 
 export type StoreLC = {
@@ -79,5 +95,3 @@ export type StoreLC = {
   projectStructure: ProjectStructureState;
   logicConstructor: LogicConstructorState;
 };
-
-export type ActionTypes = { [id: string]: string };

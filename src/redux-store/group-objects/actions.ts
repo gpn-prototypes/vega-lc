@@ -1,4 +1,4 @@
-import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
@@ -7,6 +7,11 @@ import getHeaders from '../../utils/headers';
 import { getCurrentVersion, incrementVersion } from '../../utils/version';
 
 import { GroupObjectsActionTypes } from './action-types';
+
+type SetDraggingElements = {
+  type: typeof GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS;
+  draggingElements: TargetData[];
+};
 
 type SetGroupObjectsList = {
   type: typeof GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST;
@@ -36,6 +41,11 @@ const toggleDialog = (isDialogOpened: boolean): ToggleDialog => ({
 const setNewGroupParams = (newGroupParams: NewGroupParams): SetNewGroupParams => ({
   type: GroupObjectsActionTypes.SET_NEW_GROUP_PARAMS,
   newGroupParams,
+});
+
+const setGroupObjectsDraggingElements = (draggingElements: TargetData[]): SetDraggingElements => ({
+  type: GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS,
+  draggingElements,
 });
 
 const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
@@ -85,6 +95,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
             iconId: 'circle',
             nodeList: [],
             isDropZone: false,
+            isDraggable: false,
           });
         });
       });
@@ -164,4 +175,12 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
   }
 };
 
-export { fetchGroupObjectList, createNewGroup, toggleDialog, setNewGroupParams, updateGroupObject };
+export {
+  fetchGroupObjectList,
+  setGroupObjectsList,
+  createNewGroup,
+  toggleDialog,
+  setNewGroupParams,
+  updateGroupObject,
+  setGroupObjectsDraggingElements,
+};
