@@ -81,10 +81,21 @@ const addCanvasElement = (
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify({
-      query: `mutation { logic { canvas {
-         create (title: "${stepData?.name}", width: ${width}, nodeType: "${nodeType}", vid: "${stepData?.id}", position: [${position.x}, ${position.y}], version: ${version}) {
-         result {
-        vid }}}}}`,
+      query: `mutation($nodeType: String!, $version: Int!, $title: String, $vid: UUID, $width: Float, $x: Float, $y: Float) {
+        logic { canvas {
+         create (title: $title, width: $width, nodeType: $nodeType, vid: $vid,
+          position: [$x, $y], version: $version) {
+          result {
+          vid }}}}}`,
+      variables: {
+        title: stepData?.name,
+        vid: stepData?.id,
+        width,
+        nodeType,
+        version,
+        x: position.x,
+        y: position.y,
+      },
     }),
   });
 
@@ -309,6 +320,7 @@ const syncCanvasState = (
         targetId: parentId,
         queryString: `childrenVids: $vids`,
         variables: {
+          pattern: '$vids: [UUID]',
           vids: getCanvasTreeById(canvasElements, parentId)?.getChildren(),
         },
       };
@@ -317,6 +329,7 @@ const syncCanvasState = (
         targetId: childId,
         queryString: `parentVids: $vids`,
         variables: {
+          pattern: '$vids: [UUID]',
           vids: getCanvasTreeById(canvasElements, childId)?.getParents(),
         },
       };
@@ -378,7 +391,7 @@ const addGroupObjectsToCanvasElement = (
       }),
     );
 
-    const stepData: StepData = {
+    let stepData: StepData = {
       id: '0',
       name: 'Шаг 1',
       events: [
@@ -389,6 +402,17 @@ const addGroupObjectsToCanvasElement = (
         },
       ],
     };
+
+    const treeData = tree?.getData();
+
+    if (treeData?.stepData) {
+      stepData = { ...treeData.stepData };
+
+      const event = { ...stepData.events[0] };
+      event.content = domainObjects || [];
+
+      stepData.events[0] = event;
+    }
 
     if (tree) {
       tree.setData({ stepData });

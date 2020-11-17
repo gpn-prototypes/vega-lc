@@ -13,6 +13,7 @@ export const syncCanvasRequest = async (
   queryString: string,
   options?: {
     variables?: {
+      pattern: string;
       [key: string]: unknown;
     };
     method?: 'update' | 'create' | 'delete';
@@ -23,13 +24,20 @@ export const syncCanvasRequest = async (
   const dataOnResult = options?.responseFields || '{result { vid }}';
   const version = getCurrentVersion();
   const queryBody: QueryBody = {
-    query: `mutation { logic { canvas { ${method}(vid: "${targetId}", ${queryString}, version: ${version}) ${dataOnResult} }}}`,
+    query: `mutation ($version: Int!, $vid: UUID!) { logic { canvas
+     { ${method} (vid: $vid, ${queryString}, version: $version) ${dataOnResult} }}}`,
+    variables: {
+      version,
+      vid: targetId,
+    },
   };
 
   if (options?.variables) {
-    queryBody.query = `mutation($vids: [UUID])
-     { logic { canvas { ${method}(vid: "${targetId}", ${queryString}, version: ${version}){result { vid }} }}}`;
-    queryBody.variables = options.variables;
+    const { pattern, ...variables } = options.variables;
+
+    queryBody.query = `mutation($version: Int!, $vid: UUID!, ${pattern})
+     { logic { canvas { ${method}(vid: $vid, ${queryString}, version: $version) ${dataOnResult} }}}`;
+    queryBody.variables = { ...queryBody.variables, ...variables };
   }
 
   return new Promise((resolve, reject) => {

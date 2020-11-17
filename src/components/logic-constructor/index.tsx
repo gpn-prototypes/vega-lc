@@ -32,19 +32,25 @@ export const LogicConstructorWidget: React.FC = () => {
 
       if (isAccessibleForDrop && parentRef.current instanceof HTMLElement) {
         const boundingClientRect = parentRef.current.getBoundingClientRect();
-        const { top } = boundingClientRect;
+        const { top, left } = boundingClientRect;
 
         const targetRef = activitiesDraggingElements[0].ref?.current;
 
         const canvasData: CanvasData = {
-          position: { x: e.clientX, y: e.clientY - top },
+          position: { x: e.clientX - left, y: e.clientY - top * 6 },
           type: 'step',
-          title: targetRef?.innerText || 'Шаг',
+          title: 'Шаг',
           width: 250,
           stepData: {
             id: uuidv4(),
-            name: targetRef?.innerText || 'Шаг',
-            events: [],
+            name: 'Шаг',
+            events: [
+              {
+                id: targetRef?.id || '1',
+                name: targetRef?.innerText || 'Мероприятие',
+                content: [],
+              },
+            ],
           },
         };
 

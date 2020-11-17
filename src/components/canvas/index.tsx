@@ -23,7 +23,7 @@ export const CanvasWidget: React.FC = () => {
 
   const canvasElements = useSelector(getCanvasElements);
 
-  useInterval(1600, () => {
+  useInterval(2000, () => {
     if (changes.length) {
       dispatch(syncCanvasState(changes[changes.length - 1]));
 
