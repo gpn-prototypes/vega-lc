@@ -3,12 +3,12 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import client, { projectLink } from '../../client';
-import { Query } from '../../generated/graphql-project';
+import { Mutation, Query } from '../../generated/graphql-project';
 import { NewGroupParams, StoreLC } from '../../types/redux-store';
-import getHeaders from '../../utils/headers';
 import { getCurrentVersion, incrementVersion } from '../../utils/version';
 
 import { GroupObjectsActionTypes } from './action-types';
+import { UPDATE_GROUP_OBJECT } from './mutations';
 import { OBJECT_GROUP_LIST } from './queries';
 
 type SetDraggingElements = {
@@ -127,48 +127,50 @@ const updateGroupObject = (
     return;
   }
 
-  const vids = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
+  const objects = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
 
-  try {
-    const version = getCurrentVersion();
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `mutation($vid: UUID!,$vids: [UUID]){domain{objectGroup{update(vid: $vid,vids: $vids, version: ${version}){ok, name, vids}}}}`,
-        variables: { vids, vid: groupObjectId },
-      }),
+  client.setLink(projectLink);
+  client
+    .mutate<Mutation>({
+      mutation: UPDATE_GROUP_OBJECT,
+      variables: {
+        objects,
+        vid: groupObjectId,
+        version: getCurrentVersion(),
+      },
+    })
+    .then((response) => {
+      if (response.data?.domain?.objectGroup?.update?.__typename !== 'Error') {
+        incrementVersion();
+        dispatch(fetchGroupObjectList());
+      }
+    })
+    .catch((error) => {
+      console.log(error);
     });
-
-    if (response.ok) {
-      incrementVersion();
-      dispatch(fetchGroupObjectList());
-    }
-  } catch (e) {
-    console.error(e);
-  }
 };
 
 const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  try {
-    const version = getCurrentVersion();
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `mutation {domain{objectGroup{create(name: "${name}", version: ${version}){vid,ok,vids}}}}`,
-      }),
+  client.setLink(projectLink);
+  client
+    .mutate<Mutation>({
+      mutation: UPDATE_GROUP_OBJECT,
+      variables: {
+        name,
+        version: getCurrentVersion(),
+      },
+    })
+    .then((response) => {
+      if (response.data?.domain?.objectGroup?.create?.__typename !== 'Error') {
+        incrementVersion();
+        dispatch(fetchGroupObjectList());
+      }
+    })
+    .catch((error) => {
+      console.log(error);
     });
-
-    if (response.ok) {
-      incrementVersion();
-      dispatch(fetchGroupObjectList());
-    }
-  } catch (e) {
-    console.error(e);
-  }
 };
 
 export {

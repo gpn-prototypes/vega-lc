@@ -3,17 +3,17 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import client, { projectLink } from '../../client';
-import { Logic, Query } from '../../generated/graphql-project';
+import { Logic, Mutation, Query } from '../../generated/graphql-project';
 import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '../../types/redux-store';
 import { canvasNodeTypes } from '../../utils/constants/canvas-node-types';
 import debounce from '../../utils/debounce';
 import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '../../utils/get-tree-node-by-id';
-import getHeaders from '../../utils/headers';
 import { syncCanvasRequest } from '../../utils/sync-canvas-request-body';
 import { getCurrentVersion, incrementVersion } from '../../utils/version';
 
 import { LogicConstructorActionTypes } from './action-types';
+import { ADD_CANVAS_ELEMENT, CREATE_STEP } from './mutations';
 import { FETCH_CANVAS_ITEMS_DATA, FETCH_SCENARIO_LIST } from './queries';
 
 const CANVAS_BASE_ELEMENTS_WIDTH = 67;
@@ -78,43 +78,40 @@ const addCanvasElement = (
 
   const nodeType = canvasNodeTypes[type];
 
-  const version = getCurrentVersion();
-
-  const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify({
-      query: `mutation($nodeType: String!, $version: Int!, $title: String, $vid: UUID, $width: Float, $x: Float, $y: Float) {
-        logic { canvas {
-         create (title: $title, width: $width, nodeType: $nodeType, vid: $vid,
-          position: [$x, $y], version: $version) {
-          result {
-          vid }}}}}`,
+  client.setLink(projectLink);
+  client
+    .mutate<Mutation>({
+      mutation: ADD_CANVAS_ELEMENT,
       variables: {
         title: stepData?.name,
         vid: stepData?.id,
         width,
         nodeType,
-        version,
+        version: getCurrentVersion(),
         x: position.x,
         y: position.y,
       },
-    }),
-  });
+    })
+    .then((response) => {
+      if (response.data?.logic?.canvas?.create?.__typename !== 'Error') {
+        incrementVersion();
 
-  if (response.ok) {
-    incrementVersion();
+        const canvasElement = Tree.of<CanvasData>({
+          id: stepData?.id,
+          data: canvasDataTree,
+        });
 
-    const canvasElement = Tree.of<CanvasData>({
-      id: stepData?.id,
-      data: canvasDataTree,
+        dispatch({
+          type: LogicConstructorActionTypes.ADD_CANVAS_ELEMENT,
+          canvasElement,
+        });
+      } else {
+        console.error(response.data?.logic?.canvas?.create);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
     });
-
-    dispatch({
-      type: LogicConstructorActionTypes.ADD_CANVAS_ELEMENT,
-      canvasElement,
-    });
-  }
 };
 
 const fetchScenarioList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
@@ -390,35 +387,28 @@ const createStep = (
   activityId: string,
   name: string,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
-  try {
-    const version = getCurrentVersion();
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `mutation { logic {
-          scenarioStep{
-          create(activity: "${activityId}", name: "${name}", version: ${version})
-          { result {
-          vid,
-          name,
-          ok,
-          }}}}}`,
-      }),
+  client.setLink(projectLink);
+  client
+    .mutate<Mutation>({
+      mutation: CREATE_STEP,
+      variables: {
+        activityId,
+        name,
+        version: getCurrentVersion(),
+      },
+    })
+    .then((response) => {
+      if (response.data?.logic?.scenarioStep?.create?.__typename !== 'Error') {
+        incrementVersion();
+
+        dispatch(fetchScenarioList());
+      } else {
+        console.error(response.data?.logic?.scenarioStep?.create);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
     });
-
-    const body = await response.json();
-
-    if (response.ok) {
-      incrementVersion();
-
-      dispatch(fetchScenarioList());
-    } else {
-      console.log(body);
-    }
-  } catch (e) {
-    console.error(e);
-  }
 };
 
 export {

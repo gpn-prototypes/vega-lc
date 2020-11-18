@@ -1,8 +1,12 @@
-import getHeaders from './headers';
+import { DocumentNode, gql } from '@apollo/client';
+
+import client, { projectLink } from '../client';
+import { CanvasMutations, Mutation } from '../generated/graphql-project';
+
 import { getCurrentVersion, incrementVersion } from './version';
 
 type QueryBody = {
-  query: string;
+  query: DocumentNode;
   variables?: {
     [key: string]: unknown;
   };
@@ -24,7 +28,7 @@ export const syncCanvasRequest = async (
   const dataOnResult = options?.responseFields || '{result { vid }}';
   const version = getCurrentVersion();
   const queryBody: QueryBody = {
-    query: `mutation ($version: Int!, $vid: UUID!) { logic { canvas
+    query: gql`mutation ($version: Int!, $vid: UUID!) { logic { canvas
      { ${method} (vid: $vid, ${queryString}, version: $version) ${dataOnResult} }}}`,
     variables: {
       version,
@@ -35,24 +39,36 @@ export const syncCanvasRequest = async (
   if (options?.variables) {
     const { pattern, ...variables } = options.variables;
 
-    queryBody.query = `mutation($version: Int!, $vid: UUID!, ${pattern})
+    queryBody.query = gql`mutation($version: Int!, $vid: UUID!, ${pattern})
      { logic { canvas { ${method}(vid: $vid, ${queryString}, version: $version) ${dataOnResult} }}}`;
     queryBody.variables = { ...queryBody.variables, ...variables };
   }
 
+  function isCanvasHasError(canvas: CanvasMutations): boolean {
+    switch (method) {
+      case 'create':
+        return canvas?.create?.__typename === 'Error';
+      case 'update':
+        return canvas?.update?.__typename === 'Error';
+      case 'delete':
+        return canvas?.delete?.__typename === 'Error';
+      default:
+        return false;
+    }
+  }
+
   return new Promise((resolve, reject) => {
-    fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify(queryBody),
-    })
+    client.setLink(projectLink);
+    client
+      .mutate<Mutation>({
+        mutation: queryBody.query,
+        variables: queryBody.variables,
+      })
       .then(async (response) => {
-        if (response.ok) {
+        const canvas = response.data?.logic?.canvas;
+        if (canvas && !isCanvasHasError(canvas)) {
           incrementVersion();
-
-          const body = await response.json();
-
-          resolve(body);
+          resolve();
         }
       })
       .catch(reject);
