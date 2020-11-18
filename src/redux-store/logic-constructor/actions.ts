@@ -144,8 +144,8 @@ const addCanvasElement = (
   });
 
   if (response.ok) {
-    const a = await response.json();
-    console.log(a);
+    // const a = await response.json();
+    // console.log(a);
 
     const canvasElement = Tree.of<CanvasData>({
       id: stepData?.id,
