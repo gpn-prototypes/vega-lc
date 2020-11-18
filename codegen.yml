@@ -1,0 +1,14 @@
+overwrite: true
+schema:
+  #"http://localhost:8080/graphql/a3333333-b111-c111-d111-e00000000000":
+  "http://localhost:8080/graphql":
+    "headers":
+      "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYTExMTExMjNiMTExYzExMWQxMTFlMDAwMDAwMDAwMDAifQ.ugIJES0Ruu9cf5aA6hBPP1MLV1FfyaBV5ISq6EcCPKs"
+# documents: "src/**/*.graphql"
+generates:
+  #src/generaed/graphql-project.ts
+  src/generated/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
