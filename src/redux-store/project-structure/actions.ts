@@ -1,4 +1,4 @@
-import { TargetData, TreeItem } from '@gpn-prototypes/vega-tree';
+import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 

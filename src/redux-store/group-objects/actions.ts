@@ -1,14 +1,20 @@
-import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import client, { projectLink } from '../../client';
-import { Mutation, Query } from '../../generated/graphql-project';
+import { Query } from '../../generated/graphql-project';
 import { NewGroupParams, StoreLC } from '../../types/redux-store';
+import getHeaders from '../../utils/headers';
+import { getCurrentVersion, incrementVersion } from '../../utils/version';
 
 import { GroupObjectsActionTypes } from './action-types';
-import { CREATE_NEW_GROUP, UPDATE_GROUP_OBJECT } from './mutations';
 import { OBJECT_GROUP_LIST } from './queries';
+
+type SetDraggingElements = {
+  type: typeof GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS;
+  draggingElements: TargetData[];
+};
 
 type SetGroupObjectsList = {
   type: typeof GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST;
@@ -38,6 +44,11 @@ const toggleDialog = (isDialogOpened: boolean): ToggleDialog => ({
 const setNewGroupParams = (newGroupParams: NewGroupParams): SetNewGroupParams => ({
   type: GroupObjectsActionTypes.SET_NEW_GROUP_PARAMS,
   newGroupParams,
+});
+
+const setGroupObjectsDraggingElements = (draggingElements: TargetData[]): SetDraggingElements => ({
+  type: GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS,
+  draggingElements,
 });
 
 const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
@@ -78,6 +89,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
                 iconId: 'circle',
                 nodeList: [],
                 isDropZone: false,
+                isDraggable: false,
               });
             });
           });
@@ -115,39 +127,56 @@ const updateGroupObject = (
     return;
   }
 
-  const objects = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
+  const vids = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
 
-  client.setLink(projectLink);
-
-  client
-    .mutate<Mutation>({
-      mutation: UPDATE_GROUP_OBJECT,
-      variables: { objects, vid: groupObjectId },
-    })
-    .then(() => {
-      dispatch(fetchGroupObjectList());
-    })
-    .catch((error) => {
-      console.error(error);
+  try {
+    const version = getCurrentVersion();
+    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        query: `mutation($vid: UUID!,$vids: [UUID]){domain{objectGroup{update(vid: $vid,vids: $vids, version: ${version}){ok, name, vids}}}}`,
+        variables: { vids, vid: groupObjectId },
+      }),
     });
+
+    if (response.ok) {
+      incrementVersion();
+      dispatch(fetchGroupObjectList());
+    }
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  client.setLink(projectLink);
-
-  client
-    .mutate<Mutation>({
-      mutation: CREATE_NEW_GROUP,
-      variables: { name },
-    })
-    .then(() => {
-      dispatch(fetchGroupObjectList());
-    })
-    .catch((error) => {
-      console.error(error);
+  try {
+    const version = getCurrentVersion();
+    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        query: `mutation {domain{objectGroup{create(name: "${name}", version: ${version}){vid,ok,vids}}}}`,
+      }),
     });
+
+    if (response.ok) {
+      incrementVersion();
+      dispatch(fetchGroupObjectList());
+    }
+  } catch (e) {
+    console.error(e);
+  }
 };
 
-export { fetchGroupObjectList, createNewGroup, toggleDialog, setNewGroupParams, updateGroupObject };
+export {
+  fetchGroupObjectList,
+  setGroupObjectsList,
+  createNewGroup,
+  toggleDialog,
+  setNewGroupParams,
+  updateGroupObject,
+  setGroupObjectsDraggingElements,
+};

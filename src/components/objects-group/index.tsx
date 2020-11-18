@@ -1,10 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IconAdd } from '@gpn-prototypes/vega-icons';
-import { TargetData, Tree } from '@gpn-prototypes/vega-tree';
-import { Button } from '@gpn-prototypes/vega-ui';
+import { Button, TargetData, Tree } from '@gpn-prototypes/vega-ui';
 
-import { toggleDialog, updateGroupObject } from '../../redux-store/group-objects/actions';
+import {
+  setGroupObjectsDraggingElements,
+  toggleDialog,
+  updateGroupObject,
+} from '../../redux-store/group-objects/actions';
 import { getGroupObjectsNodeList } from '../../redux-store/group-objects/selectors';
 import { getProjectStructureDraggingElements } from '../../redux-store/project-structure/selectors';
 
@@ -45,6 +48,14 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
     }
   };
 
+  const handleDragStart = (transferringElems: TargetData[]): void => {
+    dispatch(setGroupObjectsDraggingElements(transferringElems));
+  };
+
+  const handleDragEnd = (): void => {
+    dispatch(setGroupObjectsDraggingElements([]));
+  };
+
   return (
     <div className={cnObjectGroup()}>
       <Tree
@@ -52,6 +63,8 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
         nodeList={objectGroup || []}
         showIndentGuides={false}
         onPasteItem={handlePaste}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
       />
 
       <div className={cnObjectGroup('GroupCreator')}>

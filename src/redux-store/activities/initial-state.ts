@@ -1,4 +1,4 @@
-import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { TreeItem } from '@gpn-prototypes/vega-ui';
 
 const initialState = {
   nodeList: [] as TreeItem[],

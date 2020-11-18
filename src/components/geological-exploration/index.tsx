@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import styled from '@emotion/styled';
 import { GridState, GridUpdate, Layout, LayoutWidget } from '@gpn-prototypes/vega-layout';
 import { LayoutWidgetsOverrides } from '@gpn-prototypes/vega-layout/dist/src/LayoutDataView';
 
@@ -12,10 +11,9 @@ import { LogicConstructorWidget } from '../logic-constructor';
 import { ObjectsGroupWidget } from '../objects-group';
 import { ProjectStructureWidget } from '../project-structure';
 
-const Container = styled.div`
-  width: 100%;
-  height: calc(100vh - 34px);
-`;
+import { cnGeologicalExploration } from './cn-geoexploration';
+
+import './index.css';
 
 export const GeologicalExploration = (): React.ReactElement => {
   function action(change: { update: GridUpdate; state: GridState }): void {
@@ -57,7 +55,7 @@ export const GeologicalExploration = (): React.ReactElement => {
       type: 'branch',
       data: {
         splitDirection: 'right',
-        breakpoint: 20,
+        breakpoint: 14,
       },
     },
     1: {
@@ -91,13 +89,13 @@ export const GeologicalExploration = (): React.ReactElement => {
   };
 
   return (
-    <Container>
+    <div className={cnGeologicalExploration()}>
       <Layout
         state={state}
         widgets={widgets}
         widgetsOverrides={widgetsOverrides}
         onChange={action}
       />
-    </Container>
+    </div>
   );
 };

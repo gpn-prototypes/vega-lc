@@ -1,5 +1,5 @@
 import React, { Dispatch } from 'react';
-import { TargetData, TreeItem } from '@gpn-prototypes/vega-tree';
+import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
@@ -107,6 +107,7 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
 
 export {
   fetchActivitiesList,
+  setActivitiesList,
   setSearchString,
   setIsAutoFocus,
   setActivitiesRef,

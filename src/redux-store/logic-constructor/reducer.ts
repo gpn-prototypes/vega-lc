@@ -1,4 +1,4 @@
-import { CanvasTree } from '@gpn-prototypes/vega-canvas/dist/src/types';
+import { CanvasTree } from '@gpn-prototypes/vega-ui';
 
 import { LogicConstructorState } from '../../types/redux-store';
 import createReducer from '../../utils/create-reducer';
@@ -34,10 +34,19 @@ const addCanvasElementStrategy = (
   };
 };
 
+const toggleStepEditorStrategy = (
+  state: LogicConstructorState,
+  { isStepEditorOpened = false },
+): LogicConstructorState => ({
+  ...state,
+  isStepEditorOpened,
+});
+
 const strategyMap = {
   [LogicConstructorActionTypes.SET_SCENARIO_LIST]: setScenarioListStrategy,
   [LogicConstructorActionTypes.SET_CANVAS_ELEMENTS]: setCanvasElementsStrategy,
   [LogicConstructorActionTypes.ADD_CANVAS_ELEMENT]: addCanvasElementStrategy,
+  [LogicConstructorActionTypes.TOGGLE_STEP_EDITOR]: toggleStepEditorStrategy,
 };
 
 const logicConstructorReducer = createReducer(strategyMap, initialState);
