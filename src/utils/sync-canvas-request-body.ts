@@ -1,5 +1,5 @@
-import getHeaders from './headers';
-import { getCurrentVersion, incrementVersion } from './version';
+import { graphQlRequest } from './graphql-request';
+import { getCurrentVersion } from './version';
 
 type QueryBody = {
   query: string;
@@ -40,21 +40,13 @@ export const syncCanvasRequest = async (
     queryBody.variables = { ...queryBody.variables, ...variables };
   }
 
-  return new Promise((resolve, reject) => {
-    fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify(queryBody),
-    })
-      .then(async (response) => {
-        if (response.ok) {
-          incrementVersion();
-
-          const body = await response.json();
-
-          resolve(body);
-        }
-      })
-      .catch(reject);
-  });
+  try {
+    await graphQlRequest({
+      body: queryBody,
+      projectId: 'a3333333-b111-c111-d111-e00000000000',
+      isMutation: true,
+    });
+  } catch (e) {
+    console.error(e);
+  }
 };
