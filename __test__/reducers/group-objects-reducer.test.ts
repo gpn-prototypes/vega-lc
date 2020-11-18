@@ -1,4 +1,4 @@
-import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { TreeItem } from '@gpn-prototypes/vega-ui';
 
 import { GroupObjectsActionTypes } from '../../src/redux-store/group-objects/action-types';
 import groupObjectsReducer from '../../src/redux-store/group-objects/reducer';

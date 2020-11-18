@@ -3,39 +3,81 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Canvas, CanvasUpdate, Change, useInterval } from '@gpn-prototypes/vega-ui';
 
 import {
-  setDebouncedCanvasElements,
+  addGroupObjectsToCanvasElement,
+  setCanvasElements,
   syncCanvasState,
+  toggleStepEditor,
 } from '../../redux-store/logic-constructor/actions';
 import { getCanvasElements } from '../../redux-store/logic-constructor/selectors';
+import { canvasActionsForImmediateSync } from '../../utils/constants/canvas-actions-to-sync';
+import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
+
+import { cnCanvasWidget } from './cn-canvas';
 
 import './index.css';
 
-type CanvasWidgetProps = {
-  parentRef: React.RefObject<HTMLElement>;
-};
-
-export const CanvasWidget: React.FC<CanvasWidgetProps> = (props) => {
-  const { parentRef } = props;
+export const CanvasWidget: React.FC = () => {
   const [changes, setChanges] = useState<CanvasUpdate[]>([]);
-
-  const canvasElements = useSelector(getCanvasElements);
 
   const dispatch = useDispatch();
 
+  const canvasElements = useSelector(getCanvasElements);
+
   useInterval(2000, () => {
     if (changes.length) {
-      if (canvasElements) {
-        dispatch(syncCanvasState(canvasElements, changes[changes.length - 1]));
+      dispatch(syncCanvasState(changes[changes.length - 1]));
 
-        setChanges([]);
-      }
+      setChanges([]);
     }
   });
 
   const updateTree = (change: Change): void => {
-    dispatch(setDebouncedCanvasElements(change.state));
-    setChanges([...changes, change.update]);
+    const { state, update } = change;
+    const { type } = update;
+
+    dispatch(setCanvasElements(state));
+
+    if (
+      update.type === 'select' &&
+      update.selected?.type === 'item' &&
+      update.selected?.ids.length === 1 &&
+      canvasElements
+    ) {
+      const id = update.selected.ids[0];
+
+      const tree = getCanvasTreeById(canvasElements, id);
+
+      const isStepEditorOpened = tree?.getData().type === 'step';
+
+      dispatch(toggleStepEditor(isStepEditorOpened));
+
+      return;
+    }
+
+    if (type === 'unselect') {
+      dispatch(toggleStepEditor(false));
+
+      return;
+    }
+
+    if (canvasActionsForImmediateSync[type]) {
+      dispatch(syncCanvasState(update));
+
+      return;
+    }
+
+    if (update.type === 'drop-event') {
+      dispatch(addGroupObjectsToCanvasElement(update.intersectionId));
+
+      return;
+    }
+
+    setChanges([...changes, update]);
   };
 
-  return <Canvas parentRef={parentRef} state={canvasElements} onChange={updateTree} />;
+  return (
+    <div className={cnCanvasWidget()}>
+      <Canvas state={canvasElements} onChange={updateTree} />
+    </div>
+  );
 };

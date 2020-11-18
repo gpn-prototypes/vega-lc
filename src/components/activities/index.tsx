@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IconSearch } from '@gpn-design/uikit/IconSearch';
 import { Text } from '@gpn-design/uikit/Text';
 import { TextField, TextFieldOnChangeArguments } from '@gpn-design/uikit/TextField';
-import { TargetData, Tree } from '@gpn-prototypes/vega-tree';
+import { TargetData, Tree } from '@gpn-prototypes/vega-ui';
 
 import {
   setActivitiesDraggingElements,

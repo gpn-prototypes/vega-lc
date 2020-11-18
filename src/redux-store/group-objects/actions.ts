@@ -1,11 +1,17 @@
-import { TreeItem } from '@gpn-prototypes/vega-tree';
+import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { NewGroupParams, StoreLC } from '../../types/redux-store';
 import getHeaders from '../../utils/headers';
+import { getCurrentVersion, incrementVersion } from '../../utils/version';
 
 import { GroupObjectsActionTypes } from './action-types';
+
+type SetDraggingElements = {
+  type: typeof GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS;
+  draggingElements: TargetData[];
+};
 
 type SetGroupObjectsList = {
   type: typeof GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST;
@@ -35,6 +41,11 @@ const toggleDialog = (isDialogOpened: boolean): ToggleDialog => ({
 const setNewGroupParams = (newGroupParams: NewGroupParams): SetNewGroupParams => ({
   type: GroupObjectsActionTypes.SET_NEW_GROUP_PARAMS,
   newGroupParams,
+});
+
+const setGroupObjectsDraggingElements = (draggingElements: TargetData[]): SetDraggingElements => ({
+  type: GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS,
+  draggingElements,
 });
 
 const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
@@ -84,6 +95,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
             iconId: 'circle',
             nodeList: [],
             isDropZone: false,
+            isDraggable: false,
           });
         });
       });
@@ -122,16 +134,18 @@ const updateGroupObject = (
   const vids = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
 
   try {
+    const version = getCurrentVersion();
     const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query: `mutation($vid: UUID!,$vids: [UUID]){domain{objectGroup{update(vid: $vid,vids: $vids){ok, name, vids}}}}`,
+        query: `mutation($vid: UUID!,$vids: [UUID]){domain{objectGroup{update(vid: $vid,vids: $vids, version: ${version}){ok, name, vids}}}}`,
         variables: { vids, vid: groupObjectId },
       }),
     });
 
     if (response.ok) {
+      incrementVersion();
       dispatch(fetchGroupObjectList());
     }
   } catch (e) {
@@ -143,15 +157,17 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
   dispatch,
 ): Promise<void> => {
   try {
+    const version = getCurrentVersion();
     const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
-        query: `mutation {domain{objectGroup{create(name: "${name}"){vid,ok,vids}}}}`,
+        query: `mutation {domain{objectGroup{create(name: "${name}", version: ${version}){vid,ok,vids}}}}`,
       }),
     });
 
     if (response.ok) {
+      incrementVersion();
       dispatch(fetchGroupObjectList());
     }
   } catch (e) {
@@ -159,4 +175,12 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
   }
 };
 
-export { fetchGroupObjectList, createNewGroup, toggleDialog, setNewGroupParams, updateGroupObject };
+export {
+  fetchGroupObjectList,
+  setGroupObjectsList,
+  createNewGroup,
+  toggleDialog,
+  setNewGroupParams,
+  updateGroupObject,
+  setGroupObjectsDraggingElements,
+};

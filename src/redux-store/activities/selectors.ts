@@ -1,6 +1,5 @@
 import React from 'react';
-import { TargetData } from '@gpn-prototypes/vega-tree';
-import { TreeItem } from '@gpn-prototypes/vega-ui';
+import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 
 import { ActivitiesState, StoreLC } from '../../types/redux-store';
 

@@ -1,7 +1,8 @@
-import { ActionTypes } from '../../types/redux-store';
 import { applyActionTypesNames } from '../../utils/apply-action-types-names';
 
-const ProjectStructureActionTypes: ActionTypes = {
+type ProjectStructureActions = 'SET_PROJECT_STRUCTURE_LIST' | 'SET_DRAGGING_ELEMENTS';
+
+const ProjectStructureActionTypes: Record<ProjectStructureActions, string> = {
   SET_PROJECT_STRUCTURE_LIST: '',
   SET_DRAGGING_ELEMENTS: '',
 };

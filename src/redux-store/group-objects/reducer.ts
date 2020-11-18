@@ -33,10 +33,19 @@ const setNewGroupParamsStrategy = (
   newGroupParams,
 });
 
+const setDraggingElementsStrategy = (
+  state: GroupObjectsState,
+  { draggingElements = [] },
+): GroupObjectsState => ({
+  ...state,
+  draggingElements,
+});
+
 const strategyMap = {
   [GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST]: setGroupObjectsNodeListStrategy,
   [GroupObjectsActionTypes.TOGGLE_DIALOG]: toggleDialogStrategy,
   [GroupObjectsActionTypes.SET_NEW_GROUP_PARAMS]: setNewGroupParamsStrategy,
+  [GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
 };
 
 const groupObjectsReducer = createReducer(strategyMap, initialState);

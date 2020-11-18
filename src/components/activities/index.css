@@ -1,15 +1,24 @@
+:root {
+  --activities-min-width: 316px;
+  --activities-height: calc(100vh - 116px);
+}
+
 .ActivitiesWidget {
   position: absolute;
   z-index: 1;
+  top: 16px;
+  left: 16px;
 
-  margin: 16px;
-
-  width: 20%;
+  width: var(--activities-min-width);
   min-width: 316px;
-  height: calc(100vh - 35px);
+  height: var(--activities-height);
 
   background-color: var(--color-bg-default);
   border-radius: 4px;
+
+  .VegaTree__ItemName {
+    width: 100%;
+  }
 
   &__Head {
     padding: 8px;

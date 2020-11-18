@@ -9,3 +9,6 @@ export const getScenarioList = (state: StoreLC): Step[] | undefined =>
 
 export const getCanvasElements = (state: StoreLC): CanvasTree[] | undefined =>
   getCurrentState(state).canvasElements;
+
+export const getIsStepEditorOpened = (state: StoreLC): boolean | undefined =>
+  getCurrentState(state).isStepEditorOpened;
