@@ -45,7 +45,7 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
           name,
           vid}}}}}`,
       },
-      projectId: 'a3333333-b111-c111-d111-e00000000000',
+      projectId: true,
     });
 
     const body = await response.json();
