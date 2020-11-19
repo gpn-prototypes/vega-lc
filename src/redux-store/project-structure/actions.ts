@@ -45,7 +45,7 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
           name,
           vid}}}}}`,
       },
-      projectId: true,
+      appendProjectId: true,
     });
 
     const body = await response.json();

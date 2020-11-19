@@ -64,7 +64,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
           name,
           vid}}}}}`,
       },
-      projectId: true,
+      appendProjectId: true,
     });
 
     const body = await response.json();
@@ -141,7 +141,7 @@ const updateGroupObject = (
 
     const response = await graphQlRequest({
       body: requestBody,
-      projectId: true,
+      appendProjectId: true,
       isMutation: true,
     });
 
@@ -168,7 +168,7 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
 
     const response = await graphQlRequest({
       body: requestBody,
-      projectId: true,
+      appendProjectId: true,
       isMutation: true,
     });
 

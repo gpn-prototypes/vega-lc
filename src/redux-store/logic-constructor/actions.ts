@@ -90,7 +90,7 @@ const createScenarioStep = async (
   try {
     const response = await graphQlRequest({
       body: requestBody,
-      projectId: true,
+      appendProjectId: true,
       isMutation: true,
     });
 
@@ -139,7 +139,7 @@ const addCanvasElement = (
 
   const response = await graphQlRequest({
     body: requestBody,
-    projectId: true,
+    appendProjectId: true,
     isMutation: true,
   });
 

@@ -43,7 +43,7 @@ export const syncCanvasRequest = async (
   try {
     await graphQlRequest({
       body: queryBody,
-      projectId: true,
+      appendProjectId: true,
       isMutation: true,
     });
   } catch (e) {

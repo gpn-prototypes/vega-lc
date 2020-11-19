@@ -8,14 +8,14 @@ export type QueryBody = {
   };
 };
 
-type GraphqlRequestProps = { body: QueryBody; projectId?: boolean; isMutation?: boolean };
+type GraphqlRequestProps = { body: QueryBody; appendProjectId?: boolean; isMutation?: boolean };
 
 export function graphQlRequest({
   body,
-  projectId = false,
+  appendProjectId = false,
   isMutation = false,
 }: GraphqlRequestProps): Promise<Response> {
-  const url = projectId ? `graphql/a3333333-b111-c111-d111-e00000000000` : 'graphql';
+  const url = appendProjectId ? `graphql/a3333333-b111-c111-d111-e00000000000` : 'graphql';
 
   return new Promise((resolve, reject) => {
     fetch(url, {
