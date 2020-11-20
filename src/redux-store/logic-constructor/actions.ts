@@ -33,6 +33,20 @@ type ToggleStepEditor = {
   isStepEditorOpened: boolean;
 };
 
+type CreateScenarioStepResponse = {
+  data: {
+    logic?: {
+      scenarioStep?: {
+        create?: {
+          result?: {
+            vid?: string;
+          };
+        };
+      };
+    };
+  };
+};
+
 // type AddCanvasElement = {
 //   type: typeof LogicConstructorActionTypes.ADD_CANVAS_ELEMENT;
 //   canvasElement: CanvasTree | [];
@@ -70,7 +84,7 @@ export const setDebouncedCanvasElements = (
 const createScenarioStep = async (
   activityId: string,
   objectsGroupId: string,
-): Promise<{ vid: string } | undefined> => {
+): Promise<CreateScenarioStepResponse | undefined> => {
   const version = getCurrentVersion();
 
   const requestBody: QueryBody = {
@@ -103,26 +117,26 @@ const createScenarioStep = async (
 const addCanvasElement = (
   canvasDataTree: CanvasData,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState): Promise<void> => {
-  // const objectsGroup = getState().groupObjects.nodeList;
+  const objectsGroup = getState().groupObjects.nodeList;
   const { Tree } = entities;
   const { position, width, stepData, type } = canvasDataTree;
   const nodeType = canvasNodeTypes[type];
-  const version = getCurrentVersion();
 
-  // let nodeRef = null;
+  let nodeRef = null;
 
-  // if (nodeType === 'domainObject' && stepData?.events.length && objectsGroup?.length) {
-  //   const scenarioStepData = await createScenarioStep(stepData.events[0].id, objectsGroup[0].id);
-  //
-  //   if (scenarioStepData) {
-  //     nodeRef = scenarioStepData.vid;
-  //   }
-  // }
+  if (nodeType === 'domainObject' && stepData?.events.length && objectsGroup?.length) {
+    const scenarioStepData = await createScenarioStep(stepData.events[0].id, objectsGroup[0].id);
+
+    if (scenarioStepData) {
+      nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+    }
+  }
 
   const requestBody: QueryBody = {
-    query: `mutation($nodeType: String!, $version: Int!, $title: String, $vid: UUID, $width: Float, $x: Float, $y: Float) {
+    query: `mutation($nodeType: String!, $nodeRef: UUID, $version: Int!, $title: String, $vid: UUID,
+      $width: Float, $x: Float, $y: Float) {
         logic { canvas {
-         create (title: $title, width: $width, nodeType: $nodeType, vid: $vid,
+         create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef, vid: $vid,
           position: [$x, $y], version: $version) {
           result {
           vid }}}}}`,
@@ -131,7 +145,8 @@ const addCanvasElement = (
       vid: stepData?.id,
       width,
       nodeType,
-      version,
+      nodeRef,
+      version: getCurrentVersion(),
       x: position.x,
       y: position.y,
     },
@@ -172,7 +187,9 @@ const fetchScenarioList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => 
           name,
           itemList {
           activity {
-          vid,
+          activityType{
+            vid,
+          },
           name}
           object {
           ...on LicensingRound_A_Type {
