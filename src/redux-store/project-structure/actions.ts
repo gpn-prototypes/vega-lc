@@ -2,9 +2,9 @@ import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import client, { projectLink } from '../../client';
 import { Query } from '../../generated/graphql-project';
 import { StoreLC } from '../../types/redux-store';
+import { graphQlRequest } from '../../utils/graphql-request';
 
 import { ProjectStructureActionTypes } from './action-types';
 import { FETCH_PROJECT_STRUCTURE_LIST } from './queries';
@@ -34,54 +34,52 @@ const setProjectStructureDraggingElements = (
 const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ) => {
-  client.setLink(projectLink);
-
-  client
-    .query<Query>({
+  graphQlRequest({
+    body: {
       query: FETCH_PROJECT_STRUCTURE_LIST,
-    })
+    },
+    appendProjectId: true,
+  })
     .then((response) => {
-      if (!response.loading) {
-        const geoEconomicAppraisalProjectList =
-          response.data.domain?.geoEconomicAppraisalProjectList;
+      const geoEconomicAppraisalProjectList = (response as Query).domain
+        ?.geoEconomicAppraisalProjectList;
 
-        const collection: { [x: string]: any } = {};
+      const collection: { [x: string]: any } = {};
 
-        if (geoEconomicAppraisalProjectList) {
-          geoEconomicAppraisalProjectList.forEach((project: any) => {
-            const { vid } = project;
+      if (geoEconomicAppraisalProjectList) {
+        geoEconomicAppraisalProjectList.forEach((project: any) => {
+          const { vid } = project;
 
-            if (!collection[vid]) {
-              collection[vid] = {
-                name: project.name,
-                id: project.vid,
+          if (!collection[vid]) {
+            collection[vid] = {
+              name: project.name,
+              id: project.vid,
+              nodeList: [],
+              iconId: 'blue-line',
+              isDropZone: false,
+              isDraggable: false,
+            };
+          }
+
+          if (Array.isArray(project.licensingRounds)) {
+            project.licensingRounds.forEach((object: any) => {
+              collection[vid].nodeList.push({
+                name: object.name,
+                id: object.vid,
+                iconId: 'orange-line',
                 nodeList: [],
-                iconId: 'blue-line',
-                isDropZone: false,
-                isDraggable: false,
-              };
-            }
-
-            if (Array.isArray(project.licensingRounds)) {
-              project.licensingRounds.forEach((object: any) => {
-                collection[vid].nodeList.push({
-                  name: object.name,
-                  id: object.vid,
-                  iconId: 'orange-line',
-                  nodeList: [],
-                });
               });
-            }
-          });
-        }
-
-        const nodeList = Object.values(collection);
-
-        dispatch(setProjectStructureList(nodeList));
+            });
+          }
+        });
       }
+
+      const nodeList = Object.values(collection);
+
+      dispatch(setProjectStructureList(nodeList));
     })
-    .catch((error) => {
-      console.error(error);
+    .catch((err) => {
+      console.error(err);
     });
 };
 

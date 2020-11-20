@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import client, { mainLink } from '../../client';
 import { Project, Query } from '../../generated/graphql';
 import { StoreLC } from '../../types/redux-store';
+import { graphQlRequest } from '../../utils/graphql-request';
 import { getProjectId } from '../../utils/project-id';
 import { setCurrentVersion } from '../../utils/version';
 
@@ -20,28 +20,24 @@ const SetVersionSuccess = (version: number): SetVersionSuccess => ({
 const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  client.setLink(mainLink);
-  client
-    .query<Query>({
+  graphQlRequest({
+    body: {
       query: FETCH_PROJECT_VERSION,
       variables: {
         vid: getProjectId(),
       },
-    })
+    },
+  })
     .then((response) => {
-      if (response.data?.project?.__typename !== 'Error') {
-        const project = response.data?.project as Project;
+      const project = (response as Query).project as Project;
+      if (project && project.version) {
+        setCurrentVersion(project.version);
 
-        if (project.version) {
-          setCurrentVersion(project.version);
-          dispatch(SetVersionSuccess(project.version));
-        }
-      } else {
-        console.error(response.data?.project);
+        dispatch(SetVersionSuccess(project.version));
       }
     })
-    .catch((error) => {
-      console.error(error);
+    .catch((err) => {
+      console.error(err);
     });
 };
 

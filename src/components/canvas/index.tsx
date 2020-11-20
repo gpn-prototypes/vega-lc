@@ -54,8 +54,9 @@ export const CanvasWidget: React.FC = () => {
       return;
     }
 
-    if (type === 'unselect') {
+    if (type === 'unselect' || type === 'remove-trees') {
       dispatch(toggleStepEditor(false));
+      dispatch(syncCanvasState(update));
 
       return;
     }

@@ -3,8 +3,9 @@ import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import client, { mainLink } from '../../client';
+import { Query } from '../../generated/graphql';
 import { StoreLC } from '../../types/redux-store';
+import { graphQlRequest } from '../../utils/graphql-request';
 
 import { ActivitiesActionTypes } from './action-types';
 import { ACTIVITY_LIST } from './queries';
@@ -62,18 +63,16 @@ const setSearchString = (searchString: string | null) => (
 const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  client.setLink(mainLink);
-
-  client
-    .query({
+  graphQlRequest({
+    body: {
       query: ACTIVITY_LIST,
-      fetchPolicy: 'network-only',
-    })
+    },
+  })
     .then((response) => {
-      if (!response.loading) {
-        const { activityList } = response.data;
-        const collection: { [x: string]: any } = {};
+      const { activityList } = response as Query;
+      const collection: { [x: string]: any } = {};
 
+      if (activityList) {
         activityList.forEach((activity: any) => {
           const { name } = activity.category;
 
@@ -82,23 +81,13 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
               name,
               id: activity.category.vid,
               nodeList: [],
-              isDropZone: false,
-              isDraggable: false,
             };
           }
-
-          collection[name].nodeList.push({
-            name: activity.name,
-            id: activity.vid,
-            iconId: 'blue-line',
-            nodeList: [],
-          });
         });
-
-        const nodeList = Object.values(collection);
-
-        dispatch(setActivitiesList(nodeList));
       }
+      const nodeList = Object.values(collection);
+
+      dispatch(setActivitiesList(nodeList));
     })
     .catch((err) => {
       console.error(err);

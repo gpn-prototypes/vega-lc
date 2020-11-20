@@ -6,11 +6,12 @@ import client, { projectLink } from '../../client';
 import { Logic, Mutation, Query } from '../../generated/graphql-project';
 import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '../../types/redux-store';
 import { canvasNodeTypes } from '../../utils/constants/canvas-node-types';
-import debounce from '../../utils/debounce';
+import { debounce } from '../../utils/debounce';
 import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '../../utils/get-tree-node-by-id';
+import { graphQlRequest, QueryBody } from '../../utils/graphql-request';
 import { syncCanvasRequest } from '../../utils/sync-canvas-request-body';
-import { getCurrentVersion, incrementVersion } from '../../utils/version';
+import { getCurrentVersion } from '../../utils/version';
 
 import { LogicConstructorActionTypes } from './action-types';
 import { ADD_CANVAS_ELEMENT, CREATE_STEP } from './mutations';
@@ -69,48 +70,88 @@ export const setDebouncedCanvasElements = (
   debouncedSetCanvasElements(canvasElements);
 };
 
+const createScenarioStep = async (
+  activityId: string,
+  objectsGroupId: string,
+): Promise<Mutation | undefined> => {
+  const version = getCurrentVersion();
+
+  const requestBody: QueryBody = {
+    query: CREATE_STEP,
+    variables: {
+      version,
+      activity: activityId,
+      objectGroup: objectsGroupId,
+      name: 'Новый шаг',
+    },
+  };
+
+  try {
+    const response = await graphQlRequest({
+      body: requestBody,
+      appendProjectId: true,
+      isMutation: true,
+    });
+
+    return response as Mutation;
+  } catch (e) {
+    return undefined;
+  }
+};
+
 const addCanvasElement = (
   canvasDataTree: CanvasData,
-): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
+): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState): Promise<void> => {
+  // const objectsGroup = getState().groupObjects.nodeList;
   const { Tree } = entities;
-
   const { position, width, stepData, type } = canvasDataTree;
-
   const nodeType = canvasNodeTypes[type];
+  const version = getCurrentVersion();
 
-  client.setLink(projectLink);
-  client
-    .mutate<Mutation>({
-      mutation: ADD_CANVAS_ELEMENT,
-      variables: {
-        title: stepData?.name,
-        vid: stepData?.id,
-        width,
-        nodeType,
-        version: getCurrentVersion(),
-        x: position.x,
-        y: position.y,
-      },
+  // let nodeRef = null;
+
+  // if (nodeType === 'domainObject' && stepData?.events.length && objectsGroup?.length) {
+  //   const scenarioStepData = await createScenarioStep(stepData.events[0].id, objectsGroup[0].id);
+  //
+  //   if (scenarioStepData) {
+  //     nodeRef = scenarioStepData.vid;
+  //   }
+  // }
+
+  const requestBody: QueryBody = {
+    query: ADD_CANVAS_ELEMENT,
+    variables: {
+      title: stepData?.name,
+      vid: stepData?.id,
+      width,
+      nodeType,
+      version,
+      x: position.x,
+      y: position.y,
+    },
+  };
+
+  graphQlRequest({
+    body: requestBody,
+    appendProjectId: true,
+    isMutation: true,
+  })
+    .then(() => {
+      // const a = await response.json();
+      // console.log(a);
+
+      const canvasElement = Tree.of<CanvasData>({
+        id: stepData?.id,
+        data: canvasDataTree,
+      });
+
+      dispatch({
+        type: LogicConstructorActionTypes.ADD_CANVAS_ELEMENT,
+        canvasElement,
+      });
     })
-    .then((response) => {
-      if (response.data?.logic?.canvas?.create?.__typename !== 'Error') {
-        incrementVersion();
-
-        const canvasElement = Tree.of<CanvasData>({
-          id: stepData?.id,
-          data: canvasDataTree,
-        });
-
-        dispatch({
-          type: LogicConstructorActionTypes.ADD_CANVAS_ELEMENT,
-          canvasElement,
-        });
-      } else {
-        console.error(response.data?.logic?.canvas?.create);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
+    .catch((err) => {
+      console.error(err);
     });
 };
 
@@ -383,42 +424,14 @@ const addGroupObjectsToCanvasElement = (
   }
 };
 
-const createStep = (
-  activityId: string,
-  name: string,
-): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
-  client.setLink(projectLink);
-  client
-    .mutate<Mutation>({
-      mutation: CREATE_STEP,
-      variables: {
-        activityId,
-        name,
-        version: getCurrentVersion(),
-      },
-    })
-    .then((response) => {
-      if (response.data?.logic?.scenarioStep?.create?.__typename !== 'Error') {
-        incrementVersion();
-
-        dispatch(fetchScenarioList());
-      } else {
-        console.error(response.data?.logic?.scenarioStep?.create);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
-
 export {
-  createStep,
   syncCanvasState,
   setScenarioList,
   toggleStepEditor,
   addCanvasElement,
   setCanvasElements,
   fetchScenarioList,
+  createScenarioStep,
   fetchCanvasItemsData,
   addGroupObjectsToCanvasElement,
 };

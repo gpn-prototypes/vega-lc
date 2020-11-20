@@ -2,10 +2,10 @@ import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import client, { projectLink } from '../../client';
-import { Mutation, Query } from '../../generated/graphql-project';
+import { Query } from '../../generated/graphql-project';
 import { NewGroupParams, StoreLC } from '../../types/redux-store';
-import { getCurrentVersion, incrementVersion } from '../../utils/version';
+import { graphQlRequest } from '../../utils/graphql-request';
+import { getCurrentVersion } from '../../utils/version';
 
 import { GroupObjectsActionTypes } from './action-types';
 import { UPDATE_GROUP_OBJECT } from './mutations';
@@ -54,56 +54,49 @@ const setGroupObjectsDraggingElements = (draggingElements: TargetData[]): SetDra
 const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  client.setLink(projectLink);
-
-  client
-    .query<Query>({
+  graphQlRequest({
+    body: {
       query: OBJECT_GROUP_LIST,
-      fetchPolicy: 'network-only',
-    })
+    },
+    appendProjectId: true,
+  })
     .then((response) => {
-      if (!response.loading) {
-        const { domain } = response.data;
+      const objectGroupList = (response as Query).domain?.objectGroupList;
 
-        const objectGroupList = domain?.objectGroupList;
+      const collection: { [x: string]: any } = {};
 
-        const collection: { [x: string]: any } = {};
+      if (objectGroupList) {
+        objectGroupList.forEach((objectsGroup: any) => {
+          const { vid } = objectsGroup;
 
-        if (objectGroupList) {
-          objectGroupList.forEach((objectsGroup: any) => {
-            const { vid } = objectsGroup;
+          if (!collection[vid]) {
+            collection[vid] = {
+              name: objectsGroup.name,
+              id: objectsGroup.vid,
+              nodeList: [],
+              iconId: 'square',
+            };
+          }
 
-            if (!collection[vid]) {
-              collection[vid] = {
-                name: objectsGroup.name,
-                id: objectsGroup.vid,
-                nodeList: [],
-                iconId: 'square',
-              };
-            }
-
-            objectsGroup.objects.forEach((object: any) => {
-              collection[vid].nodeList.push({
-                name: object.name,
-                id: object.vid,
-                iconId: 'circle',
-                nodeList: [],
-                isDropZone: false,
-                isDraggable: false,
-              });
+          objectsGroup.objects.forEach((object: any) => {
+            collection[vid].nodeList.push({
+              name: object.name,
+              id: object.vid,
+              iconId: 'circle',
+              nodeList: [],
+              isDropZone: false,
+              isDraggable: false,
             });
           });
-        }
-
-        const nodeList = Object.values(collection);
-
-        dispatch(setGroupObjectsList(nodeList));
-      } else {
-        dispatch(setGroupObjectsList([]));
+        });
       }
+
+      const nodeList = Object.values(collection);
+
+      dispatch(setGroupObjectsList(nodeList));
     })
-    .catch((error) => {
-      console.error(error);
+    .catch((err) => {
+      console.error(err);
     });
 };
 
@@ -129,47 +122,47 @@ const updateGroupObject = (
 
   const objects = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
 
-  client.setLink(projectLink);
-  client
-    .mutate<Mutation>({
-      mutation: UPDATE_GROUP_OBJECT,
-      variables: {
-        objects,
-        vid: groupObjectId,
-        version: getCurrentVersion(),
-      },
+  const version = getCurrentVersion();
+  const requestBody = {
+    query: UPDATE_GROUP_OBJECT,
+    variables: { objects, vid: groupObjectId, version },
+  };
+
+  graphQlRequest({
+    body: requestBody,
+    appendProjectId: true,
+    isMutation: true,
+  })
+    .then(() => {
+      dispatch(fetchGroupObjectList());
     })
-    .then((response) => {
-      if (response.data?.domain?.objectGroup?.update?.__typename !== 'Error') {
-        incrementVersion();
-        dispatch(fetchGroupObjectList());
-      }
-    })
-    .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      console.error(err);
     });
 };
 
 const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  client.setLink(projectLink);
-  client
-    .mutate<Mutation>({
-      mutation: UPDATE_GROUP_OBJECT,
-      variables: {
-        name,
-        version: getCurrentVersion(),
-      },
+  const version = getCurrentVersion();
+  const requestBody = {
+    query: UPDATE_GROUP_OBJECT,
+    variables: {
+      name,
+      version,
+    },
+  };
+
+  graphQlRequest({
+    body: requestBody,
+    appendProjectId: true,
+    isMutation: true,
+  })
+    .then(() => {
+      dispatch(fetchGroupObjectList());
     })
-    .then((response) => {
-      if (response.data?.domain?.objectGroup?.create?.__typename !== 'Error') {
-        incrementVersion();
-        dispatch(fetchGroupObjectList());
-      }
-    })
-    .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      console.error(err);
     });
 };
 

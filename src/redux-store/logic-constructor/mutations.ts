@@ -59,19 +59,12 @@ export const SYNC_CANVAS_STATE = gql`
 `;
 
 export const CREATE_STEP = gql`
-  mutation createStep($activityId: UUID!, $name: String, $version: Int!) {
+  mutation($version: Int!, $activity: UUID!, $name: String, $objectGroup: UUID) {
     logic {
       scenarioStep {
-        create(activity: $activityId, name: $name, version: $version) {
-          __typename
-          ... on ScenarioStep {
+        create(activity: $activity, version: $version, name: $name, objectGroup: $objectGroup) {
+          result {
             vid
-            code
-            name
-          }
-          ... on Error {
-            code
-            message
           }
         }
       }
