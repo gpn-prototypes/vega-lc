@@ -26,7 +26,7 @@ export type StepContent = {
     };
     name: string;
   };
-  objects?: {
+  object?: {
     vid: string;
     name: string;
   };
