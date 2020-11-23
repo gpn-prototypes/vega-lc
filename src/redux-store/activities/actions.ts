@@ -83,10 +83,8 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
       },
     });
 
-    const body = await response.json();
-
-    if (response.ok) {
-      const { activityList } = body.data;
+    if (response.data) {
+      const { activityList } = response.data;
       const collection: { [x: string]: any } = {};
 
       activityList.forEach((activity: any) => {
@@ -114,7 +112,7 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
 
       dispatch(setActivitiesList(nodeList));
     } else {
-      console.log(body);
+      console.log(response);
     }
   } catch (e) {
     console.error(e);
