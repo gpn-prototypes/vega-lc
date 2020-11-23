@@ -6,6 +6,7 @@
   "exclude": ["node_modules", "**/dist/**/*"],
   "compilerOptions": {
     "lib": ["dom", "esnext", "es2020"],
-    "noImplicitThis": false
+    "noImplicitThis": false,
+    "baseUrl": "src"
   }
 }

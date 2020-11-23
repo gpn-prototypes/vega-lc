@@ -3,14 +3,13 @@ import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { presetGpnDark, Theme } from '@gpn-prototypes/vega-ui';
 
-import { GeologicalExploration } from './components/geological-exploration';
-import Navigation from './components/navigation';
-import { fetchVersion } from './redux-store/version/actions';
+import { GeologicalExploration } from '../components/geological-exploration';
+import { fetchVersion } from '../redux-store/version/actions';
 
 import './App.css';
-import './styles/colors.css';
+import '../styles/colors.css';
 
-export const App = (): React.ReactElement => {
+export const AppView = (): React.ReactElement => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,7 +18,7 @@ export const App = (): React.ReactElement => {
 
   return (
     <Theme className="App" preset={presetGpnDark}>
-      <Navigation />
+      {/* <Navigation /> */}
       <Switch>
         <Route exact component={GeologicalExploration} path="/" />
       </Switch>

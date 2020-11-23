@@ -3,6 +3,7 @@ const path = require('path');
 const root = process.env.PROJECT_ROOT_DIR || path.join(__dirname, '..');
 
 const getAppConfig = () => ({
+  projectName: 'lc',
   entry: path.join(root, 'src/index.tsx'),
   root,
   buildDirPath: path.resolve(root, 'dist'),
@@ -15,4 +16,4 @@ const getAppConfig = () => ({
   VEGA_API_PROXY: process.env.VEGA_API_PROXY || 'http://outsourcing.nat.tepkom.ru:38080',
 });
 
-module.exports = getAppConfig;
+module.exports = { getAppConfig };
