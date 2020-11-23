@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { StoreLC } from '../../types/redux-store';
-import getHeaders from '../../utils/headers';
+import { graphQlRequest } from '../../utils/graphql-request';
 
 import { ProjectStructureActionTypes } from './action-types';
 
@@ -33,10 +33,8 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
   dispatch,
 ) => {
   try {
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
+    const response = await graphQlRequest({
+      body: {
         query: `{domain{geoEconomicAppraisalProjectList{
           vid,
           name,
@@ -46,7 +44,8 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
           __typename,
           name,
           vid}}}}}`,
-      }),
+      },
+      appendProjectId: true,
     });
 
     const body = await response.json();

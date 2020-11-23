@@ -4,12 +4,13 @@ import { ThunkAction } from 'redux-thunk';
 
 import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '../../types/redux-store';
 import { canvasNodeTypes } from '../../utils/constants/canvas-node-types';
-import debounce from '../../utils/debounce';
+import { debounce } from '../../utils/debounce';
 import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '../../utils/get-tree-node-by-id';
-import getHeaders from '../../utils/headers';
+import { graphQlRequest, QueryBody } from '../../utils/graphql-request';
+import { getHeaders } from '../../utils/headers';
 import { syncCanvasRequest } from '../../utils/sync-canvas-request-body';
-import { getCurrentVersion, incrementVersion } from '../../utils/version';
+import { getCurrentVersion } from '../../utils/version';
 
 import { LogicConstructorActionTypes } from './action-types';
 
@@ -66,41 +67,85 @@ export const setDebouncedCanvasElements = (
   debouncedSetCanvasElements(canvasElements);
 };
 
-const addCanvasElement = (
-  canvasDataTree: CanvasData,
-): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
-  const { Tree } = entities;
-
-  const { position, width, stepData, type } = canvasDataTree;
-
-  const nodeType = canvasNodeTypes[type];
-
+const createScenarioStep = async (
+  activityId: string,
+  objectsGroupId: string,
+): Promise<{ vid: string } | undefined> => {
   const version = getCurrentVersion();
 
-  const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify({
-      query: `mutation($nodeType: String!, $version: Int!, $title: String, $vid: UUID, $width: Float, $x: Float, $y: Float) {
+  const requestBody: QueryBody = {
+    query: `mutation($version: Int!, $activity: UUID!, $name: String, $objectGroup: UUID) {
+        logic { scenarioStep {
+         create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup) {
+          result {
+          vid }}}}}`,
+    variables: {
+      version,
+      activity: activityId,
+      objectGroup: objectsGroupId,
+      name: 'Новый шаг',
+    },
+  };
+
+  try {
+    const response = await graphQlRequest({
+      body: requestBody,
+      appendProjectId: true,
+      isMutation: true,
+    });
+
+    return await response.json();
+  } catch (e) {
+    return undefined;
+  }
+};
+
+const addCanvasElement = (
+  canvasDataTree: CanvasData,
+): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState): Promise<void> => {
+  // const objectsGroup = getState().groupObjects.nodeList;
+  const { Tree } = entities;
+  const { position, width, stepData, type } = canvasDataTree;
+  const nodeType = canvasNodeTypes[type];
+  const version = getCurrentVersion();
+
+  // let nodeRef = null;
+
+  // if (nodeType === 'domainObject' && stepData?.events.length && objectsGroup?.length) {
+  //   const scenarioStepData = await createScenarioStep(stepData.events[0].id, objectsGroup[0].id);
+  //
+  //   if (scenarioStepData) {
+  //     nodeRef = scenarioStepData.vid;
+  //   }
+  // }
+
+  const requestBody: QueryBody = {
+    query: `mutation($nodeType: String!, $version: Int!, $title: String, $vid: UUID, $width: Float, $x: Float, $y: Float) {
         logic { canvas {
          create (title: $title, width: $width, nodeType: $nodeType, vid: $vid,
           position: [$x, $y], version: $version) {
           result {
           vid }}}}}`,
-      variables: {
-        title: stepData?.name,
-        vid: stepData?.id,
-        width,
-        nodeType,
-        version,
-        x: position.x,
-        y: position.y,
-      },
-    }),
+    variables: {
+      title: stepData?.name,
+      vid: stepData?.id,
+      width,
+      nodeType,
+      version,
+      x: position.x,
+      y: position.y,
+    },
+  };
+
+  const response = await graphQlRequest({
+    body: requestBody,
+    appendProjectId: true,
+    isMutation: true,
   });
 
   if (response.ok) {
-    incrementVersion();
+    // const a = await response.json();
+    // console.log(a);
 
     const canvasElement = Tree.of<CanvasData>({
       id: stepData?.id,
@@ -420,49 +465,14 @@ const addGroupObjectsToCanvasElement = (
   }
 };
 
-const createStep = (
-  activityId: string,
-  name: string,
-): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch): Promise<void> => {
-  try {
-    const version = getCurrentVersion();
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `mutation { logic {
-          scenarioStep{
-          create(activity: "${activityId}", name: "${name}", version: ${version})
-          { result {
-          vid,
-          name,
-          ok,
-          }}}}}`,
-      }),
-    });
-
-    const body = await response.json();
-
-    if (response.ok) {
-      incrementVersion();
-
-      dispatch(fetchScenarioList());
-    } else {
-      console.log(body);
-    }
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 export {
-  createStep,
   syncCanvasState,
   setScenarioList,
   toggleStepEditor,
   addCanvasElement,
   setCanvasElements,
   fetchScenarioList,
+  createScenarioStep,
   fetchCanvasItemsData,
   addGroupObjectsToCanvasElement,
 };

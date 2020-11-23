@@ -1,4 +1,4 @@
-const debounce = (fn: Function, wait: number): Function => {
+export const debounce = (fn: Function, wait: number): Function => {
   let timeout: number;
 
   return function func<T>(...args: T[]): void {
@@ -8,5 +8,3 @@ const debounce = (fn: Function, wait: number): Function => {
     timeout = window.setTimeout(debouncedFunction, wait);
   };
 };
-
-export default debounce;

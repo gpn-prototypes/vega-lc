@@ -4,7 +4,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { StoreLC } from '../../types/redux-store';
-import getHeaders from '../../utils/headers';
+import { graphQlRequest } from '../../utils/graphql-request';
 
 import { ActivitiesActionTypes } from './action-types';
 
@@ -62,10 +62,8 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
   dispatch,
 ): Promise<void> => {
   try {
-    const response = await fetch(`graphql`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
+    const response = await graphQlRequest({
+      body: {
         query: `{activityList{
           vid,
           code,
@@ -82,7 +80,7 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
           vid,
           code,
           name}}}}`,
-      }),
+      },
     });
 
     const body = await response.json();
