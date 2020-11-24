@@ -5,8 +5,11 @@
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "**/dist/**/*"],
   "compilerOptions": {
-    "lib": ["dom", "esnext", "es2020"],
     "noImplicitThis": false,
-    "baseUrl": "src"
+    "baseUrl": "./",
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
