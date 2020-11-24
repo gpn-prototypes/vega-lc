@@ -11,6 +11,6 @@ const lifecycles = singleSpaReact({
   ReactDOM,
   rootComponent: App,
   suppressComponentDidCatchWarning: true,
-} as any);   // TODO: resolve React type error
+} as any); // TODO: resolve React type error
 
 export const { bootstrap, mount, unmount } = lifecycles;
