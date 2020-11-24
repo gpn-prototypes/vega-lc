@@ -1,9 +1,11 @@
 import { Content, Event, Step, StepData } from '../types/redux-store';
 
-export function stepToStepData(step: Step): StepData {
+export function getStepDataFromScenarioStep(step: Step): StepData {
   const events = [] as Event[];
 
   step.itemList.forEach((item) => {
+    if (!item.activity) return;
+
     const eventContent =
       item.object &&
       ({
@@ -12,18 +14,16 @@ export function stepToStepData(step: Step): StepData {
         type: 'domain',
       } as Content);
 
-    if (!item.activity) return;
+    const existingEvent = events.find((event) => event.id === item.activity?.activityType.vid);
 
-    const exisingEvent = events.find((event) => event.id === item.activity?.activityType.vid);
-
-    if (!exisingEvent) {
+    if (!existingEvent) {
       events.push({
         id: item.activity.activityType.vid,
         name: item.activity.name,
         content: [eventContent],
       } as Event);
     } else if (eventContent) {
-      exisingEvent.content.push(eventContent);
+      existingEvent.content.push(eventContent);
     }
   });
 

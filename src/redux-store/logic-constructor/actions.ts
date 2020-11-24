@@ -11,7 +11,7 @@ import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '../../utils/get-tree-node-by-id';
 import { graphQlRequest, QueryBody } from '../../utils/graphql-request';
 import { getHeaders } from '../../utils/headers';
-import { stepToStepData } from '../../utils/step-to-step-data';
+import { getStepDataFromScenarioStep } from '../../utils/step-data';
 import { syncCanvasRequest } from '../../utils/sync-canvas-request-body';
 import { getCurrentVersion } from '../../utils/version';
 
@@ -261,7 +261,7 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
                   canvasElementsMap[item.vid].data = {
                     ...canvasElementsMap[item.vid].data,
                     width: CANVAS_STEP_WIDTH,
-                    stepData: step && stepToStepData(step),
+                    stepData: step && getStepDataFromScenarioStep(step),
                   };
                 } else {
                   canvasElementsMap[item.vid].data.width = CANVAS_BASE_ELEMENTS_WIDTH;
