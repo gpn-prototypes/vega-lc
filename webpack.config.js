@@ -3,13 +3,13 @@ const dotenv = require('dotenv');
 const webpack = require('webpack');
 
 const appConfig = require('./app-config').getAppConfig();
-const postCssConfig = require('./postcss.config');
 
 dotenv.config();
 
 const gpnWebpack = require('@gpn-prototypes/frontend-configs/webpack.config')({
   appConfig,
-  postCssConfig,
+  // eslint-disable-next-line global-require
+  postCssConfig: { postcssOptions: { ...require('./postcss.config') } },
 });
 
 const commonWebpack = () => {
