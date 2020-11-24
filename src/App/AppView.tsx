@@ -18,7 +18,6 @@ export const AppView = (): React.ReactElement => {
 
   return (
     <Theme className="App" preset={presetGpnDark}>
-      {/* <Navigation /> */}
       <Switch>
         <Route exact component={GeologicalExploration} path="/" />
       </Switch>
