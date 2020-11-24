@@ -44,7 +44,7 @@
     "bem-cn": "^3.0.1",
     "graphql": "^15.4.0",
     "lodash": "^4.17.20",
-    "react": "^17.0.1",
+    "react": "^16.14.0",
     "react-collapse": "^5.0.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
