@@ -1,7 +1,7 @@
 version: 1-alpha.1
 
 releases:
-  vega-lc-template-testing:
+  vega-lc-testing:
     name: VEGA LC
     autodeploy-on: default
     chart: csssr/static-site@~1.0.0
