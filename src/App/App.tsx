@@ -7,7 +7,7 @@ import { Providers } from '../components/providers';
 import { AppView } from './AppView';
 
 type AppProps = {
-  graphqlClient?: ApolloClient<NormalizedCacheObject>;
+  graphqlClient: ApolloClient<NormalizedCacheObject>;
 };
 
 export const App = (props: AppProps): React.ReactElement => {
