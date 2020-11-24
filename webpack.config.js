@@ -2,7 +2,7 @@ const merge = require('webpack-merge');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
 
-const appConfig = require('./app-config')();
+const appConfig = require('./app-config').getAppConfig();
 const postCssConfig = require('./postcss.config');
 
 dotenv.config();
