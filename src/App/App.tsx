@@ -6,11 +6,11 @@ import { Providers } from '../components/providers';
 
 import { AppView } from './AppView';
 
-type AppProps = {
-  graphqlClient: ApolloClient<NormalizedCacheObject>;
-};
+interface AppProps {
+  graphqlClient?: ApolloClient<NormalizedCacheObject>;
+}
 
-export const App = (props: AppProps): React.ReactElement => {
+export const App: React.FC<AppProps> = (props) => {
   const { graphqlClient } = props;
 
   return (
