@@ -24,14 +24,14 @@
     "server": "cross-env NODE_ENV=development webpack-dev-server --host 0.0.0.0 --disable-host-check --open --mode development",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "format": "prettier --write '{src,types,scripts}/**/*.{json,{j,t}s{,x},css,}'",
+    "format": "prettier --write \"{src,types,scripts}/**/*.{json,{j,t}s{,x},css,}\"",
     "coverage": "jest --all --coverage",
     "lint": "npm-run-all lint:*",
     "lint-fix": "npm-run-all format lint-fix:*",
-    "lint:ts": "eslint '{src,types}/**/*.ts{,x}'",
-    "lint-fix:ts": "eslint '{src,types}/**/*.ts{,x}' --fix",
-    "lint:css": "stylelint 'src/**/*.css'",
-    "lint-fix:css": "stylelint 'src/**/*.css' --fix"
+    "lint:ts": "eslint \"{src,types}/**/*.ts{,x}\"",
+    "lint-fix:ts": "eslint \"{src,types}/**/*.ts{,x}\" --fix",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint-fix:css": "stylelint \"src/**/*.css\" --fix"
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
@@ -68,6 +68,11 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.16.3",
+    "@graphql-codegen/introspection": "1.16.3",
+    "@graphql-codegen/typescript": "^1.16.3",
+    "@graphql-codegen/typescript-operations": "1.16.3",
+    "@graphql-codegen/typescript-react-apollo": "1.16.3",
     "@gpn-prototypes/frontend-configs": "^1.2.12",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",

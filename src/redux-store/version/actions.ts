@@ -8,9 +8,12 @@ import { setCurrentVersion } from '../../utils/version';
 
 import { VersionActionTypes } from './action-types';
 
-type SetVersionSuccess = { type: typeof VersionActionTypes.SET_VERSION_SUCCESS; version: number };
+interface SetVersionSuccessType {
+  type: typeof VersionActionTypes.SET_VERSION_SUCCESS;
+  version: number;
+}
 
-const SetVersionSuccess = (version: number): SetVersionSuccess => ({
+const SetVersionSuccess = (version: number): SetVersionSuccessType => ({
   type: VersionActionTypes.SET_VERSION_SUCCESS,
   version,
 });

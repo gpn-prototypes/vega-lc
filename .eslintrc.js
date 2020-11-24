@@ -10,7 +10,8 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/camelcase': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     'no-redeclare': 'off',
@@ -18,12 +19,12 @@ module.exports = {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
   },
-  // settings: {
-  //   'import/resolver': {
-  //     alias: {
-  //       map: [['@', './src/']],
-  //       extensions: ['.ts', '.tsx', '.json', 'js', 'jsx'],
-  //     },
-  //   },
-  // },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [['@', './src/']],
+        extensions: ['.ts', '.tsx', '.json', 'js', 'jsx'],
+      },
+    },
+  },
 };
