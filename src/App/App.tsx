@@ -20,7 +20,7 @@ export const App: React.FC<AppProps> = (props) => {
     <Root
       initialPortals={[{ name: 'modalRoot' }]}
       defaultTheme="dark"
-      className={classNames('App-Wrapper')}
+      className={classNames('App-Wrapper').toString()}
     >
       <Providers graphqlClient={graphqlClient}>
         <AppView />

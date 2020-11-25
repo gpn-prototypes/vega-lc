@@ -16,27 +16,24 @@ body,
   height: 100%;
 }
 
-.LC {
-  &__App-Wrapper {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+.LC__App-Wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 
-    width: 100%;
-  }
+  width: 100%;
+}
 
-  &__App {
-    display: flex;
-    overflow: hidden;
-    flex-direction: column;
-    flex-grow: 1;
+.LC__App {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  flex-grow: 1;
 
-    width: 100vw;
-    min-height: 100%;
+  min-height: 100%;
 
-    color: var(--color-typo-primary);
-    background-color: var(--color-bg-default);
-  }
+  color: var(--color-typo-primary);
+  background-color: var(--color-bg-default);
 }
 
 .Tooltip {
