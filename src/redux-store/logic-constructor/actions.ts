@@ -94,7 +94,7 @@ const createScenarioStep = async (
       isMutation: true,
     });
 
-    return await response.json();
+    return response.data?.vid;
   } catch (e) {
     return undefined;
   }
@@ -143,10 +143,7 @@ const addCanvasElement = (
     isMutation: true,
   });
 
-  if (response.ok) {
-    // const a = await response.json();
-    // console.log(a);
-
+  if (response.data) {
     const canvasElement = Tree.of<CanvasData>({
       id: stepData?.id,
       data: canvasDataTree,

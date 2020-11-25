@@ -48,10 +48,8 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
       appendProjectId: true,
     });
 
-    const body = await response.json();
-
-    if (response.ok) {
-      const { domain } = body.data;
+    if (response.data) {
+      const { domain } = response.data;
       const { geoEconomicAppraisalProjectList } = domain;
 
       const collection: { [x: string]: any } = {};
@@ -86,7 +84,7 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
 
       dispatch(setProjectStructureList(nodeList));
     } else {
-      console.log(body);
+      console.error(response);
     }
   } catch (e) {
     console.error(e);
