@@ -2,14 +2,14 @@ const merge = require('webpack-merge');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
 
-const appConfig = require('./app-config')();
-const postCssConfig = require('./postcss.config');
+const appConfig = require('./app-config').getAppConfig();
 
 dotenv.config();
 
 const gpnWebpack = require('@gpn-prototypes/frontend-configs/webpack.config')({
   appConfig,
-  postCssConfig,
+  // eslint-disable-next-line global-require
+  postCssConfig: { postcssOptions: { ...require('./postcss.config') } },
 });
 
 const commonWebpack = () => {
