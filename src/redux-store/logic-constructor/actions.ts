@@ -1,7 +1,9 @@
+import { NetworkStatus } from '@apollo/client';
 import { CanvasData, CanvasTree, CanvasUpdate, entities } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
+import client, { projectLink } from '../../client';
 import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '../../types/redux-store';
 import { canvasNodeTypes } from '../../utils/constants/canvas-node-types';
 import { debounce, DebounceFunction } from '../../utils/debounce';
@@ -9,10 +11,12 @@ import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '../../utils/get-tree-node-by-id';
 import { graphQlRequest, QueryBody } from '../../utils/graphql-request';
 import { getHeaders } from '../../utils/headers';
+import { getStepDataFromScenarioStep } from '../../utils/step-data';
 import { syncCanvasRequest } from '../../utils/sync-canvas-request-body';
 import { getCurrentVersion } from '../../utils/version';
 
 import { LogicConstructorActionTypes } from './action-types';
+import { FETCH_CANVAS_ITEMS_DATA } from './queries';
 
 const CANVAS_BASE_ELEMENTS_WIDTH = 67;
 const CANVAS_STEP_WIDTH = 250;
@@ -31,6 +35,20 @@ type SetCanvasElements = {
 type ToggleStepEditor = {
   type: typeof LogicConstructorActionTypes.TOGGLE_STEP_EDITOR;
   isStepEditorOpened: boolean;
+};
+
+type CreateScenarioStepResponse = {
+  data: {
+    logic?: {
+      scenarioStep?: {
+        create?: {
+          result?: {
+            vid?: string;
+          };
+        };
+      };
+    };
+  };
 };
 
 // type AddCanvasElement = {
@@ -70,7 +88,7 @@ export const setDebouncedCanvasElements = (
 const createScenarioStep = async (
   activityId: string,
   objectsGroupId: string,
-): Promise<{ vid: string } | undefined> => {
+): Promise<CreateScenarioStepResponse | undefined> => {
   const version = getCurrentVersion();
 
   const requestBody: QueryBody = {
@@ -103,26 +121,26 @@ const createScenarioStep = async (
 const addCanvasElement = (
   canvasDataTree: CanvasData,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState): Promise<void> => {
-  // const objectsGroup = getState().groupObjects.nodeList;
+  const objectsGroup = getState().groupObjects.nodeList;
   const { Tree } = entities;
   const { position, width, stepData, type } = canvasDataTree;
   const nodeType = canvasNodeTypes[type];
-  const version = getCurrentVersion();
 
-  // let nodeRef = null;
+  let nodeRef = null;
 
-  // if (nodeType === 'domainObject' && stepData?.events.length && objectsGroup?.length) {
-  //   const scenarioStepData = await createScenarioStep(stepData.events[0].id, objectsGroup[0].id);
-  //
-  //   if (scenarioStepData) {
-  //     nodeRef = scenarioStepData.vid;
-  //   }
-  // }
+  if (nodeType === 'domainObject' && stepData?.events.length && objectsGroup?.length) {
+    const scenarioStepData = await createScenarioStep(stepData.events[0].id, objectsGroup[0].id);
+
+    if (scenarioStepData) {
+      nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+    }
+  }
 
   const requestBody: QueryBody = {
-    query: `mutation($nodeType: String!, $version: Int!, $title: String, $vid: UUID, $width: Float, $x: Float, $y: Float) {
+    query: `mutation($nodeType: String!, $nodeRef: UUID, $version: Int!, $title: String, $vid: UUID,
+      $width: Float, $x: Float, $y: Float) {
         logic { canvas {
-         create (title: $title, width: $width, nodeType: $nodeType, vid: $vid,
+         create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef, vid: $vid,
           position: [$x, $y], version: $version) {
           result {
           vid }}}}}`,
@@ -131,7 +149,8 @@ const addCanvasElement = (
       vid: stepData?.id,
       width,
       nodeType,
-      version,
+      nodeRef,
+      version: getCurrentVersion(),
       x: position.x,
       y: position.y,
     },
@@ -169,7 +188,9 @@ const fetchScenarioList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => 
           name,
           itemList {
           activity {
-          vid,
+          activityType{
+            vid,
+          },
           name}
           object {
           ...on LicensingRound_A_Type {
@@ -201,127 +222,70 @@ const fetchScenarioList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => 
 const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  const canvasItemsPromise = new Promise<CanvasElements[]>((resolve, reject) => {
-    fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `{ logic { canvas {
-          vid, title, position, nodeRef, nodeType, width,
-          children {
-          vid }
-          parents {
-          vid}}}}`,
-      }),
+  client.setLink(projectLink);
+  client
+    .query({
+      query: FETCH_CANVAS_ITEMS_DATA,
     })
-      .then(async (response) => {
-        if (response.ok) {
-          const body = await response.json();
-          const { logic } = body.data;
-          const { canvas } = logic;
+    .then(async (response) => {
+      if (response.networkStatus === NetworkStatus.ready) {
+        const { logic } = response.data;
+        const { canvas, stepList } = logic;
 
-          resolve(canvas);
-        }
+        const getCanvasElements = (): CanvasTree[] => {
+          let result: CanvasTree[] = [];
+          const canvasElementsMap: { [key: string]: CanvasElement } = {};
 
-        reject(response);
-      })
-      .catch(reject);
-  });
+          if (canvas) {
+            (canvas as CanvasElements[]).forEach((item) => {
+              if (!canvasElementsMap[item.vid]) {
+                canvasElementsMap[item.vid] = {
+                  id: item.vid,
+                  childrenIds: item.children?.map((child) => child.vid) || [],
+                  parentIds: item.parents?.map((parent) => parent.vid) || [],
+                  data: {
+                    position: {
+                      x: item.position[0],
+                      y: item.position[1],
+                    },
+                    type: item.nodeType === 'domainObject' ? 'step' : item.nodeType,
+                    title: item.title || '',
+                  },
+                };
 
-  const scenarioListPromise = new Promise<Step[]>((resolve, reject) => {
-    fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `{logic { stepList {
-          vid,
-          name,
-          itemList {
-          activity {
-          name}
-          object {
-          ...on LicensingRound_A_Type {
-          vid,
-          name,
-          }}}}}}`,
-      }),
-    })
-      .then(async (response) => {
-        if (response.ok) {
-          const body = await response.json();
-
-          const { logic } = body.data;
-          const { stepList } = logic;
-
-          if (!stepList) {
-            reject(response);
+                if (item.nodeType === 'domainObject') {
+                  const step = (stepList as Step[]).find((element) => element.vid === item.nodeRef);
+                  canvasElementsMap[item.vid].data = {
+                    ...canvasElementsMap[item.vid].data,
+                    width: CANVAS_STEP_WIDTH,
+                    stepData: step && getStepDataFromScenarioStep(step),
+                  };
+                } else {
+                  canvasElementsMap[item.vid].data.width = CANVAS_BASE_ELEMENTS_WIDTH;
+                }
+              }
+            });
           }
 
-          resolve(stepList);
-        }
+          const canvasElementsData: CanvasElement[] = Object.values(canvasElementsMap);
 
-        reject(response);
-      })
-      .catch(reject);
-  });
+          if (canvasElementsData.length > 0) {
+            const { Tree } = entities;
 
-  const promises: [Promise<CanvasElements[]>, Promise<Step[]>] = [
-    canvasItemsPromise,
-    scenarioListPromise,
-  ];
-
-  try {
-    const [canvasItems, scenarioList] = await Promise.all(promises);
-
-    console.log(scenarioList);
-
-    const getCanvasElements = (): CanvasTree[] => {
-      let result: CanvasTree[] = [];
-      const canvasElementsMap: { [key: string]: CanvasElement } = {};
-
-      if (canvasItems) {
-        canvasItems.forEach((item) => {
-          if (!canvasElementsMap[item.vid]) {
-            canvasElementsMap[item.vid] = {
-              id: item.vid,
-              childrenIds: item.children?.map((child) => child.vid) || [],
-              parentIds: item.parents?.map((parent) => parent.vid) || [],
-              data: {
-                position: {
-                  x: item.position[0],
-                  y: item.position[1],
-                },
-                type: item.nodeType === 'domainObject' ? 'step' : item.nodeType,
-                title: item.title || '',
-              },
-            };
-
-            if (item.nodeType === 'domainObject') {
-              canvasElementsMap[item.vid].data.width = CANVAS_STEP_WIDTH;
-            } else {
-              canvasElementsMap[item.vid].data.width = CANVAS_BASE_ELEMENTS_WIDTH;
-            }
+            result = canvasElementsData.map((elem) => Tree.of<CanvasData>(elem));
           }
-        });
+
+          return result;
+        };
+
+        const canvasElements = getCanvasElements();
+
+        dispatch(setCanvasElements(canvasElements));
       }
-
-      const canvasElementsData: CanvasElement[] = Object.values(canvasElementsMap);
-
-      if (canvasElementsData.length > 0) {
-        const { Tree } = entities;
-
-        result = canvasElementsData.map((elem) => Tree.of<CanvasData>(elem));
-      }
-
-      return result;
-    };
-
-    const canvasElements = getCanvasElements();
-
-    dispatch(setCanvasElements(canvasElements));
-  } catch (e) {
-    console.error(e);
-  }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
 const syncCanvasState = (

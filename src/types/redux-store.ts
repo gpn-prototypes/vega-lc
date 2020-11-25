@@ -21,10 +21,12 @@ export declare type StepData = {
 
 export type StepContent = {
   activity?: {
-    vid: string;
+    activityType: {
+      vid: string;
+    };
     name: string;
   };
-  objects?: {
+  object?: {
     vid: string;
     name: string;
   };
