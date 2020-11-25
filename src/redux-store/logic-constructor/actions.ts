@@ -6,7 +6,7 @@ import { ThunkAction } from 'redux-thunk';
 import client, { projectLink } from '../../client';
 import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '../../types/redux-store';
 import { canvasNodeTypes } from '../../utils/constants/canvas-node-types';
-import { debounce } from '../../utils/debounce';
+import { debounce, DebounceFunction } from '../../utils/debounce';
 import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '../../utils/get-tree-node-by-id';
 import { graphQlRequest, QueryBody } from '../../utils/graphql-request';
@@ -71,7 +71,7 @@ const toggleStepEditor = (isStepEditorOpened: boolean): ToggleStepEditor => ({
   isStepEditorOpened,
 });
 
-let debouncedSetCanvasElements: Function;
+let debouncedSetCanvasElements: DebounceFunction<CanvasTree[]>;
 export const setDebouncedCanvasElements = (
   canvasElements: CanvasTree[],
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => (dispatch): void => {
@@ -112,7 +112,7 @@ const createScenarioStep = async (
       isMutation: true,
     });
 
-    return await response.json();
+    return response.data?.vid;
   } catch (e) {
     return undefined;
   }
@@ -162,10 +162,7 @@ const addCanvasElement = (
     isMutation: true,
   });
 
-  if (response.ok) {
-    // const a = await response.json();
-    // console.log(a);
-
+  if (response.data) {
     const canvasElement = Tree.of<CanvasData>({
       id: stepData?.id,
       data: canvasDataTree,

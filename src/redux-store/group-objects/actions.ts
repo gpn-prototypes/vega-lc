@@ -67,10 +67,8 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
       appendProjectId: true,
     });
 
-    const body = await response.json();
-
-    if (response.ok) {
-      const { domain } = body.data;
+    if (response.data) {
+      const { domain } = response.data;
       const { objectGroupList } = domain;
 
       const collection: { [x: string]: any } = {};
@@ -145,7 +143,7 @@ const updateGroupObject = (
       isMutation: true,
     });
 
-    if (response.ok) {
+    if (response.data) {
       dispatch(fetchGroupObjectList());
     }
   } catch (e) {
@@ -172,7 +170,7 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
       isMutation: true,
     });
 
-    if (response.ok) {
+    if (response.data) {
       dispatch(fetchGroupObjectList());
     }
   } catch (e) {

@@ -9,25 +9,30 @@ export type QueryBody = {
 };
 
 type GraphqlRequestProps = { body: QueryBody; appendProjectId?: boolean; isMutation?: boolean };
+type ResponseProp = { [key: string]: any };
 
 export function graphQlRequest({
   body,
   appendProjectId = false,
   isMutation = false,
-}: GraphqlRequestProps): Promise<Response> {
-  const url = appendProjectId ? `graphql/a3333333-b111-c111-d111-e00000000000` : 'graphql';
+}: GraphqlRequestProps): Promise<{ data: ResponseProp; errors?: ResponseProp }> {
+  const uri = appendProjectId ? `graphql/a3333333-b111-c111-d111-e00000000000` : 'graphql';
 
   return new Promise((resolve, reject) => {
-    fetch(url, {
+    fetch(`http://outsourcing.nat.tepkom.ru:38080/${uri}`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(body),
     })
-      .then((resp) => {
-        if (resp.ok) {
+      .then(async (resp) => {
+        const parsedResponse = await resp.json();
+
+        if (resp.ok && !parsedResponse.errors) {
           if (isMutation) incrementVersion();
 
-          resolve(resp);
+          resolve(parsedResponse);
+        } else {
+          throw new Error(parsedResponse.errors || 'Request failed');
         }
       })
       .catch(reject);

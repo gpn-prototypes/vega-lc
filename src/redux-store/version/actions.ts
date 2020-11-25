@@ -8,9 +8,12 @@ import { setCurrentVersion } from '../../utils/version';
 
 import { VersionActionTypes } from './action-types';
 
-type SetVersionSuccess = { type: typeof VersionActionTypes.SET_VERSION_SUCCESS; version: number };
+interface SetVersionSuccessType {
+  type: typeof VersionActionTypes.SET_VERSION_SUCCESS;
+  version: number;
+}
 
-const SetVersionSuccess = (version: number): SetVersionSuccess => ({
+const SetVersionSuccess = (version: number): SetVersionSuccessType => ({
   type: VersionActionTypes.SET_VERSION_SUCCESS,
   version,
 });
@@ -36,17 +39,15 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
       },
     });
 
-    const body = await response.json();
+    if (response.data) {
+      setCurrentVersion(response.data?.project.version);
 
-    if (response.status === 200) {
-      setCurrentVersion(body.data?.project.version);
-
-      dispatch(SetVersionSuccess(body.data?.project.version));
+      dispatch(SetVersionSuccess(response.data?.project.version));
     } else {
-      console.log(body.message);
+      console.log(response);
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 
