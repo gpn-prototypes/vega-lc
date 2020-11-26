@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { GridState, GridUpdate, Layout, LayoutWidget } from '@gpn-prototypes/vega-layout';
-import { LayoutWidgetsOverrides } from '@gpn-prototypes/vega-layout/dist/src/LayoutDataView';
+import {
+  GridState,
+  GridUpdate,
+  Layout,
+  LayoutWidget,
+  LayoutWidgetsOverrides,
+} from '@gpn-prototypes/vega-ui';
 
 import { fetchActivitiesList } from '../../redux-store/activities/actions';
 import { fetchGroupObjectList } from '../../redux-store/group-objects/actions';
