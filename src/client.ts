@@ -7,16 +7,22 @@ const headers = {
   ...authHeader(),
 };
 
-export const mainLink = new HttpLink({ uri: 'graphql', headers, fetch });
+const VEGA_API_URI = 'http://outsourcing.nat.tepkom.ru:38080';
+
+export const mainLink = new HttpLink({
+  uri: `${VEGA_API_URI}/graphql`,
+  headers,
+  fetch,
+});
 
 export const projectLink = new HttpLink({
-  uri: 'graphql/a3333333-b111-c111-d111-e00000000000',
+  uri: `${VEGA_API_URI}/graphql/a3333333-b111-c111-d111-e00000000000`,
   headers,
   fetch,
 });
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: 'graphql', headers, fetch }),
+  link: new HttpLink({ uri: `${VEGA_API_URI}/graphql`, headers, fetch }),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
