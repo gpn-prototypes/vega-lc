@@ -17,12 +17,12 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
     }
   >
     <div
-      className="Text text text_size_m text_view_primary ActivitiesWidget__Title"
+      className="Text Text_size_m Text_view_primary ActivitiesWidget__Title"
     >
       Мероприятия
     </div>
     <div
-      className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_type_input ActivitiesWidget__Search"
+      className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_default TextField_type_input ActivitiesWidget__Search"
     >
       <div
         className="TextField-Side TextField-Side_position_left TextField-Side_type_icon"
