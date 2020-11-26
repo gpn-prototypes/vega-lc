@@ -1,6 +1,7 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import fetch from 'cross-fetch';
 
+import { getProjectId } from './utils/project-id';
 import { authHeader } from './utils/set-auth-token';
 
 const headers = {
@@ -16,7 +17,7 @@ export const mainLink = new HttpLink({
 });
 
 export const projectLink = new HttpLink({
-  uri: `${VEGA_API_URI}/graphql/a3333333-b111-c111-d111-e00000000000`,
+  uri: `${VEGA_API_URI}/graphql/${getProjectId()}`,
   headers,
   fetch,
 });

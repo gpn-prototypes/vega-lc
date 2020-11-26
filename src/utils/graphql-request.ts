@@ -1,4 +1,5 @@
 import { getHeaders } from './headers';
+import { getProjectId } from './project-id';
 import { incrementVersion } from './version';
 
 export type QueryBody = {
@@ -16,7 +17,7 @@ export function graphQlRequest({
   appendProjectId = false,
   isMutation = false,
 }: GraphqlRequestProps): Promise<{ data: ResponseProp; errors?: ResponseProp }> {
-  const uri = appendProjectId ? `graphql/a3333333-b111-c111-d111-e00000000000` : 'graphql';
+  const uri = appendProjectId ? `graphql/${getProjectId()}` : 'graphql';
 
   return new Promise((resolve, reject) => {
     fetch(`http://outsourcing.nat.tepkom.ru:38080/${uri}`, {

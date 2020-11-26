@@ -2,7 +2,7 @@ import React from 'react';
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { Root } from '@gpn-prototypes/vega-ui';
 
-import { Providers } from '../components/providers';
+import { Providers } from '../react-context/providers';
 
 import { AppView } from './AppView';
 import classNames from './cn-app';

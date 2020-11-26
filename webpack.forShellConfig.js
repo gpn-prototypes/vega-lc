@@ -2,6 +2,7 @@ const webpackMerge = require('webpack-merge');
 const singleSpaDefaults = require('webpack-config-single-spa-react-ts');
 const ImportMapPlugin = require('webpack-import-map-plugin');
 const { getAppConfig } = require('./app-config');
+const path = require('path');
 
 const { projectName } = getAppConfig();
 
@@ -18,6 +19,11 @@ module.exports = (webpackConfigEnv) => {
     // modify the webpack config however you'd like to by adding to this object
     entry: ['./src/singleSpaEntry.tsx'],
     externals: [...externalPackages],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
+    },
     module: {
       rules: [
         {

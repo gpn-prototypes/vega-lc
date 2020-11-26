@@ -1,6 +1,7 @@
 const merge = require('webpack-merge');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
+const path = require('path');
 
 const appConfig = require('./app-config').getAppConfig();
 
@@ -30,6 +31,11 @@ const commonWebpack = () => {
 
 const appWebpack = {
   devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : false,
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   devServer: {
     historyApiFallback: true,
     proxy: {
