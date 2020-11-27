@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { GeologicalExploration } from '../components/geological-exploration';
+import { InProgress } from '../components/in-progress';
 import { fetchVersion } from '../redux-store/version/actions';
 
 import classNames from './cn-app';
@@ -19,6 +20,7 @@ export const AppView = (): React.ReactElement => {
   return (
     <div className={classNames('App')}>
       <GeologicalExploration />
+      <InProgress />
     </div>
   );
 };
