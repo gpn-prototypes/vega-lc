@@ -3,7 +3,7 @@ import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { Root } from '@gpn-prototypes/vega-ui';
 
 import { AppView } from './AppView';
-import classNames from './cn-app';
+import { cnApp } from './cn-app';
 
 import './App.css';
 
@@ -20,7 +20,7 @@ export const App: React.FC<AppProps> = (props) => {
     <Root
       initialPortals={[{ name: 'modalRoot' }]}
       defaultTheme="dark"
-      className={classNames('App-Wrapper').toString()}
+      className={cnApp('App-Wrapper').toString()}
     >
       <Providers graphqlClient={graphqlClient}>
         <AppView />
