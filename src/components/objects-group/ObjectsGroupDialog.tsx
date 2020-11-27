@@ -1,7 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SwitchPropOnChange } from '@gpn-design/uikit/Switch';
-import { TextFieldOnChangeArguments } from '@gpn-design/uikit/TextField';
 import { Button, IconClose, Modal, Switch, TextField, usePortal } from '@gpn-prototypes/vega-ui';
 
 import {
@@ -21,7 +19,7 @@ export const ObjectsGroupDialog: React.FC = () => {
   const isDialogOpen = useSelector(getIsDialogOpened);
   const { name, isDynamic } = useSelector(getNewGroupParams);
 
-  const handleChangeName = (args: TextFieldOnChangeArguments): void => {
+  const handleChangeName = (args: { value: string | null }): void => {
     if (args.value?.search(/\s/g) === 0) {
       return;
     }
@@ -29,7 +27,7 @@ export const ObjectsGroupDialog: React.FC = () => {
     dispatch(setNewGroupParams({ isDynamic, name: args.value || '' }));
   };
 
-  const handleToggleDynamicGroup: SwitchPropOnChange = ({ checked }): void => {
+  const handleToggleDynamicGroup = ({ checked }: { checked: boolean }): void => {
     dispatch(setNewGroupParams({ isDynamic: checked, name }));
   };
 

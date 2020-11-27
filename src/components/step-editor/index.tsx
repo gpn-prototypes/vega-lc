@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs } from '@gpn-design/uikit/Tabs';
+import { Tabs } from '@gpn-prototypes/vega-ui';
 
 import { cnStepEditor } from './cn-lc';
 import CommonInfo from './CommonInfo';

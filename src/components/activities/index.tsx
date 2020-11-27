@@ -1,9 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IconSearch } from '@gpn-design/uikit/IconSearch';
-import { Text } from '@gpn-design/uikit/Text';
-import { TextField, TextFieldOnChangeArguments } from '@gpn-design/uikit/TextField';
-import { TargetData, Tree } from '@gpn-prototypes/vega-ui';
+import { IconSearch, TargetData, Text, TextField, Tree } from '@gpn-prototypes/vega-ui';
 
 import {
   setActivitiesDraggingElements,
@@ -39,7 +36,7 @@ export const ActivitiesWidget: React.FC = (): React.ReactElement => {
   const activities = useSelector(getActivitiesNodeList(searchString));
   const autoFocus = useSelector(getIsAutoFocus);
 
-  const handleSearch = (args: TextFieldOnChangeArguments): void => {
+  const handleSearch = (args: { value: string | null }): void => {
     dispatch(setSearchString(args.value));
   };
 

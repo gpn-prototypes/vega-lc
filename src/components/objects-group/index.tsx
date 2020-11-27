@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IconAdd } from '@gpn-prototypes/vega-icons';
-import { Button, TargetData, Tree } from '@gpn-prototypes/vega-ui';
+import { Button, IconAdd, TargetData, Tree } from '@gpn-prototypes/vega-ui';
 
 import {
   setGroupObjectsDraggingElements,
