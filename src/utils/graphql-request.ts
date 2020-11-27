@@ -12,6 +12,8 @@ export type QueryBody = {
 type GraphqlRequestProps = { body: QueryBody; appendProjectId?: boolean; isMutation?: boolean };
 type ResponseProp = { [key: string]: any };
 
+const baseApiUrl = process.env.BASE_API_URL || 'http://outsourcing.nat.tepkom.ru:38080';
+
 export function graphQlRequest({
   body,
   appendProjectId = false,
@@ -20,7 +22,7 @@ export function graphQlRequest({
   const uri = appendProjectId ? `graphql/${getProjectId()}` : 'graphql';
 
   return new Promise((resolve, reject) => {
-    fetch(`http://outsourcing.nat.tepkom.ru:38080/${uri}`, {
+    fetch(`${baseApiUrl}/${uri}`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(body),

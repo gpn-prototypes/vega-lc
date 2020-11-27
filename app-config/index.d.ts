@@ -8,6 +8,7 @@ export type AppConfig = {
   assetsPath: string;
   port: string | number;
   apiURL: string;
+  baseApiUrl: string;
   VEGA_API_PROXY: string;
 };
 
