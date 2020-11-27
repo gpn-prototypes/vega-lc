@@ -3,20 +3,20 @@ import { CanvasData, CanvasTree, CanvasUpdate, entities } from '@gpn-prototypes/
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import client, { projectLink } from '../../client';
-import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '../../types/redux-store';
-import { canvasNodeTypes } from '../../utils/constants/canvas-node-types';
-import { debounce, DebounceFunction } from '../../utils/debounce';
-import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
-import { getTreeNodeById } from '../../utils/get-tree-node-by-id';
-import { graphQlRequest, QueryBody } from '../../utils/graphql-request';
-import { getHeaders } from '../../utils/headers';
-import { getStepDataFromScenarioStep } from '../../utils/step-data';
-import { syncCanvasRequest } from '../../utils/sync-canvas-request-body';
-import { getCurrentVersion } from '../../utils/version';
-
 import { LogicConstructorActionTypes } from './action-types';
 import { FETCH_CANVAS_ITEMS_DATA } from './queries';
+
+import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '@/types/redux-store';
+import { getProjectLink, vegaApi } from '@/utils/api-clients/vega-api';
+import { canvasNodeTypes } from '@/utils/constants/canvas-node-types';
+import { debounce, DebounceFunction } from '@/utils/debounce';
+import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
+import { getTreeNodeById } from '@/utils/get-tree-node-by-id';
+import { graphQlRequest, QueryBody } from '@/utils/graphql-request';
+import { getHeaders } from '@/utils/headers';
+import { getStepDataFromScenarioStep } from '@/utils/step-data';
+import { syncCanvasRequest } from '@/utils/sync-canvas-request-body';
+import { getCurrentVersion } from '@/utils/version';
 
 const CANVAS_BASE_ELEMENTS_WIDTH = 67;
 const CANVAS_STEP_WIDTH = 250;
@@ -222,8 +222,8 @@ const fetchScenarioList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => 
 const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  client.setLink(projectLink);
-  client
+  vegaApi.setLink(getProjectLink());
+  vegaApi
     .query({
       query: FETCH_CANVAS_ITEMS_DATA,
     })

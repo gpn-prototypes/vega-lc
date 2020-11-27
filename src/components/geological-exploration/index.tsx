@@ -8,10 +8,6 @@ import {
   LayoutWidgetsOverrides,
 } from '@gpn-prototypes/vega-ui';
 
-import { fetchActivitiesList } from '../../redux-store/activities/actions';
-import { fetchGroupObjectList } from '../../redux-store/group-objects/actions';
-import { fetchCanvasItemsData } from '../../redux-store/logic-constructor/actions';
-import { fetchProjectStructureList } from '../../redux-store/project-structure/actions';
 import { LogicConstructorWidget } from '../logic-constructor';
 import { ObjectsGroupWidget } from '../objects-group';
 import { ProjectStructureWidget } from '../project-structure';
@@ -19,6 +15,11 @@ import { ProjectStructureWidget } from '../project-structure';
 import { cnGeologicalExploration } from './cn-geoexploration';
 
 import './index.css';
+
+import { fetchActivitiesList } from '@/redux-store/activities/actions';
+import { fetchGroupObjectList } from '@/redux-store/group-objects/actions';
+import { fetchCanvasItemsData } from '@/redux-store/logic-constructor/actions';
+import { fetchProjectStructureList } from '@/redux-store/project-structure/actions';
 
 export const GeologicalExploration = (): React.ReactElement => {
   function action(change: { update: GridUpdate; state: GridState }): void {

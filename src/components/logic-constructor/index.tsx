@@ -3,12 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CanvasData } from '@gpn-prototypes/vega-ui';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  getActivitiesDraggingElements,
-  getActivitiesRef,
-} from '../../redux-store/activities/selectors';
-import { addCanvasElement } from '../../redux-store/logic-constructor/actions';
-import { getIsStepEditorOpened } from '../../redux-store/logic-constructor/selectors';
 import { ActivitiesWidget } from '../activities';
 import { CanvasWidget } from '../canvas';
 import StepEditor from '../step-editor';
@@ -16,6 +10,13 @@ import StepEditor from '../step-editor';
 import { cnLogicConstructor } from './cn-lc';
 
 import './index.css';
+
+import {
+  getActivitiesDraggingElements,
+  getActivitiesRef,
+} from '@/redux-store/activities/selectors';
+import { addCanvasElement } from '@/redux-store/logic-constructor/actions';
+import { getIsStepEditorOpened } from '@/redux-store/logic-constructor/selectors';
 
 export const LogicConstructorWidget: React.FC = () => {
   const dispatch = useDispatch();

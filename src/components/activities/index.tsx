@@ -2,21 +2,21 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IconSearch, TargetData, Text, TextField, Tree } from '@gpn-prototypes/vega-ui';
 
-import {
-  setActivitiesDraggingElements,
-  setActivitiesRef,
-  setSearchString,
-} from '../../redux-store/activities/actions';
-import {
-  getActivitiesNodeList,
-  getIsAutoFocus,
-  getSearchStringValue,
-} from '../../redux-store/activities/selectors';
-
 import { cnActivities } from './cn-activities';
 import { BlueLineSvg } from './icons';
 
 import './index.css';
+
+import {
+  setActivitiesDraggingElements,
+  setActivitiesRef,
+  setSearchString,
+} from '@/redux-store/activities/actions';
+import {
+  getActivitiesNodeList,
+  getIsAutoFocus,
+  getSearchStringValue,
+} from '@/redux-store/activities/selectors';
 
 const icons = {
   'blue-line': BlueLineSvg,
