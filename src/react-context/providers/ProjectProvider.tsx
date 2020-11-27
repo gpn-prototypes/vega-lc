@@ -14,7 +14,7 @@ const ProjectProvider: React.FC = ({ children }) => {
   const matchedData = defaultTo<MatchedData>(
     useRouteMatch<MatchedData>(ROUTE_MATCH_PROJECT_ID)?.params,
     {
-      projectId: 'a3333333-b111-c111-d111-e00000000000',
+      projectId: '',
     },
   );
 
