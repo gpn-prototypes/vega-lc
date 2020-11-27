@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { InProgress } from '../components/in-progress';
-
-import classNames from './cn-app';
+import { cnApp } from './cn-app';
 
 import './App.css';
 import '../styles/colors.css';
 
 import { GeologicalExploration } from '@/components/geological-exploration';
+import { InProgress } from '@/components/in-progress';
 import { fetchVersion } from '@/redux-store/version/actions';
 
 export const AppView = (): React.ReactElement => {
@@ -19,7 +18,7 @@ export const AppView = (): React.ReactElement => {
   }, [dispatch]);
 
   return (
-    <div className={classNames('App')}>
+    <div className={cnApp('App')}>
       <GeologicalExploration />
       <InProgress />
     </div>
