@@ -16,6 +16,12 @@
   background-color: var(--color-bg-default);
   border-radius: 4px;
 
+  .VegaTree {
+    overflow-y: scroll;
+
+    max-height: 90%;
+  }
+
   .VegaTree__ItemName {
     width: 100%;
   }

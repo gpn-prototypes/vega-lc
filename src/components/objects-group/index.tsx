@@ -2,19 +2,19 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, IconAdd, TargetData, Tree } from '@gpn-prototypes/vega-ui';
 
-import {
-  setGroupObjectsDraggingElements,
-  toggleDialog,
-  updateGroupObject,
-} from '../../redux-store/group-objects/actions';
-import { getGroupObjectsNodeList } from '../../redux-store/group-objects/selectors';
-import { getProjectStructureDraggingElements } from '../../redux-store/project-structure/selectors';
-
 import { cnObjectGroup } from './cn-objects-group';
 import { CircleSvg, SquareSvg } from './icons';
 import { ObjectsGroupDialog } from './ObjectsGroupDialog';
 
 import './index.css';
+
+import {
+  setGroupObjectsDraggingElements,
+  toggleDialog,
+  updateGroupObject,
+} from '@/redux-store/group-objects/actions';
+import { getGroupObjectsNodeList } from '@/redux-store/group-objects/selectors';
+import { getProjectStructureDraggingElements } from '@/redux-store/project-structure/selectors';
 
 const icons = {
   square: SquareSvg,
