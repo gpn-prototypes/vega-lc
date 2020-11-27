@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { InProgress } from '../components/in-progress';
+
 import classNames from './cn-app';
 
 import './App.css';
@@ -19,6 +21,7 @@ export const AppView = (): React.ReactElement => {
   return (
     <div className={classNames('App')}>
       <GeologicalExploration />
+      <InProgress />
     </div>
   );
 };
