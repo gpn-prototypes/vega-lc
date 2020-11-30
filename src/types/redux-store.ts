@@ -82,9 +82,15 @@ export type GroupObjectsState = {
   draggingElements?: TargetData[] | [];
 };
 
+export interface ProjectStructureQuery {
+  query: string;
+  tree: string[];
+}
+
 export type ProjectStructureState = {
   nodeList?: NodeList;
   draggingElements?: TargetData[] | [];
+  projectStructureQuery?: ProjectStructureQuery;
 };
 
 export type VersionState = {
@@ -96,4 +102,5 @@ export type StoreLC = {
   groupObjects: GroupObjectsState;
   projectStructure: ProjectStructureState;
   logicConstructor: LogicConstructorState;
+  version: VersionState;
 };

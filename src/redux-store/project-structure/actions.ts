@@ -29,65 +29,59 @@ const setProjectStructureDraggingElements = (
   draggingElements,
 });
 
+const DEFAULT_QUERY = `{
+  domain{
+    geoEconomicAppraisalProjectList{
+      vid name
+    }
+  }
+}`;
+
+const DEFAULT_TREE = ['geoEconomicAppraisalProjectList'];
+
+interface DomainObject {
+  vid: string;
+  name: string;
+  [key: string]: DomainObject[] | string;
+}
+
+function buildTree(current: DomainObject, tree: string[], level: number): TreeItem[] {
+  const key = tree[level];
+  const items: DomainObject[] = current[key] as DomainObject[];
+  return items.map((item) => ({
+    name: item.name,
+    id: item.vid,
+    iconId: 'blue-line',
+    nodeList: level + 1 < tree.length ? buildTree(item, tree, level + 1) : [],
+  }));
+}
+
 const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
+  getState,
 ) => {
   try {
+    const state = getState();
+
+    const query = state.projectStructure.projectStructureQuery?.query || DEFAULT_QUERY;
+    const tree = state.projectStructure.projectStructureQuery?.tree || DEFAULT_TREE;
+
     const response = await graphQlRequest({
-      body: {
-        query: `{domain{geoEconomicAppraisalProjectList{
-          vid,
-          name,
-          licensingRounds{
-          __typename,
-          ...on LicensingRound_A_Type{
-          __typename,
-          name,
-          vid}}}}}`,
-      },
+      body: { query },
       appendProjectId: true,
     });
 
     if (response.data) {
       const { domain } = response.data;
-      const { geoEconomicAppraisalProjectList } = domain;
 
-      const collection: { [x: string]: any } = {};
-
-      geoEconomicAppraisalProjectList.forEach((project: any) => {
-        const { vid } = project;
-
-        if (!collection[vid]) {
-          collection[vid] = {
-            name: project.name,
-            id: project.vid,
-            nodeList: [],
-            iconId: 'blue-line',
-            isDropZone: false,
-            isDraggable: false,
-          };
-        }
-
-        if (Array.isArray(project.licensingRounds)) {
-          project.licensingRounds.forEach((object: any) => {
-            collection[vid].nodeList.push({
-              name: object.name,
-              id: object.vid,
-              iconId: 'orange-line',
-              nodeList: [],
-            });
-          });
-        }
-      });
-
-      const nodeList = Object.values(collection);
+      const nodeList = buildTree(domain, tree, 0);
 
       dispatch(setProjectStructureList(nodeList));
     } else {
-      console.error(response);
+      // TODO: throw error | show error
     }
   } catch (e) {
-    console.error(e);
+    // TODO: throw error | show error
   }
 };
 
