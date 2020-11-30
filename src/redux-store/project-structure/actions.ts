@@ -42,20 +42,25 @@ const DEFAULT_TREE = ['geoEconomicAppraisalProjectList'];
 interface DomainObject {
   vid: string;
   name: string;
+
   [key: string]: DomainObject[] | string;
 }
 
 function buildTree(current: DomainObject, tree: string[], level: number): TreeItem[] {
   const key = tree[level];
   const items: DomainObject[] = current[key] as DomainObject[];
+
+  const trapRegExp = /Ловушка/i;
+  const oilReservoirRegExp = /Залежь/i;
+
   return items.map((item) => {
     let iconId = 'blue-line';
 
-    if (new RegExp(/Ловушка/, 'i').test(item.name)) {
+    if (trapRegExp.test(item.name)) {
       iconId = 'red-line';
     }
 
-    if (new RegExp(/Залежь/, 'i').test(item.name)) {
+    if (oilReservoirRegExp.test(item.name)) {
       iconId = 'orange-line';
     }
 
