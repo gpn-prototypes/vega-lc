@@ -11,4 +11,9 @@ module.exports = {
   transformIgnorePatterns: ['/node_modules/?!(@gpn-prototypes)'],
   modulePathIgnorePatterns: [...config.modulePathIgnorePatterns, '/e2e-tests/'],
   coveragePathIgnorePatterns: [...config.coveragePathIgnorePatterns, '/e2e-tests/'],
+  moduleDirectories: ['<rootDir>/src', 'node_modules'],
+  moduleNameMapper: {
+    ...config.moduleNameMapper,
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
 };

@@ -1,6 +1,5 @@
 import React from 'react';
-import { IconAdd } from '@gpn-prototypes/vega-icons';
-import { BasicSelect, Button } from '@gpn-prototypes/vega-ui';
+import { BasicSelect, Button, IconAdd } from '@gpn-prototypes/vega-ui';
 
 import { cnStepEditor } from './cn-lc';
 

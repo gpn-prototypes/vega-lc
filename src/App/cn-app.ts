@@ -1,3 +1,3 @@
 import bemCn from 'bem-cn';
 
-export default bemCn('LC');
+export const cnApp = bemCn('LC');

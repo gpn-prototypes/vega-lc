@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TargetData, Tree } from '@gpn-prototypes/vega-ui';
 
-import { setProjectStructureDraggingElements } from '../../redux-store/project-structure/actions';
-import { getProjectStructureNodeList } from '../../redux-store/project-structure/selectors';
-
 import { BlueLineSvg, OrangeLineSvg, RedLineSvg } from './icons';
+
+import { setProjectStructureDraggingElements } from '@/redux-store/project-structure/actions';
+import { getProjectStructureNodeList } from '@/redux-store/project-structure/selectors';
 
 const icons = {
   'blue-line': BlueLineSvg,
