@@ -59,10 +59,8 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
           name,
           objects{
           vid,
-          name,
-          ...on LicensingRound_A_Type{
-          name,
-          vid}}}}}`,
+          name
+        }}}}}`,
       },
       appendProjectId: true,
     });
