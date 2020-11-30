@@ -60,7 +60,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
           objects{
           vid,
           name
-        }}}}}`,
+        }}}}`,
       },
       appendProjectId: true,
     });

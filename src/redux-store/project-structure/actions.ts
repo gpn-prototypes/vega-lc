@@ -48,12 +48,14 @@ interface DomainObject {
 function buildTree(current: DomainObject, tree: string[], level: number): TreeItem[] {
   const key = tree[level];
   const items: DomainObject[] = current[key] as DomainObject[];
-  return items.map((item) => ({
-    name: item.name,
-    id: item.vid,
-    iconId: 'blue-line',
-    nodeList: level + 1 < tree.length ? buildTree(item, tree, level + 1) : [],
-  }));
+  return items.map((item) => {
+    return {
+      name: item.name,
+      id: item.vid,
+      iconId: 'blue-line',
+      nodeList: level + 1 < tree.length ? buildTree(item, tree, level + 1) : [],
+    };
+  });
 }
 
 const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
