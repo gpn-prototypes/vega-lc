@@ -78,10 +78,10 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
 
       dispatch(setProjectStructureList(nodeList));
     } else {
-      // TODO: throw error | show error
+      console.log(response); // TODO: throw error | show error
     }
   } catch (e) {
-    // TODO: throw error | show error
+    console.error(e); // TODO: throw error | show error
   }
 };
 
