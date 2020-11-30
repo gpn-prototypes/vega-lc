@@ -125,9 +125,12 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
       dispatch(SetProjectStructureQuery(structureQuery));
     } else {
       // TODO: throw error | show error
+      //
+      console.error('Response has no data', response);
     }
   } catch (e) {
     // TODO: throw error | show error
+    console.error(e);
   }
 };
 

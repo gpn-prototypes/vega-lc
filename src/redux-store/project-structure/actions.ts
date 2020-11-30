@@ -79,9 +79,11 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
       dispatch(setProjectStructureList(nodeList));
     } else {
       // TODO: throw error | show error
+      console.error('Response has no data', response);
     }
   } catch (e) {
     // TODO: throw error | show error
+    console.error(e);
   }
 };
 
