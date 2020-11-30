@@ -101,18 +101,16 @@ const createScenarioStep = async (
       version,
       activity: activityId,
       objectGroup: objectsGroupId,
-      name: 'Новый шаг',
+      name: 'Шаг',
     },
   };
 
   try {
-    const response = await graphQlRequest({
+    return await graphQlRequest({
       body: requestBody,
       appendProjectId: true,
       isMutation: true,
     });
-
-    return response.data?.vid;
   } catch (e) {
     return undefined;
   }
