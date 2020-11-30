@@ -51,14 +51,19 @@ function buildStructureQuery(entityImages: EntityImage[]): ProjectStructureQuery
     if (!attr) {
       return '';
     }
+
     const found = entityImages.find((ei) => ei.entity.vid === attr.entity.vid);
+
     if (found) {
       tree.push(attr.name);
+
       const attributeFound = found.attributes.find((i) => i.attrType === '[*]');
+
       return `${attr.name} { ... on ${found.name}_Type { vid name ${buildAttributeQuery(
         attributeFound,
       )} } }`;
     }
+
     return '';
   }
 
@@ -66,7 +71,9 @@ function buildStructureQuery(entityImages: EntityImage[]): ProjectStructureQuery
     const attributeFound = image.attributes.find((i) => i.attrType === '[*]');
     query += buildAttributeQuery(attributeFound);
   }
+
   query += '} } }';
+
   return {
     query,
     tree,

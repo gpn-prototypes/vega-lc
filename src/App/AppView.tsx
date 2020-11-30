@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ProgressSpin } from '@gpn-prototypes/vega-ui';
+import { Loader } from '@gpn-prototypes/vega-ui';
 
 import { cnApp } from './cn-app';
 
@@ -14,7 +14,7 @@ import { StoreLC } from '@/types/redux-store';
 
 export const AppView = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const loading = useSelector<StoreLC, boolean>(
+  const isLoading = useSelector<StoreLC, boolean>(
     (state) => !state.projectStructure.projectStructureQuery,
   );
 
@@ -24,7 +24,7 @@ export const AppView = (): React.ReactElement => {
 
   return (
     <div className={cnApp('App')}>
-      {loading ? <ProgressSpin /> : <GeologicalExploration />}
+      {isLoading ? <Loader size="m" /> : <GeologicalExploration />}
       <InProgress />
     </div>
   );
