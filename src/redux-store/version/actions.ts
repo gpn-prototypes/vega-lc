@@ -46,17 +46,18 @@ function buildStructureQuery(entityImages: EntityImage[]): ProjectStructureQuery
   const image = entityImages.find((ei) => ei.name === 'GeoEconomicAppraisalProject');
   let query = `{ domain { geoEconomicAppraisalProjectList { vid name `;
   const tree = ['geoEconomicAppraisalProjectList'];
+  const loadedImages: string[] = [];
 
   function buildAttributeQuery(attr: EntityImageAttribute | undefined): string {
     if (!attr) {
       return '';
     }
-
-    const found = entityImages.find((ei) => ei.entity.vid === attr.entity.vid);
-
+    const found = entityImages.find(
+      (ei) => ei.entity.vid === attr.entity.vid && loadedImages.indexOf(ei.vid) < 0,
+    );
     if (found) {
       tree.push(attr.name);
-
+      loadedImages.push(found.vid);
       const attributeFound = found.attributes.find((i) => i.attrType === '[*]');
 
       return `${attr.name} { ... on ${found.name}_Type { vid name ${buildAttributeQuery(
