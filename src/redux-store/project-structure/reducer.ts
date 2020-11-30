@@ -1,4 +1,4 @@
-import { ProjectStructureState } from '../../types/redux-store';
+import { ProjectStructureQuery, ProjectStructureState } from '../../types/redux-store';
 import createReducer from '../../utils/create-reducer';
 
 import { ProjectStructureActionTypes } from './action-types';
@@ -20,9 +20,18 @@ const setDraggingElementsStrategy = (
   draggingElements,
 });
 
+const setProjectStructureQuerySuccessStrategy = (
+  state: ProjectStructureState,
+  { projectStructureQuery }: { projectStructureQuery: ProjectStructureQuery },
+): ProjectStructureState => ({
+  ...state,
+  projectStructureQuery,
+});
+
 const strategyMap = {
   [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST]: setProjectStructureNodeListStrategy,
   [ProjectStructureActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
+  [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_QUERY]: setProjectStructureQuerySuccessStrategy,
 };
 
 const projectStructureReducer = createReducer(strategyMap, initialState);
