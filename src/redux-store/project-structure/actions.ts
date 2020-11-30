@@ -49,10 +49,20 @@ function buildTree(current: DomainObject, tree: string[], level: number): TreeIt
   const key = tree[level];
   const items: DomainObject[] = current[key] as DomainObject[];
   return items.map((item) => {
+    let iconId = 'blue-line';
+
+    if (new RegExp(/Ловушка/, 'i').test(item.name)) {
+      iconId = 'red-line';
+    }
+
+    if (new RegExp(/Залежь/, 'i').test(item.name)) {
+      iconId = 'orange-line';
+    }
+
     return {
       name: item.name,
       id: item.vid,
-      iconId: 'blue-line',
+      iconId,
       nodeList: level + 1 < tree.length ? buildTree(item, tree, level + 1) : [],
     };
   });
