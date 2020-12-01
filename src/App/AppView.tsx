@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Loader } from '@gpn-prototypes/vega-ui';
 
 import { cnApp } from './cn-app';
 
@@ -9,9 +10,13 @@ import '../styles/colors.css';
 import { GeologicalExploration } from '@/components/geological-exploration';
 import { InProgress } from '@/components/in-progress';
 import { fetchVersion } from '@/redux-store/version/actions';
+import { StoreLC } from '@/types/redux-store';
 
 export const AppView = (): React.ReactElement => {
   const dispatch = useDispatch();
+  const isLoading = useSelector<StoreLC, boolean>(
+    (state) => !state.projectStructure.projectStructureQuery,
+  );
 
   useEffect(() => {
     dispatch(fetchVersion());
@@ -19,7 +24,7 @@ export const AppView = (): React.ReactElement => {
 
   return (
     <div className={cnApp('App')}>
-      <GeologicalExploration />
+      {isLoading ? <Loader size="m" /> : <GeologicalExploration />}
       <InProgress />
     </div>
   );
