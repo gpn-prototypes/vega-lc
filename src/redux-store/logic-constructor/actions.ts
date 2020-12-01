@@ -117,6 +117,38 @@ const createScenarioStep = async (
   }
 };
 
+const updateScenarioStep = async (
+  scenarioStepId: string,
+  activityId: string,
+  objectGroupId: string,
+): Promise<CreateScenarioStepResponse | undefined> => {
+  const version = getCurrentVersion();
+
+  const requestBody: QueryBody = {
+    query: `mutation($vid: UUID!, $version: Int!, $activity: UUID!, $objectGroup: UUID) {
+        logic { scenarioStep {
+         update (vid: $vid, activity: $activity, version: $version, objectGroup: $objectGroup) {
+          result {
+          vid }}}}}`,
+    variables: {
+      vid: scenarioStepId,
+      activity: activityId,
+      objectGroup: objectGroupId,
+      version,
+    },
+  };
+
+  try {
+    return await graphQlRequest({
+      body: requestBody,
+      appendProjectId: true,
+      isMutation: true,
+    });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 const addCanvasElement = (
   canvasDataTree: CanvasData,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState): Promise<void> => {
@@ -171,9 +203,16 @@ const addCanvasElement = (
   });
 
   if (response.data) {
+    const canvasData: CanvasData = nodeRef
+      ? ({
+          ...canvasDataTree,
+          stepData: { ...canvasDataTree.stepData, id: nodeRef },
+        } as CanvasData)
+      : canvasDataTree;
+
     const canvasElement = Tree.of<CanvasData>({
       id: stepData?.id,
-      data: canvasDataTree,
+      data: canvasData,
     });
 
     dispatch({
@@ -436,10 +475,11 @@ const addGroupObjectsToCanvasElement = (
 
 const addActivityToCanvasElement = (
   CanvasTreeId: string,
-): ThunkAction<void, StoreLC, unknown, AnyAction> => (dispatch, getState) => {
+): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
   dispatch(setIsDroppingOnExistingStep(true));
 
-  const { logicConstructor, activities } = getState();
+  const { logicConstructor, activities, groupObjects } = getState();
+  const objectsGroup = groupObjects.nodeList;
   const { canvasElements } = logicConstructor;
   const { draggingElements, nodeList } = activities;
 
@@ -448,26 +488,61 @@ const addActivityToCanvasElement = (
     const activity = getTreeNodeById(draggingElements[0].id, nodeList);
     const treeData = tree?.getData();
 
-    let stepData: StepData = {
-      id: '0',
-      name: 'Шаг 1',
-      events: [
-        {
-          id: activity?.id || '0',
-          name: activity?.name || 'Мероприятие',
-          content: [],
+    if (!treeData?.stepData && activity?.id && objectsGroup?.length) {
+      const stepData: StepData = {
+        id: '0',
+        name: 'Шаг',
+        events: [
+          {
+            id: activity?.id || '0',
+            name: activity?.name || 'Мероприятие',
+            content: [],
+          },
+        ],
+      };
+
+      let nodeRef = null;
+
+      const scenarioStepData = await createScenarioStep(activity?.id, objectsGroup[0].id);
+
+      if (scenarioStepData) {
+        nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+
+        stepData.id = nodeRef || '0';
+      }
+
+      const queryString = `nodeRef: $nodeRef`;
+
+      await syncCanvasRequest(CanvasTreeId, queryString, {
+        variables: {
+          pattern: '$nodeRef: UUID',
+          nodeRef,
         },
-      ],
-    };
+      });
 
-    if (treeData?.stepData) {
-      stepData = { ...treeData.stepData };
+      tree?.setData({ stepData });
 
-      stepData.events[0] = { ...stepData.events[0] };
+      return;
     }
 
-    if (tree) {
-      tree.setData({ stepData });
+    if (treeData?.stepData && activity?.id && objectsGroup?.length) {
+      const { stepData: existStepData } = treeData;
+
+      const response = await updateScenarioStep(existStepData.id, activity?.id, objectsGroup[0].id);
+
+      if (!response) {
+        return;
+      }
+
+      const events = [
+        {
+          id: activity.id,
+          name: activity.name,
+          content: [...existStepData.events[0].content],
+        },
+      ];
+
+      tree?.setData({ stepData: { ...existStepData, events } });
     }
   }
 };
