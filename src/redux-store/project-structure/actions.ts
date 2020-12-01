@@ -42,28 +42,23 @@ const DEFAULT_TREE = ['geoEconomicAppraisalProjectList'];
 interface DomainObject {
   vid: string;
   name: string;
-
+  // eslint-disable-next-line no-underscore-dangle
+  typename: string;
   [key: string]: DomainObject[] | string;
 }
+
+// TODO: make maps with entities
+const ICONS_MAP: { [key: string]: string } = {
+  Trap_Type: 'red-line',
+  OilPool_Type: 'orange-line',
+};
 
 function buildTree(current: DomainObject, tree: string[], level: number): TreeItem[] {
   const key = tree[level];
   const items: DomainObject[] = current[key] as DomainObject[];
-
-  const trapRegExp = /Ловушка/i;
-  const oilReservoirRegExp = /Залежь/i;
-
   return items.map((item) => {
-    let iconId = 'blue-line';
-
-    if (trapRegExp.test(item.name)) {
-      iconId = 'red-line';
-    }
-
-    if (oilReservoirRegExp.test(item.name)) {
-      iconId = 'orange-line';
-    }
-
+    // eslint-disable-next-line no-underscore-dangle
+    const iconId = ICONS_MAP[item.typename] || 'blue-line';
     return {
       name: item.name,
       id: item.vid,
