@@ -24,7 +24,7 @@ const icons = {
 export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
   const dispatch = useDispatch();
 
-  const objectGroup = useSelector(getGroupObjectsNodeList);
+  const objectGroupList = useSelector(getGroupObjectsNodeList);
   const projectStructureDraggingElements = useSelector(getProjectStructureDraggingElements);
 
   const handleOpenDialog = (): void => {
@@ -36,14 +36,20 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
       const ids = projectStructureDraggingElements.reduce((acc: string[], element: TargetData) => {
         if (element.isDraggable) {
           acc.push(element.id);
-
           return acc;
         }
-
         return acc;
       }, []);
 
-      dispatch(updateGroupObject(receivingId, ids));
+      let found = objectGroupList?.find((group) => group.id === receivingId);
+      if (!found) {
+        found = objectGroupList?.find((group) => group.nodeList.find((i) => i.id === receivingId));
+      }
+      if (found) {
+        dispatch(updateGroupObject(found.id, ids));
+      } else {
+        // TODO: show error message
+      }
     }
   };
 
@@ -59,7 +65,7 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
     <div className={cnObjectGroup()}>
       <Tree
         icons={icons}
-        nodeList={objectGroup || []}
+        nodeList={objectGroupList || []}
         showIndentGuides={false}
         onPasteItem={handlePaste}
         onDragStart={handleDragStart}
