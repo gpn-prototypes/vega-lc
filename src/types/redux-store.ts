@@ -62,6 +62,7 @@ export type ActivitiesState = {
   autoFocus?: boolean;
   activitiesRef?: React.RefObject<HTMLElement> | null;
   draggingElements?: TargetData[] | [];
+  isDroppingOnExistingStep?: boolean;
 };
 
 export type LogicConstructorState = {

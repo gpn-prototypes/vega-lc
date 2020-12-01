@@ -6,6 +6,7 @@ import { ThunkAction } from 'redux-thunk';
 import { LogicConstructorActionTypes } from './action-types';
 import { FETCH_CANVAS_ITEMS_DATA } from './queries';
 
+import { setIsDroppingOnExistingStep } from '@/redux-store/activities/actions';
 import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '@/types/redux-store';
 import { getProjectLink, vegaApi } from '@/utils/api-clients/vega-api';
 import { canvasNodeTypes } from '@/utils/constants/canvas-node-types';
@@ -119,7 +120,16 @@ const createScenarioStep = async (
 const addCanvasElement = (
   canvasDataTree: CanvasData,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState): Promise<void> => {
-  const objectsGroup = getState().groupObjects.nodeList;
+  const { groupObjects, activities } = getState();
+  const { isDroppingOnExistingStep } = activities;
+
+  if (isDroppingOnExistingStep) {
+    dispatch(setIsDroppingOnExistingStep(false));
+
+    return;
+  }
+
+  const objectsGroup = groupObjects.nodeList;
   const { Tree } = entities;
   const { position, width, stepData, type } = canvasDataTree;
   const nodeType = canvasNodeTypes[type];
@@ -385,7 +395,7 @@ const addGroupObjectsToCanvasElement = (
   const { nodeList, draggingElements } = groupObjects;
   const { canvasElements } = logicConstructor;
 
-  if (canvasElements && nodeList && draggingElements) {
+  if (draggingElements?.length && canvasElements && nodeList) {
     const tree = getCanvasTreeById(canvasElements, CanvasTreeId);
     const domainObjects = getTreeNodeById(draggingElements[0].id, nodeList)?.nodeList.map(
       (node) => ({
@@ -424,6 +434,62 @@ const addGroupObjectsToCanvasElement = (
   }
 };
 
+const addActivityToCanvasElement = (
+  CanvasTreeId: string,
+): ThunkAction<void, StoreLC, unknown, AnyAction> => (dispatch, getState) => {
+  dispatch(setIsDroppingOnExistingStep(true));
+
+  const { logicConstructor, activities } = getState();
+  const { canvasElements } = logicConstructor;
+  const { draggingElements, nodeList } = activities;
+
+  if (draggingElements?.length && canvasElements && nodeList) {
+    const tree = getCanvasTreeById(canvasElements, CanvasTreeId);
+    const activity = getTreeNodeById(draggingElements[0].id, nodeList);
+    const treeData = tree?.getData();
+
+    let stepData: StepData = {
+      id: '0',
+      name: 'Шаг 1',
+      events: [
+        {
+          id: activity?.id || '0',
+          name: activity?.name || 'Мероприятие',
+          content: [],
+        },
+      ],
+    };
+
+    if (treeData?.stepData) {
+      stepData = { ...treeData.stepData };
+
+      stepData.events[0] = { ...stepData.events[0] };
+    }
+
+    if (tree) {
+      tree.setData({ stepData });
+    }
+  }
+};
+
+const mapDropEventToRelatedAction = (
+  intersectionId: string,
+): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
+  const { groupObjects, activities } = getState();
+  const { draggingElements: groupObjectsDraggingElements } = groupObjects;
+  const { draggingElements: activitiesDraggingElements } = activities;
+
+  if (groupObjectsDraggingElements?.length) {
+    dispatch(addGroupObjectsToCanvasElement(intersectionId));
+
+    return;
+  }
+
+  if (activitiesDraggingElements?.length) {
+    dispatch(addActivityToCanvasElement(intersectionId));
+  }
+};
+
 export {
   syncCanvasState,
   setScenarioList,
@@ -433,5 +499,6 @@ export {
   fetchScenarioList,
   createScenarioStep,
   fetchCanvasItemsData,
+  mapDropEventToRelatedAction,
   addGroupObjectsToCanvasElement,
 };

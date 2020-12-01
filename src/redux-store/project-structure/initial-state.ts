@@ -1,6 +1,8 @@
 import { TreeItem } from '@gpn-prototypes/vega-ui';
 
-const initialState = {
+import { ProjectStructureState } from '@/types/redux-store';
+
+const initialState: ProjectStructureState = {
   nodeList: [] as TreeItem[],
   draggingElements: [],
 };

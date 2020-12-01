@@ -1,6 +1,8 @@
 import { TreeItem } from '@gpn-prototypes/vega-ui';
 
-const initialState = {
+import { GroupObjectsState } from '@/types/redux-store';
+
+const initialState: GroupObjectsState = {
   nodeList: [] as TreeItem[],
   isDialogOpened: false,
   newGroupParams: {
