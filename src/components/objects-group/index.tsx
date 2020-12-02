@@ -36,19 +36,23 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
       const ids = projectStructureDraggingElements.reduce((acc: string[], element: TargetData) => {
         if (element.isDraggable) {
           acc.push(element.id);
+
           return acc;
         }
+
         return acc;
       }, []);
 
       let found = objectGroupList?.find((group) => group.id === receivingId);
+
       if (!found) {
         found = objectGroupList?.find((group) => group.nodeList.find((i) => i.id === receivingId));
       }
+
       if (found) {
         dispatch(updateGroupObject(found.id, ids));
       } else {
-        // TODO: show error message
+        console.error(`Object group with specified ID: ${receivingId} was not found`); // TODO: show error message
       }
     }
   };
