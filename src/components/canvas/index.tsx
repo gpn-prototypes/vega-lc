@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Canvas, CanvasUpdate, Change, useInterval } from '@gpn-prototypes/vega-ui';
 
 import {
-  addGroupObjectsToCanvasElement,
+  mapDropEventToRelatedAction,
   setCanvasElements,
   syncCanvasState,
   toggleStepEditor,
@@ -68,7 +68,7 @@ export const CanvasWidget: React.FC = () => {
     }
 
     if (update.type === 'drop-event') {
-      dispatch(addGroupObjectsToCanvasElement(update.intersectionId));
+      dispatch(mapDropEventToRelatedAction(update.intersectionId));
 
       return;
     }

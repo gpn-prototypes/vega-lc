@@ -36,9 +36,10 @@ export const LogicConstructorWidget: React.FC = () => {
         const { top, left } = boundingClientRect;
 
         const targetRef = activitiesDraggingElements[0].ref?.current;
+        const y: number = (e.clientY + top) / 2;
 
         const canvasData: CanvasData = {
-          position: { x: e.clientX - left, y: e.clientY - top * 6 },
+          position: { x: e.clientX - left, y },
           type: 'step',
           title: 'Шаг',
           width: 250,

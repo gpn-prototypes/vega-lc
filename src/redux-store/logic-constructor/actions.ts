@@ -6,6 +6,7 @@ import { ThunkAction } from 'redux-thunk';
 import { LogicConstructorActionTypes } from './action-types';
 import { FETCH_CANVAS_ITEMS_DATA } from './queries';
 
+import { setIsDroppingOnExistingStep } from '@/redux-store/activities/actions';
 import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '@/types/redux-store';
 import { getProjectLink, vegaApi } from '@/utils/api-clients/vega-api';
 import { canvasNodeTypes } from '@/utils/constants/canvas-node-types';
@@ -13,7 +14,6 @@ import { debounce, DebounceFunction } from '@/utils/debounce';
 import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '@/utils/get-tree-node-by-id';
 import { graphQlRequest, QueryBody } from '@/utils/graphql-request';
-import { getHeaders } from '@/utils/headers';
 import { getStepDataFromScenarioStep } from '@/utils/step-data';
 import { syncCanvasRequest } from '@/utils/sync-canvas-request-body';
 import { getCurrentVersion } from '@/utils/version';
@@ -93,10 +93,16 @@ const createScenarioStep = async (
 
   const requestBody: QueryBody = {
     query: `mutation($version: Int!, $activity: UUID!, $name: String, $objectGroup: UUID) {
-        logic { scenarioStep {
-         create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup) {
-          result {
-          vid }}}}}`,
+              logic {
+                scenarioStep {
+                  create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup) {
+                    result {
+                      vid
+                    }
+                  }
+                }
+              }
+            }`,
     variables: {
       version,
       activity: activityId,
@@ -116,10 +122,57 @@ const createScenarioStep = async (
   }
 };
 
+const updateScenarioStep = async (
+  scenarioStepId: string,
+  activityId: string,
+  objectGroupId: string,
+): Promise<CreateScenarioStepResponse | undefined> => {
+  const version = getCurrentVersion();
+
+  const requestBody: QueryBody = {
+    query: `mutation($vid: UUID!, $version: Int!, $activity: UUID!, $objectGroup: UUID) {
+              logic {
+                scenarioStep {
+                  update (vid: $vid, activity: $activity, version: $version, objectGroup: $objectGroup) {
+                    result {
+                      vid
+                    }
+                  }
+                }
+              }
+            }`,
+    variables: {
+      vid: scenarioStepId,
+      activity: activityId,
+      objectGroup: objectGroupId,
+      version,
+    },
+  };
+
+  try {
+    return await graphQlRequest({
+      body: requestBody,
+      appendProjectId: true,
+      isMutation: true,
+    });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 const addCanvasElement = (
   canvasDataTree: CanvasData,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState): Promise<void> => {
-  const objectsGroup = getState().groupObjects.nodeList;
+  const { groupObjects, activities } = getState();
+  const { isDroppingOnExistingStep } = activities;
+
+  if (isDroppingOnExistingStep) {
+    dispatch(setIsDroppingOnExistingStep(false));
+
+    return;
+  }
+
+  const objectsGroup = groupObjects.nodeList;
   const { Tree } = entities;
   const { position, width, stepData, type } = canvasDataTree;
   const nodeType = canvasNodeTypes[type];
@@ -136,12 +189,18 @@ const addCanvasElement = (
 
   const requestBody: QueryBody = {
     query: `mutation($nodeType: String!, $nodeRef: UUID, $version: Int!, $title: String, $vid: UUID,
-      $width: Float, $x: Float, $y: Float) {
-        logic { canvas {
-         create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef, vid: $vid,
-          position: [$x, $y], version: $version) {
-          result {
-          vid }}}}}`,
+              $width: Float, $x: Float, $y: Float) {
+                logic {
+                  canvas {
+                    create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef, vid: $vid,
+                      position: [$x, $y], version: $version) {
+                        result {
+                          vid
+                        }
+                      }
+                  }
+                }
+              }`,
     variables: {
       title: stepData?.name,
       vid: stepData?.id,
@@ -161,59 +220,22 @@ const addCanvasElement = (
   });
 
   if (response.data) {
+    const canvasData: CanvasData = nodeRef
+      ? ({
+          ...canvasDataTree,
+          stepData: { ...canvasDataTree.stepData, id: nodeRef },
+        } as CanvasData)
+      : canvasDataTree;
+
     const canvasElement = Tree.of<CanvasData>({
       id: stepData?.id,
-      data: canvasDataTree,
+      data: canvasData,
     });
 
     dispatch({
       type: LogicConstructorActionTypes.ADD_CANVAS_ELEMENT,
       canvasElement,
     });
-  }
-};
-
-const fetchScenarioList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
-  dispatch,
-): Promise<void> => {
-  try {
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `{logic { stepList {
-          vid,
-          name,
-          itemList {
-          activity {
-          activityType{
-            vid,
-          },
-          name}
-          object {
-          ...on LicensingRound_A_Type {
-          vid,
-          name,
-          }}}}}}`,
-      }),
-    });
-
-    const body = await response.json();
-
-    if (response.ok) {
-      const { logic } = body.data;
-      const { stepList } = logic;
-
-      if (!stepList) {
-        return;
-      }
-
-      dispatch(setScenarioList(stepList));
-    } else {
-      console.log(body);
-    }
-  } catch (e) {
-    console.error(e);
   }
 };
 
@@ -385,7 +407,7 @@ const addGroupObjectsToCanvasElement = (
   const { nodeList, draggingElements } = groupObjects;
   const { canvasElements } = logicConstructor;
 
-  if (canvasElements && nodeList && draggingElements) {
+  if (draggingElements?.length && canvasElements && nodeList) {
     const tree = getCanvasTreeById(canvasElements, CanvasTreeId);
     const domainObjects = getTreeNodeById(draggingElements[0].id, nodeList)?.nodeList.map(
       (node) => ({
@@ -424,14 +446,106 @@ const addGroupObjectsToCanvasElement = (
   }
 };
 
+const addActivityToCanvasElement = (
+  CanvasTreeId: string,
+): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
+  dispatch(setIsDroppingOnExistingStep(true));
+
+  const { logicConstructor, activities, groupObjects } = getState();
+  const objectsGroup = groupObjects.nodeList;
+  const { canvasElements } = logicConstructor;
+  const { draggingElements, nodeList } = activities;
+
+  if (draggingElements?.length && canvasElements && nodeList) {
+    const tree = getCanvasTreeById(canvasElements, CanvasTreeId);
+    const activity = getTreeNodeById(draggingElements[0].id, nodeList);
+    const treeData = tree?.getData();
+
+    if (!treeData?.stepData && activity?.id && objectsGroup?.length) {
+      const stepData: StepData = {
+        id: '0',
+        name: 'Шаг',
+        events: [
+          {
+            id: activity?.id || '0',
+            name: activity?.name || 'Мероприятие',
+            content: [],
+          },
+        ],
+      };
+
+      let nodeRef = null;
+
+      const scenarioStepData = await createScenarioStep(activity?.id, objectsGroup[0].id);
+
+      if (scenarioStepData) {
+        nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+
+        stepData.id = nodeRef || '0';
+      }
+
+      const queryString = `nodeRef: $nodeRef`;
+
+      await syncCanvasRequest(CanvasTreeId, queryString, {
+        variables: {
+          pattern: '$nodeRef: UUID',
+          nodeRef,
+        },
+      });
+
+      tree?.setData({ stepData });
+
+      return;
+    }
+
+    if (treeData?.stepData && activity?.id && objectsGroup?.length) {
+      const { stepData: existStepData } = treeData;
+
+      const response = await updateScenarioStep(existStepData.id, activity?.id, objectsGroup[0].id);
+
+      if (!response) {
+        return;
+      }
+
+      const events = [
+        {
+          id: activity.id,
+          name: activity.name,
+          content: [...existStepData.events[0].content],
+        },
+      ];
+
+      tree?.setData({ stepData: { ...existStepData, events } });
+    }
+  }
+};
+
+const mapDropEventToRelatedAction = (
+  intersectionId: string,
+): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
+  const { groupObjects, activities } = getState();
+  const { draggingElements: groupObjectsDraggingElements } = groupObjects;
+  const { draggingElements: activitiesDraggingElements } = activities;
+
+  if (groupObjectsDraggingElements?.length) {
+    dispatch(addGroupObjectsToCanvasElement(intersectionId));
+
+    return;
+  }
+
+  if (activitiesDraggingElements?.length) {
+    dispatch(addActivityToCanvasElement(intersectionId));
+  }
+};
+
 export {
   syncCanvasState,
   setScenarioList,
   toggleStepEditor,
   addCanvasElement,
   setCanvasElements,
-  fetchScenarioList,
   createScenarioStep,
   fetchCanvasItemsData,
+  mapDropEventToRelatedAction,
   addGroupObjectsToCanvasElement,
 };

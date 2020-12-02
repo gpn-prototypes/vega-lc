@@ -17,6 +17,9 @@ export const getActivitiesRef = (state: StoreLC): React.RefObject<HTMLElement> |
 export const getActivitiesDraggingElements = (state: StoreLC): TargetData[] | undefined =>
   getCurrentState(state).draggingElements;
 
+export const getIsDroppingOnExistingStep = (state: StoreLC): boolean | undefined =>
+  getCurrentState(state).isDroppingOnExistingStep;
+
 export const getActivitiesNodeList = (searchString: string | null | undefined) => (
   state: StoreLC,
 ): TreeItem[] | undefined => {

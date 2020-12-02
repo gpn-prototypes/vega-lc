@@ -1,4 +1,6 @@
-const initialState = {
+import { VersionState } from '@/types/redux-store';
+
+const initialState: VersionState = {
   version: -1,
 };
 

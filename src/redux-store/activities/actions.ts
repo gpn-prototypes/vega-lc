@@ -3,10 +3,10 @@ import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { StoreLC } from '../../types/redux-store';
-import { graphQlRequest } from '../../utils/graphql-request';
-
 import { ActivitiesActionTypes } from './action-types';
+
+import { StoreLC } from '@/types/redux-store';
+import { graphQlRequest } from '@/utils/graphql-request';
 
 type SetIsAutoFocus = { type: typeof ActivitiesActionTypes.SET_IS_AUTO_FOCUS; autoFocus: boolean };
 
@@ -23,6 +23,11 @@ type SetActivitiesRef = {
 type SetActivitiesList = {
   type: typeof ActivitiesActionTypes.SET_ACTIVITIES_LIST;
   nodeList: TreeItem[];
+};
+
+type SetIsDroppingOnExisting = {
+  type: typeof ActivitiesActionTypes.SET_IS_DROPPING_ON_EXISTING_STEP;
+  isDroppingOnExistingStep: boolean;
 };
 
 const setActivitiesList = (nodeList: TreeItem[]): SetActivitiesList => ({
@@ -43,6 +48,13 @@ const setActivitiesRef = (activitiesRef: React.RefObject<HTMLElement>): SetActiv
 const setActivitiesDraggingElements = (draggingElements: TargetData[]): SetDraggingElements => ({
   type: ActivitiesActionTypes.SET_DRAGGING_ELEMENTS,
   draggingElements,
+});
+
+const setIsDroppingOnExistingStep = (
+  isDroppingOnExistingStep: boolean,
+): SetIsDroppingOnExisting => ({
+  type: ActivitiesActionTypes.SET_IS_DROPPING_ON_EXISTING_STEP,
+  isDroppingOnExistingStep,
 });
 
 const setSearchString = (searchString: string | null) => (
@@ -125,5 +137,6 @@ export {
   setSearchString,
   setIsAutoFocus,
   setActivitiesRef,
+  setIsDroppingOnExistingStep,
   setActivitiesDraggingElements,
 };
