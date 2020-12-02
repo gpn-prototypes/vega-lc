@@ -94,10 +94,12 @@ const createScenarioStep = async (
 
   const requestBody: QueryBody = {
     query: `mutation($version: Int!, $activity: UUID!, $name: String, $objectGroup: UUID) {
-        logic { scenarioStep {
-         create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup) {
-          result {
-          vid }}}}}`,
+        logic {
+          scenarioStep {
+          create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup) {
+            result {
+              vid }
+          }}}}`,
     variables: {
       version,
       activity: activityId,
@@ -126,10 +128,12 @@ const updateScenarioStep = async (
 
   const requestBody: QueryBody = {
     query: `mutation($vid: UUID!, $version: Int!, $activity: UUID!, $objectGroup: UUID) {
-        logic { scenarioStep {
-         update (vid: $vid, activity: $activity, version: $version, objectGroup: $objectGroup) {
-          result {
-          vid }}}}}`,
+        logic {
+          scenarioStep {
+            update (vid: $vid, activity: $activity, version: $version, objectGroup: $objectGroup) {
+              result {
+                vid }
+              }}}}`,
     variables: {
       vid: scenarioStepId,
       activity: activityId,
@@ -179,11 +183,13 @@ const addCanvasElement = (
   const requestBody: QueryBody = {
     query: `mutation($nodeType: String!, $nodeRef: UUID, $version: Int!, $title: String, $vid: UUID,
       $width: Float, $x: Float, $y: Float) {
-        logic { canvas {
-         create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef, vid: $vid,
-          position: [$x, $y], version: $version) {
-          result {
-          vid }}}}}`,
+        logic {
+          canvas {
+            create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef, vid: $vid,
+              position: [$x, $y], version: $version) {
+                result {
+                  vid }
+              }}}}`,
     variables: {
       title: stepData?.name,
       vid: stepData?.id,
