@@ -14,7 +14,6 @@ import { debounce, DebounceFunction } from '@/utils/debounce';
 import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '@/utils/get-tree-node-by-id';
 import { graphQlRequest, QueryBody } from '@/utils/graphql-request';
-import { getHeaders } from '@/utils/headers';
 import { getStepDataFromScenarioStep } from '@/utils/step-data';
 import { syncCanvasRequest } from '@/utils/sync-canvas-request-body';
 import { getCurrentVersion } from '@/utils/version';
@@ -94,12 +93,16 @@ const createScenarioStep = async (
 
   const requestBody: QueryBody = {
     query: `mutation($version: Int!, $activity: UUID!, $name: String, $objectGroup: UUID) {
-        logic {
-          scenarioStep {
-          create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup) {
-            result {
-              vid }
-          }}}}`,
+              logic {
+                scenarioStep {
+                  create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup) {
+                    result {
+                      vid
+                    }
+                  }
+                }
+              }
+            }`,
     variables: {
       version,
       activity: activityId,
@@ -128,12 +131,16 @@ const updateScenarioStep = async (
 
   const requestBody: QueryBody = {
     query: `mutation($vid: UUID!, $version: Int!, $activity: UUID!, $objectGroup: UUID) {
-        logic {
-          scenarioStep {
-            update (vid: $vid, activity: $activity, version: $version, objectGroup: $objectGroup) {
-              result {
-                vid }
-              }}}}`,
+              logic {
+                scenarioStep {
+                  update (vid: $vid, activity: $activity, version: $version, objectGroup: $objectGroup) {
+                    result {
+                      vid
+                    }
+                  }
+                }
+              }
+            }`,
     variables: {
       vid: scenarioStepId,
       activity: activityId,
@@ -182,14 +189,18 @@ const addCanvasElement = (
 
   const requestBody: QueryBody = {
     query: `mutation($nodeType: String!, $nodeRef: UUID, $version: Int!, $title: String, $vid: UUID,
-      $width: Float, $x: Float, $y: Float) {
-        logic {
-          canvas {
-            create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef, vid: $vid,
-              position: [$x, $y], version: $version) {
-                result {
-                  vid }
-              }}}}`,
+              $width: Float, $x: Float, $y: Float) {
+                logic {
+                  canvas {
+                    create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef, vid: $vid,
+                      position: [$x, $y], version: $version) {
+                        result {
+                          vid
+                        }
+                      }
+                  }
+                }
+              }`,
     variables: {
       title: stepData?.name,
       vid: stepData?.id,
@@ -225,50 +236,6 @@ const addCanvasElement = (
       type: LogicConstructorActionTypes.ADD_CANVAS_ELEMENT,
       canvasElement,
     });
-  }
-};
-
-const fetchScenarioList = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
-  dispatch,
-): Promise<void> => {
-  try {
-    const response = await fetch(`graphql/a3333333-b111-c111-d111-e00000000000`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        query: `{logic { stepList {
-          vid,
-          name,
-          itemList {
-          activity {
-          activityType{
-            vid,
-          },
-          name}
-          object {
-          ...on LicensingRound_A_Type {
-          vid,
-          name,
-          }}}}}}`,
-      }),
-    });
-
-    const body = await response.json();
-
-    if (response.ok) {
-      const { logic } = body.data;
-      const { stepList } = logic;
-
-      if (!stepList) {
-        return;
-      }
-
-      dispatch(setScenarioList(stepList));
-    } else {
-      console.log(body);
-    }
-  } catch (e) {
-    console.error(e);
   }
 };
 
@@ -577,7 +544,6 @@ export {
   toggleStepEditor,
   addCanvasElement,
   setCanvasElements,
-  fetchScenarioList,
   createScenarioStep,
   fetchCanvasItemsData,
   mapDropEventToRelatedAction,
