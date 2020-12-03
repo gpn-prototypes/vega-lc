@@ -1,62 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Geological Exploration рендерится без ошибок 1`] = `
-<div
-  className="ActivitiesWidget"
->
+Array [
   <div
-    className={
-      Object {
-        "has": [Function],
-        "is": [Function],
-        "mix": [Function],
-        "split": [Function],
-        "state": [Function],
-        "toString": [Function],
-      }
-    }
-  >
-    <div
-      className="Text Text_size_m Text_view_primary ActivitiesWidget__Title"
-    >
-      Мероприятия
-    </div>
-    <div
-      className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_default TextField_type_input ActivitiesWidget__Search"
-    >
-      <div
-        className="TextField-Side TextField-Side_position_left TextField-Side_type_icon"
-      >
-        <span
-          className="Icon Icon_size_s IconSearch TextField-Icon"
-        >
-          <svg
-            className="Icon-Svg"
-            viewBox="0 0 16 16"
-          >
-            <path
-              clipRule="evenodd"
-              d="M9.618 11.032a5.5 5.5 0 111.414-1.414l3.97 3.969L13.586 15l-3.97-3.97zM10 6.5a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0z"
-              fillRule="evenodd"
-            />
-          </svg>
-        </span>
-      </div>
-      <input
-        autoFocus={false}
-        className="TextField-Input"
-        id=""
-        onBlur={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        placeholder="Поиск"
-        type="input"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    className="VegaTree"
+    className="ActivitiesWidget"
+    hidden={false}
   >
     <div
       className={
@@ -70,7 +18,49 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
         }
       }
     >
-      <ul
+      <div
+        className="Text Text_size_m Text_view_primary ActivitiesWidget__Title"
+      >
+        Мероприятия
+      </div>
+      <div
+        className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_default TextField_type_input ActivitiesWidget__Search"
+      >
+        <div
+          className="TextField-Side TextField-Side_position_left TextField-Side_type_icon"
+        >
+          <span
+            className="Icon Icon_size_s IconSearch TextField-Icon"
+          >
+            <svg
+              className="Icon-Svg"
+              viewBox="0 0 16 16"
+            >
+              <path
+                clipRule="evenodd"
+                d="M9.618 11.032a5.5 5.5 0 111.414-1.414l3.97 3.969L13.586 15l-3.97-3.97zM10 6.5a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0z"
+                fillRule="evenodd"
+              />
+            </svg>
+          </span>
+        </div>
+        <input
+          autoFocus={false}
+          className="TextField-Input"
+          id=""
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          placeholder="Поиск"
+          type="input"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="VegaTree"
+    >
+      <div
         className={
           Object {
             "has": [Function],
@@ -81,10 +71,50 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
             "toString": [Function],
           }
         }
-        role="tree"
-        tabIndex={0}
-      />
+      >
+        <ul
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+          role="tree"
+          tabIndex={0}
+        />
+      </div>
     </div>
-  </div>
-</div>
+  </div>,
+  <button
+    className="Button Button_size_m Button_view_primary Button_width_default Button_form_default Button_withIcon MixFocus ActivitiesWidget__Switch"
+    onClick={[Function]}
+    style={
+      Object {
+        "right": "calc(0px + var(--space-m) + var(--space-xl))",
+      }
+    }
+  >
+    <span
+      className="Button-Label"
+    >
+      Мероприятия
+    </span>
+    <span
+      className="Icon Icon_size_s IconForward Button-Icon Button-Icon_position_right"
+    >
+      <svg
+        className="Icon-Svg"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M10.594 7L7.297 3.703l1.414-1.414L14.423 8 8.71 13.711l-1.414-1.414L10.594 9H2V7h8.594z"
+        />
+      </svg>
+    </span>
+  </button>,
+]
 `;
