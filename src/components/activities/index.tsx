@@ -65,8 +65,10 @@ export const ActivitiesWidget: React.FC = (): React.ReactElement => {
   };
 
   useMount(() => {
-    const optionsWrapper = document.getElementsByClassName('VegaCanvas__OptionsPanelWrapper')[0];
-    setOptionsWrapperWidth(optionsWrapper.getBoundingClientRect().width);
+    const optionsWrapper = document.querySelector('.VegaCanvas__OptionsPanelWrapper');
+    if (optionsWrapper) {
+      setOptionsWrapperWidth(optionsWrapper.getBoundingClientRect().width);
+    }
   });
 
   return (
