@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Tabs } from '@gpn-prototypes/vega-ui';
+import { useDispatch } from 'react-redux';
+import { IconClose, Tabs } from '@gpn-prototypes/vega-ui';
 
 import { cnStepEditor } from './cn-lc';
 import CommonInfo from './CommonInfo';
@@ -8,11 +9,19 @@ import Effects from './Effects';
 
 import './index.css';
 
+import { toggleStepEditor } from '@/redux-store/logic-constructor/actions';
+
 type Item = {
   name: string;
 };
 
 const StepEditor: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const handleClose = (): void => {
+    dispatch(toggleStepEditor(false));
+  };
+
   const tabs = [
     {
       name: 'Общая информация',
@@ -53,7 +62,11 @@ const StepEditor: React.FC = () => {
         />
       </div>
 
-      <div className={cnStepEditor('Content')}>{renderContent()}</div>
+      <div className={cnStepEditor('Content')}>
+        {renderContent()}
+
+        <IconClose size="s" className={cnStepEditor('CloseBtn').toString()} onClick={handleClose} />
+      </div>
     </div>
   );
 };

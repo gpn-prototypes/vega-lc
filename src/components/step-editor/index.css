@@ -41,6 +41,14 @@
     background-color: var(--color-bg-default);
   }
 
+  &__CloseBtn {
+    position: absolute;
+    top: 11px;
+    right: 5px;
+
+    cursor: pointer;
+  }
+
   &__ChanceSelect {
     width: 100%;
   }
