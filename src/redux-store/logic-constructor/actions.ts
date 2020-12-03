@@ -52,6 +52,20 @@ type CreateScenarioStepResponse = {
   };
 };
 
+type CreateCanvasNodeResponse = {
+  data: {
+    logic?: {
+      canvas?: {
+        create?: {
+          result?: {
+            vid?: string;
+          };
+        };
+      };
+    };
+  };
+};
+
 // type AddCanvasElement = {
 //   type: typeof LogicConstructorActionTypes.ADD_CANVAS_ELEMENT;
 //   canvasElement: CanvasTree | [];
@@ -189,11 +203,11 @@ const addCanvasElement = (
   }
 
   const requestBody: QueryBody = {
-    query: `mutation($nodeType: String!, $nodeRef: UUID, $version: Int!, $title: String, $vid: UUID,
+    query: `mutation($nodeType: String!, $nodeRef: UUID, $version: Int!, $title: String,
               $width: Float, $x: Float, $y: Float) {
                 logic {
                   canvas {
-                    create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef, vid: $vid,
+                    create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef,
                       position: [$x, $y], version: $version) {
                         result {
                           vid
@@ -204,7 +218,6 @@ const addCanvasElement = (
               }`,
     variables: {
       title: stepData?.name,
-      vid: stepData?.id,
       width,
       nodeType,
       nodeRef,
@@ -214,7 +227,7 @@ const addCanvasElement = (
     },
   };
 
-  const response = await graphQlRequest({
+  const response: CreateCanvasNodeResponse = await graphQlRequest({
     body: requestBody,
     appendProjectId: true,
     isMutation: true,
@@ -229,7 +242,7 @@ const addCanvasElement = (
       : canvasDataTree;
 
     const canvasElement = Tree.of<CanvasData>({
-      id: stepData?.id,
+      id: response.data.logic?.canvas?.create?.result?.vid,
       data: canvasData,
     });
 
@@ -339,6 +352,8 @@ const syncCanvasState = (
           .then(() => syncCanvasRequest(update.id, update.queryString))
           .catch(console.error);
       }, Promise.resolve());
+
+      return;
     }
 
     if (updateData.type === 'connect-tree' || updateData.type === 'disconnect-tree') {
@@ -370,6 +385,8 @@ const syncCanvasState = (
           });
         })
         .catch(console.error);
+
+      return;
     }
 
     if (updateData.type === 'add-tree') {
@@ -378,10 +395,45 @@ const syncCanvasState = (
       if (tree) {
         const { type, position: pos, title } = tree.getData();
         const nodeType = type === 'step' ? 'domainObject' : type;
+        const { groupObjects, activities } = getState();
+        const { nodeList: groupObjectsList } = groupObjects;
+        const { nodeList: activitiesList } = activities;
+
+        let nodeRef = null;
+
+        if (nodeType === 'domainObject' && activitiesList?.length && groupObjectsList?.length) {
+          const scenarioStepData = await createScenarioStep(
+            activitiesList[0].nodeList[0].id,
+            groupObjectsList[0].id,
+          );
+
+          if (scenarioStepData) {
+            nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+          }
+        }
+
         const treeWidth = type === 'step' ? CANVAS_STEP_WIDTH : CANVAS_BASE_ELEMENTS_WIDTH;
-        const queryString = `title: "${title}", nodeType: "${nodeType}", width: ${treeWidth}, position: [${pos.x},${pos.y}]`;
-        await syncCanvasRequest(updateData.id, queryString, { method: 'create' });
+        const queryString = `title: $title, nodeType: $nodeType, width: $width, position: $position, nodeRef: $nodeRef`;
+
+        if (nodeRef) {
+          tree.setData({ stepData: { id: nodeRef, name: 'Шаг', events: [] } });
+        }
+
+        await syncCanvasRequest(updateData.id, queryString, {
+          method: 'create',
+          variables: {
+            pattern:
+              '$title: String, $nodeType: String!, $width: Float, $position: [Float], $nodeRef: UUID',
+            title,
+            nodeType,
+            width: treeWidth,
+            position: [pos.x, pos.y],
+            nodeRef,
+          },
+        });
       }
+
+      return;
     }
 
     if (updateData.type === 'remove-trees') {
@@ -453,13 +505,13 @@ const addActivityToCanvasElement = (
   dispatch(setIsDroppingOnExistingStep(true));
 
   const { logicConstructor, activities, groupObjects } = getState();
-  const objectsGroup = groupObjects.nodeList;
+  const { nodeList: objectsGroup } = groupObjects;
   const { canvasElements } = logicConstructor;
-  const { draggingElements, nodeList } = activities;
+  const { draggingElements, nodeList: activitiesList } = activities;
 
-  if (draggingElements?.length && canvasElements && nodeList) {
+  if (draggingElements?.length && canvasElements && activitiesList) {
     const tree = getCanvasTreeById(canvasElements, CanvasTreeId);
-    const activity = getTreeNodeById(draggingElements[0].id, nodeList);
+    const activity = getTreeNodeById(draggingElements[0].id, activitiesList);
     const treeData = tree?.getData();
 
     if (!treeData?.stepData && activity?.id && objectsGroup?.length) {
@@ -512,7 +564,9 @@ const addActivityToCanvasElement = (
         {
           id: activity.id,
           name: activity.name,
-          content: [...existStepData.events[0].content],
+          content: existStepData.events[0]?.content?.length
+            ? [...existStepData.events[0].content]
+            : [],
         },
       ];
 
