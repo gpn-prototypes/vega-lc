@@ -37,10 +37,8 @@ const appWebpack = {
     },
   },
   devServer: {
+    ...gpnWebpack.devServer,
     historyApiFallback: true,
-    // proxy: {
-    //   '/graphql': process.env.VEGA_API_PROXY,
-    // },
   },
 };
 

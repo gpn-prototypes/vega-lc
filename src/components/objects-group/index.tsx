@@ -24,7 +24,7 @@ const icons = {
 export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
   const dispatch = useDispatch();
 
-  const objectGroup = useSelector(getGroupObjectsNodeList);
+  const objectGroupList = useSelector(getGroupObjectsNodeList);
   const projectStructureDraggingElements = useSelector(getProjectStructureDraggingElements);
 
   const handleOpenDialog = (): void => {
@@ -43,7 +43,17 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
         return acc;
       }, []);
 
-      dispatch(updateGroupObject(receivingId, ids));
+      let found = objectGroupList?.find((group) => group.id === receivingId);
+
+      if (!found) {
+        found = objectGroupList?.find((group) => group.nodeList.find((i) => i.id === receivingId));
+      }
+
+      if (found) {
+        dispatch(updateGroupObject(found.id, ids));
+      } else {
+        console.error(`Object group with specified ID: ${receivingId} was not found`); // TODO: show error message
+      }
     }
   };
 
@@ -59,7 +69,7 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
     <div className={cnObjectGroup()}>
       <Tree
         icons={icons}
-        nodeList={objectGroup || []}
+        nodeList={objectGroupList || []}
         showIndentGuides={false}
         onPasteItem={handlePaste}
         onDragStart={handleDragStart}

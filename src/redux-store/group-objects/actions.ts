@@ -69,7 +69,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
       const { domain } = response.data;
       const { objectGroupList } = domain;
 
-      const collection: { [x: string]: any } = {};
+      const collection: { [x: string]: TreeItem } = {};
 
       objectGroupList.forEach((objectsGroup: any) => {
         const { vid } = objectsGroup;
@@ -89,7 +89,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
             id: object.vid,
             iconId: 'circle',
             nodeList: [],
-            isDropZone: false,
+            isDropZone: true,
             isDraggable: false,
           });
         });
