@@ -65,11 +65,7 @@ const StepEditor: React.FC = () => {
       <div className={cnStepEditor('Content')}>
         {renderContent()}
 
-        <IconClose
-          size="xs"
-          className={cnStepEditor('CloseBtn').toString()}
-          onClick={handleClose}
-        />
+        <IconClose size="s" className={cnStepEditor('CloseBtn').toString()} onClick={handleClose} />
       </div>
     </div>
   );

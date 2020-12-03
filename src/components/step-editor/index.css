@@ -43,8 +43,8 @@
 
   &__CloseBtn {
     position: absolute;
-    top: 11px;
-    right: 11px;
+    top: 12px;
+    right: 12px;
 
     cursor: pointer;
   }
