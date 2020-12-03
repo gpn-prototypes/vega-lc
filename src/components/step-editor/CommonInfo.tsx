@@ -1,5 +1,6 @@
 import React from 'react';
-import { BasicSelect, Button, IconAdd } from '@gpn-prototypes/vega-ui';
+import { BasicSelect, Button, IconAdd, IconTrash } from '@gpn-prototypes/vega-ui';
+import { v4 as uuidv4 } from 'uuid';
 
 import { cnStepEditor } from './cn-lc';
 
@@ -8,110 +9,123 @@ type Option = {
   value: string;
 };
 
+type Value = {
+  label: string;
+  value: unknown;
+};
+
+type Item = {
+  value: Value;
+  id: string;
+  section: 'Parameters' | 'Chances';
+};
+
 const CommonInfo: React.FC = () => {
-  const chanceItems = [{ label: 'Обстановка осадконакопления, Морская', value: '1' }];
-
-  const startActivityItems = [
-    { label: 'август, 2020', value: '1' },
-    { label: 'август, 2021', value: '2' },
-    { label: 'август, 2023', value: '3' },
+  const chanceOptions: Value[] = [
+    { label: 'Обстановка осадконакопления, Морская', value: '1' },
+    { label: 'Водянистая почва', value: '2' },
   ];
 
-  const continuousItems = [
-    { label: '1 год', value: '1' },
-    { label: '2 года', value: '2' },
-    { label: '3 года', value: '3' },
-  ];
-
-  const costItems = [
+  const costOptions: Value[] = [
     { label: '1 000 000 рублей', value: '1' },
     { label: '5 000 000 рублей', value: '2' },
     { label: '10 000 000 рублей', value: '3' },
   ];
 
+  const deleteItem = (id: string): void => {
+    console.log(id);
+  };
+
   const getItemLabel = (option: Option): string => option.label;
+
+  const chanceItems: Item[] = [
+    {
+      id: uuidv4(),
+      value: { label: 'Обстановка осадконакопления, Морская', value: '1' },
+      section: 'Chances',
+    },
+    {
+      id: uuidv4(),
+      value: { label: 'Водянистая почва', value: '2' },
+      section: 'Chances',
+    },
+  ];
+
+  const costItems: Item[] = [
+    {
+      id: uuidv4(),
+      value: { label: '10 000 000 рублей', value: '3' },
+      section: 'Parameters',
+    },
+  ];
+
+  const renderItems = (items: Item[]) => {
+    return items.map((item) => {
+      return (
+        <div key={item.id} className={cnStepEditor('SelectContainer')}>
+          <BasicSelect
+            size="s"
+            className={cnStepEditor(`${item.section}Select`).toString()}
+            value={item.value}
+            options={item.section === 'Chances' ? chanceOptions : costOptions}
+            id={item.id}
+            getOptionLabel={getItemLabel}
+            view="default"
+          />
+
+          {item.section === 'Chances' && (
+            <IconTrash
+              onClick={() => deleteItem(item.id)}
+              className={cnStepEditor('RemoveBtn').toString()}
+              size="xs"
+              view="secondary"
+            />
+          )}
+        </div>
+      );
+    });
+  };
 
   return (
     <div className={cnStepEditor('CommonInfo')}>
-      <p className={cnStepEditor('SelectLabel').toString()}>Риск</p>
+      <div className={cnStepEditor('Chances')}>
+        <p className={cnStepEditor('SectionLabel').toString()}>Риск</p>
 
-      <BasicSelect
-        size="s"
-        className={cnStepEditor('ChanceSelect').toString()}
-        value={{ label: 'Обстановка осадконакопления, Морская', value: '1' }}
-        options={chanceItems}
-        id="common-info-chance"
-        getOptionLabel={getItemLabel}
-        view="default"
-      />
+        {renderItems(chanceItems)}
 
-      <div className={cnStepEditor('TimeFrames')}>
-        <div className={cnStepEditor('ExtremePoints')}>
-          <div>
-            <p className={cnStepEditor('SelectLabel').toString()}>Начало мероприятия</p>
-
-            <BasicSelect
-              size="s"
-              options={startActivityItems}
-              value={{ label: 'август, 2020', value: '1' }}
-              id="common-info-start-date"
-              getOptionLabel={getItemLabel}
-              className={cnStepEditor('DatePointSelect').toString()}
-            />
-          </div>
-
-          <div>
-            <p className={cnStepEditor('SelectLabel').toString()}>Завершение мероприятия</p>
-
-            <BasicSelect
-              size="s"
-              options={startActivityItems}
-              id="common-info-end-date"
-              value={{ label: 'август, 2023', value: '3' }}
-              getOptionLabel={getItemLabel}
-              className={cnStepEditor('DatePointSelect').toString()}
-            />
-          </div>
-        </div>
-
-        <div className={cnStepEditor('Continuous')}>
-          <p className={cnStepEditor('SelectLabel').toString()}>Длительность</p>
-
-          <BasicSelect
+        <div className={cnStepEditor('ItemAppender')}>
+          <Button
+            width="default"
+            type="button"
+            view="ghost"
             size="s"
-            options={continuousItems}
-            value={{ label: '3 года', value: '3' }}
-            id="common-info-continuous"
-            getOptionLabel={getItemLabel}
-            className={cnStepEditor('ContinuousSelect').toString()}
+            iconSize="xs"
+            iconLeft={IconAdd}
+            onClick={(): void => {}}
+            label="Добавить риск"
           />
         </div>
       </div>
 
-      <div className={cnStepEditor('Cost')}>
-        <p className={cnStepEditor('SelectLabel').toString()}>Цена</p>
+      <div className={cnStepEditor('Parameters')}>
+        <p className={cnStepEditor('SectionLabel').toString()}>Параметры</p>
 
-        <BasicSelect
-          size="s"
-          options={costItems}
-          value={{ label: '10 000 000 рублей', value: '3' }}
-          id="common-info-cost"
-          getOptionLabel={getItemLabel}
-          className={cnStepEditor('CostSelect').toString()}
-        />
-      </div>
+        <p className={cnStepEditor('SelectLabel').toString()}>Стоимость</p>
 
-      <div className={cnStepEditor('ParameterAppender')}>
-        <Button
-          width="default"
-          type="button"
-          view="clear"
-          size="xs"
-          iconSize="s"
-          iconLeft={IconAdd}
-          onClick={(): void => {}}
-          label="Добавить параметр"
-        />
+        {renderItems(costItems)}
+
+        <div className={cnStepEditor('ItemAppender')}>
+          <Button
+            width="default"
+            type="button"
+            view="ghost"
+            size="s"
+            iconSize="xs"
+            iconLeft={IconAdd}
+            onClick={(): void => {}}
+            label="Добавить параметр"
+          />
+        </div>
       </div>
     </div>
   );
