@@ -195,6 +195,8 @@ const addCanvasElement = (
   let nodeRef = null;
 
   if (nodeType === 'domainObject' && stepData?.events.length && objectsGroup?.length) {
+    // TODO: Выпилить добавление группы объектов и мероприятия,
+    //  когда будет реализовано на бэке возможность создавать ScenarioStep без двух последних
     const scenarioStepData = await createScenarioStep(stepData.events[0].id, objectsGroup[0].id);
 
     if (scenarioStepData) {
@@ -553,6 +555,9 @@ const addActivityToCanvasElement = (
 
     if (treeData?.stepData && activity?.id && objectsGroup?.length) {
       const { stepData: existStepData } = treeData;
+
+      // TODO: Выпилить добавление группы объектов и мероприятия,
+      //  когда будет реализовано на бэке возможность создавать ScenarioStep без двух последних
 
       const response = await updateScenarioStep(existStepData.id, activity?.id, objectsGroup[0].id);
 
