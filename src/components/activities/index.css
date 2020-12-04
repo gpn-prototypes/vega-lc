@@ -17,7 +17,7 @@
   border-radius: 4px;
 
   .VegaTree {
-    overflow-y: scroll;
+    overflow-y: auto;
 
     max-height: 90%;
   }

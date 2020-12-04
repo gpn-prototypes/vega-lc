@@ -2,7 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TargetData, Tree } from '@gpn-prototypes/vega-ui';
 
+import { cnProjectStructure } from './cn-project-structure';
 import { BlueLineSvg, OrangeLineSvg, RedLineSvg } from './icons';
+
+import './index.css';
 
 import { setProjectStructureDraggingElements } from '@/redux-store/project-structure/actions';
 import { getProjectStructureNodeList } from '@/redux-store/project-structure/selectors';
@@ -26,12 +29,14 @@ export const ProjectStructureWidget: React.FC = (): React.ReactElement => {
   };
 
   return (
-    <Tree
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      icons={icons}
-      isContextMenuEnable
-      nodeList={projectStructure || []}
-    />
+    <div className={cnProjectStructure()}>
+      <Tree
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        icons={icons}
+        isContextMenuEnable
+        nodeList={projectStructure || []}
+      />
+    </div>
   );
 };

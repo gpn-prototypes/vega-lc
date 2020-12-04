@@ -4,7 +4,7 @@
   height: 100%;
 
   & > .VegaTree {
-    overflow-y: scroll;
+    overflow-y: auto;
 
     height: calc(100% - 90px);
   }
