@@ -6,6 +6,6 @@
   & > .VegaTree {
     overflow-y: auto;
 
-    height: calc(100% - 25px);
+    height: 100%;
   }
 }
