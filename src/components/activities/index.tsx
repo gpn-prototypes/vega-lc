@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Button,
-  IconForward,
+  IconArrowDown,
+  IconArrowUp,
   IconSearch,
   TargetData,
   Text,
@@ -106,7 +107,8 @@ export const ActivitiesWidget: React.FC = (): React.ReactElement => {
         className={cnActivities('Switch').toString()}
         view={isActivitiesHidden ? 'ghost' : 'primary'}
         onClick={switchActivitiesVisibility}
-        iconRight={IconForward}
+        iconRight={isActivitiesHidden ? IconArrowDown : IconArrowUp}
+        iconSize="xs"
       />
     </>
   );
