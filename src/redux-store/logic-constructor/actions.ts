@@ -86,16 +86,17 @@ export const setDebouncedCanvasElements = (
 };
 
 const createScenarioStep = async (
-  activityId: string,
-  objectsGroupId: string,
+  activityId?: string,
+  objectsGroupId?: string,
+  objects?: string[],
 ): Promise<CreateScenarioStepResponse | undefined> => {
   const version = getCurrentVersion();
 
   const requestBody: QueryBody = {
-    query: `mutation($version: Int!, $activity: UUID!, $name: String, $objectGroup: UUID) {
+    query: `mutation($version: Int!, $activity: UUID, $name: String, $objectGroup: UUID, $objects: [UUID]) {
               logic {
                 scenarioStep {
-                  create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup) {
+                  create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup, objects: $objects) {
                     result {
                       vid
                     }
@@ -107,6 +108,7 @@ const createScenarioStep = async (
       version,
       activity: activityId,
       objectGroup: objectsGroupId,
+      objects,
       name: 'Шаг',
     },
   };
@@ -124,16 +126,17 @@ const createScenarioStep = async (
 
 const updateScenarioStep = async (
   scenarioStepId: string,
-  activityId: string,
-  objectGroupId: string,
+  activityId?: string,
+  objectGroupId?: string,
+  objects?: string[],
 ): Promise<CreateScenarioStepResponse | undefined> => {
   const version = getCurrentVersion();
 
   const requestBody: QueryBody = {
-    query: `mutation($vid: UUID!, $version: Int!, $activity: UUID!, $objectGroup: UUID) {
+    query: `mutation($vid: UUID!, $version: Int!, $activity: UUID, $objectGroup: UUID, $objects: [UUID]) {
               logic {
                 scenarioStep {
-                  update (vid: $vid, activity: $activity, version: $version, objectGroup: $objectGroup) {
+                  update (vid: $vid, activity: $activity, version: $version, objectGroup: $objectGroup, objects: $objects) {
                     result {
                       vid
                     }
@@ -145,6 +148,7 @@ const updateScenarioStep = async (
       vid: scenarioStepId,
       activity: activityId,
       objectGroup: objectGroupId,
+      objects,
       version,
     },
   };
@@ -400,6 +404,53 @@ const syncCanvasState = (
   };
 };
 
+const addProjectStructureObjectToCanvasElement = (
+  CanvasTreeId: string,
+): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
+  const { logicConstructor, projectStructure } = getState();
+  const { nodeList, draggingElements } = projectStructure;
+  const { canvasElements } = logicConstructor;
+
+  if (draggingElements?.length && canvasElements && nodeList) {
+    const tree = getCanvasTreeById(canvasElements, CanvasTreeId);
+    const treeNode = getTreeNodeById(draggingElements[0].id, nodeList);
+
+    if (!treeNode) return;
+
+    const object = {
+      id: treeNode.id,
+      name: treeNode.name,
+      type: 'domain',
+    };
+    const treeData = tree?.getData();
+
+    if (treeData?.stepData && object.id) {
+      const { stepData: existStepData } = treeData;
+
+      const existObjectsIds = existStepData.events[0].content.map((item) => item.id);
+
+      const response = await updateScenarioStep(
+        existStepData.id,
+        existStepData.events[0].id,
+        undefined,
+        [...existObjectsIds, object.id],
+      );
+
+      if (!response) return;
+
+      const events = [
+        {
+          id: existStepData.events[0].id,
+          name: existStepData.events[0].name,
+          content: [...existStepData.events[0].content, object],
+        },
+      ];
+
+      tree?.setData({ stepData: { ...existStepData, events } });
+    }
+  }
+};
+
 const addGroupObjectsToCanvasElement = (
   CanvasTreeId: string,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
@@ -523,9 +574,10 @@ const addActivityToCanvasElement = (
 const mapDropEventToRelatedAction = (
   intersectionId: string,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
-  const { groupObjects, activities } = getState();
+  const { groupObjects, activities, projectStructure } = getState();
   const { draggingElements: groupObjectsDraggingElements } = groupObjects;
   const { draggingElements: activitiesDraggingElements } = activities;
+  const { draggingElements: projectStructureDraggingElements } = projectStructure;
 
   if (groupObjectsDraggingElements?.length) {
     dispatch(addGroupObjectsToCanvasElement(intersectionId));
@@ -535,6 +587,12 @@ const mapDropEventToRelatedAction = (
 
   if (activitiesDraggingElements?.length) {
     dispatch(addActivityToCanvasElement(intersectionId));
+
+    return;
+  }
+
+  if (projectStructureDraggingElements?.length) {
+    dispatch(addProjectStructureObjectToCanvasElement(intersectionId));
   }
 };
 
@@ -548,4 +606,5 @@ export {
   fetchCanvasItemsData,
   mapDropEventToRelatedAction,
   addGroupObjectsToCanvasElement,
+  addProjectStructureObjectToCanvasElement,
 };
