@@ -8,7 +8,7 @@ const headers = {
   ...authHeader(),
 };
 
-const baseApiUrl = process.env.BASE_API_URL || 'http://ababakov2-lt-vega-builder.code013.org:38080';
+const baseApiUrl = process.env.BASE_API_URL || 'http://ababakov-lt-vega-builder.code013.org:38080';
 
 export const getMainLink = (): HttpLink =>
   new HttpLink({
