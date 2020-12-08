@@ -101,6 +101,7 @@ export type ProjectStructureState = {
 
 export type VersionState = {
   version?: number;
+  errors: string[];
 };
 
 export type StoreLC = {

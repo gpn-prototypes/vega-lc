@@ -1,0 +1,17 @@
+.LC_ProjectErrors {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--space-s) + 38px);
+  right: var(--space-xs);
+
+  width: 400px;
+
+  &__SnackBar {
+    padding-right: var(--space-xs);
+    padding-left: var(--space-xs);
+
+    overflow: auto;
+
+    width: 400px;
+  }
+}

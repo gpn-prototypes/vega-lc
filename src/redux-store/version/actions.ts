@@ -14,6 +14,16 @@ interface SetVersionSuccessType {
   version: number;
 }
 
+interface SetVersionErrorsType {
+  type: typeof VersionActionTypes.SET_VERSION_ERRORS;
+  errors: string[];
+}
+
+interface DeleteVersionErrorType {
+  type: typeof VersionActionTypes.DELETE_VERSION_ERROR;
+  index: number;
+}
+
 interface Entity {
   name: string;
   vid: string;
@@ -35,6 +45,16 @@ interface EntityImage {
 const SetVersionSuccess = (version: number): SetVersionSuccessType => ({
   type: VersionActionTypes.SET_VERSION_SUCCESS,
   version,
+});
+
+const SetVersionErrors = (errors: string[]): SetVersionErrorsType => ({
+  type: VersionActionTypes.SET_VERSION_ERRORS,
+  errors,
+});
+
+const DeleteVersionError = (index: number): DeleteVersionErrorType => ({
+  type: VersionActionTypes.DELETE_VERSION_ERROR,
+  index,
 });
 
 const SetProjectStructureQuery = (projectStructureQuery: ProjectStructureQuery) => ({
@@ -97,14 +117,17 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
       dispatch(SetVersionSuccess(response.data?.project.version));
       dispatch(SetProjectStructureQuery(structureQuery));
     } else {
-      // TODO: throw error | show error
-      //
+      dispatch(SetVersionErrors(['Response has no data']));
       console.error('Response has no data', response);
     }
   } catch (e) {
-    // TODO: throw error | show error
+    if (Array.isArray(e)) {
+      dispatch(SetVersionErrors(e.map((error) => error.message)));
+    } else {
+      dispatch(SetVersionErrors([e.message]));
+    }
     console.error(e);
   }
 };
 
-export { fetchVersion };
+export { fetchVersion, DeleteVersionError };
