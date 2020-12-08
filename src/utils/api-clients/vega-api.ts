@@ -4,28 +4,28 @@ import fetch from 'cross-fetch';
 import { getProjectId } from '../project-id';
 import { authHeader } from '../set-auth-token';
 
+import { config } from '@/config.public';
+
 const headers = {
   ...authHeader(),
 };
 
-const baseApiUrl = process.env.BASE_API_URL || 'http://ababakov-lt-vega-builder.code013.org:38080';
-
 export const getMainLink = (): HttpLink =>
   new HttpLink({
-    uri: `${baseApiUrl}/graphql`,
+    uri: `${config.baseApiUrl}/graphql`,
     headers,
     fetch,
   });
 
 export const getProjectLink = (): HttpLink =>
   new HttpLink({
-    uri: `${baseApiUrl}/graphql/${getProjectId()}`,
+    uri: `${config.baseApiUrl}/graphql/${getProjectId()}`,
     headers,
     fetch,
   });
 
 export const vegaApi = new ApolloClient({
-  link: new HttpLink({ uri: `${baseApiUrl}/graphql`, headers, fetch }),
+  link: new HttpLink({ uri: `${config.baseApiUrl}/graphql`, headers, fetch }),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

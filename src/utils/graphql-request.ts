@@ -2,6 +2,8 @@ import { getHeaders } from './headers';
 import { getProjectId } from './project-id';
 import { incrementVersion } from './version';
 
+import { config } from '@/config.public';
+
 export type QueryBody = {
   query: string;
   variables?: {
@@ -12,8 +14,6 @@ export type QueryBody = {
 type GraphqlRequestProps = { body: QueryBody; appendProjectId?: boolean; isMutation?: boolean };
 type ResponseProp = { [key: string]: any };
 
-const baseApiUrl = process.env.BASE_API_URL || 'http://ababakov-lt-vega-builder.code013.org:38080';
-
 export function graphQlRequest({
   body,
   appendProjectId = false,
@@ -22,7 +22,7 @@ export function graphQlRequest({
   const uri = appendProjectId ? `graphql/${getProjectId()}` : 'graphql';
 
   return new Promise((resolve, reject) => {
-    fetch(`${baseApiUrl}/${uri}`, {
+    fetch(`${config.baseApiUrl}/${uri}`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(body),
