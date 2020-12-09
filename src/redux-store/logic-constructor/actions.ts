@@ -246,6 +246,7 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
   vegaApi
     .query({
       query: FETCH_CANVAS_ITEMS_DATA,
+      fetchPolicy: 'network-only',
     })
     .then(async (response) => {
       if (response.networkStatus === NetworkStatus.ready) {
