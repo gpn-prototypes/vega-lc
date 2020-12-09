@@ -199,9 +199,7 @@ const addCanvasElement = (
   let nodeRef = null;
 
   if (nodeType === 'domainObject' && stepData?.events.length && objectsGroup?.length) {
-    // TODO: Выпилить добавление группы объектов и мероприятия,
-    //  когда будет реализовано на бэке возможность создавать ScenarioStep без двух последних
-    const scenarioStepData = await createScenarioStep(stepData.events[0].id, objectsGroup[0].id);
+    const scenarioStepData = await createScenarioStep(stepData.events[0].id);
 
     if (scenarioStepData) {
       nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
@@ -270,14 +268,14 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
     .then(async (response) => {
       if (response.networkStatus === NetworkStatus.ready) {
         const { logic } = response.data;
-        const { canvas, stepList } = logic;
+        const { canvas, stepList }: { canvas?: CanvasElements[]; stepList?: Step[] } = logic;
 
         const getCanvasElements = (): CanvasTree[] => {
           let result: CanvasTree[] = [];
           const canvasElementsMap: { [key: string]: CanvasElement } = {};
 
           if (canvas) {
-            (canvas as CanvasElements[]).forEach((item) => {
+            canvas.forEach((item) => {
               if (!canvasElementsMap[item.vid]) {
                 canvasElementsMap[item.vid] = {
                   id: item.vid,
@@ -294,7 +292,7 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
                 };
 
                 if (item.nodeType === 'domainObject') {
-                  const step = (stepList as Step[]).find((element) => element.vid === item.nodeRef);
+                  const step = stepList?.find((element) => element.vid === item.nodeRef);
                   canvasElementsMap[item.vid].data = {
                     ...canvasElementsMap[item.vid].data,
                     width: CANVAS_STEP_WIDTH,
@@ -408,10 +406,7 @@ const syncCanvasState = (
         let nodeRef = null;
 
         if (nodeType === 'domainObject' && activitiesList?.length && groupObjectsList?.length) {
-          const scenarioStepData = await createScenarioStep(
-            activitiesList[0].nodeList[0].id,
-            groupObjectsList[0].id,
-          );
+          const scenarioStepData = await createScenarioStep();
 
           if (scenarioStepData) {
             nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
@@ -482,22 +477,27 @@ const addProjectStructureObjectToCanvasElement = (
     if (treeData?.stepData && object.id) {
       const { stepData: existStepData } = treeData;
 
-      const existObjectsIds = existStepData.events[0].content.map((item) => item.id);
+      const existObjectsIds = existStepData.events[0]?.content.map((item) => item.id) || [];
 
       const response = await updateScenarioStep(
         existStepData.id,
-        existStepData.events[0].id,
+        existStepData.events[0]?.id,
         undefined,
         [...existObjectsIds, object.id],
       );
 
+      // TODO: process error
       if (!response) return;
+
+      const id = existStepData.events[0]?.id || '0';
+      const name = existStepData.events[0]?.name || 'Мероприятие';
+      const content = existStepData.events[0]?.content || [];
 
       const events = [
         {
-          id: existStepData.events[0].id,
-          name: existStepData.events[0].name,
-          content: [...existStepData.events[0].content, object],
+          id,
+          name,
+          content: [...content, object],
         },
       ];
 
@@ -523,16 +523,16 @@ const addGroupObjectsToCanvasElement = (
       }),
     );
 
+    const defaultEvent = {
+      id: '0',
+      name: 'Мероприятие',
+      content: domainObjects || [],
+    };
+
     let stepData: StepData = {
       id: '0',
-      name: 'Шаг 1',
-      events: [
-        {
-          id: '0',
-          name: 'Мероприятие',
-          content: domainObjects || [],
-        },
-      ],
+      name: 'Шаг',
+      events: [defaultEvent],
     };
 
     const treeData = tree?.getData();
@@ -540,10 +540,20 @@ const addGroupObjectsToCanvasElement = (
     if (treeData?.stepData) {
       stepData = { ...treeData.stepData };
 
-      const event = { ...stepData.events[0] };
+      const event = { ...defaultEvent, ...stepData.events[0] };
       event.content = domainObjects || [];
 
       stepData.events[0] = event;
+
+      // TODO: refactor - default event id and default event name should be in one place
+      const response = await updateScenarioStep(
+        stepData.id,
+        event.id !== '0' ? event.id : undefined,
+        draggingElements[0].id,
+      );
+
+      // TODO: process error
+      if (!response) return;
     }
 
     if (tree) {
@@ -607,10 +617,7 @@ const addActivityToCanvasElement = (
     if (treeData?.stepData && activity?.id && objectsGroup?.length) {
       const { stepData: existStepData } = treeData;
 
-      // TODO: Выпилить добавление группы объектов и мероприятия,
-      //  когда будет реализовано на бэке возможность создавать ScenarioStep без двух последних
-
-      const response = await updateScenarioStep(existStepData.id, activity?.id, objectsGroup[0].id);
+      const response = await updateScenarioStep(existStepData.id, activity?.id);
 
       if (!response) {
         return;
