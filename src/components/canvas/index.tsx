@@ -68,7 +68,9 @@ export const CanvasWidget: React.FC = () => {
     }
 
     if (update.type === 'drop-event') {
-      dispatch(mapDropEventToRelatedAction(update.intersectionId));
+      const { intersectionId, position } = update;
+
+      dispatch(mapDropEventToRelatedAction({ intersectionId, position }));
 
       return;
     }

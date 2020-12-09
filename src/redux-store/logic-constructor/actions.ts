@@ -2,6 +2,7 @@ import { NetworkStatus } from '@apollo/client';
 import { CanvasData, CanvasTree, CanvasUpdate, entities } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
+import { v4 as uuidv4 } from 'uuid';
 
 import { LogicConstructorActionTypes } from './action-types';
 import { FETCH_CANVAS_ITEMS_DATA } from './queries';
@@ -520,23 +521,51 @@ const addActivityToCanvasElement = (
   }
 };
 
-const mapDropEventToRelatedAction = (
-  intersectionId?: string,
-): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
+const mapDropEventToRelatedAction = ({
+  intersectionId,
+  position,
+}: {
+  intersectionId?: string;
+  position?: { x: number; y: number };
+}): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
   const { groupObjects, activities } = getState();
   const { draggingElements: groupObjectsDraggingElements } = groupObjects;
   const { draggingElements: activitiesDraggingElements } = activities;
 
-  if (!intersectionId) return;
-
-  if (groupObjectsDraggingElements?.length) {
+  if (groupObjectsDraggingElements?.length && intersectionId) {
     dispatch(addGroupObjectsToCanvasElement(intersectionId));
 
     return;
   }
 
   if (activitiesDraggingElements?.length) {
-    dispatch(addActivityToCanvasElement(intersectionId));
+    if (intersectionId) {
+      dispatch(addActivityToCanvasElement(intersectionId));
+
+      return;
+    }
+
+    if (position?.x && position?.y) {
+      const canvasData: CanvasData = {
+        position,
+        type: 'step',
+        title: 'Шаг',
+        width: 250,
+        stepData: {
+          id: uuidv4(),
+          name: 'Шаг',
+          events: [
+            {
+              id: activitiesDraggingElements[0]?.ref?.current?.id || '1',
+              name: activitiesDraggingElements[0]?.ref?.current?.innerText || 'Мероприятие',
+              content: [],
+            },
+          ],
+        },
+      };
+
+      dispatch(addCanvasElement(canvasData));
+    }
   }
 };
 
