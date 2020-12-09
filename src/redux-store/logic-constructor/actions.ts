@@ -614,7 +614,7 @@ const addActivityToCanvasElement = (
       return;
     }
 
-    if (treeData?.stepData && activity?.id && objectsGroup?.length) {
+    if (treeData?.stepData && activity?.id) {
       const { stepData: existStepData } = treeData;
 
       const response = await updateScenarioStep(existStepData.id, activity?.id);
