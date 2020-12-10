@@ -399,13 +399,10 @@ const syncCanvasState = (
       if (tree) {
         const { type, position: pos, title } = tree.getData();
         const nodeType = type === 'step' ? 'domainObject' : type;
-        const { groupObjects, activities } = getState();
-        const { nodeList: groupObjectsList } = groupObjects;
-        const { nodeList: activitiesList } = activities;
 
         let nodeRef = null;
 
-        if (nodeType === 'domainObject' && activitiesList?.length && groupObjectsList?.length) {
+        if (nodeType === 'domainObject') {
           const scenarioStepData = await createScenarioStep();
 
           if (scenarioStepData) {
