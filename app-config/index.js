@@ -15,8 +15,7 @@ const getAppConfig = () => ({
   analyze: process.env.ANALYZE || 0,
   baseApiUrl:
     process.env.BASE_API_URL ||
-    process.env.VEGA_API_PROXY ||
-    'http://outsourcing.nat.tepkom.ru:38080',
+    process.env.VEGA_API_PROXY
 });
 
 module.exports = { getAppConfig };
