@@ -13,7 +13,6 @@ import {
 } from '@/redux-store/logic-constructor/actions';
 import { getCanvasElements } from '@/redux-store/logic-constructor/selectors';
 import { canvasActionsForImmediateSync } from '@/utils/constants/canvas-actions-to-sync';
-import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
 
 export const CanvasWidget: React.FC = () => {
   const [changes, setChanges] = useState<CanvasUpdate[]>([]);
@@ -36,19 +35,8 @@ export const CanvasWidget: React.FC = () => {
 
     dispatch(setCanvasElements(state));
 
-    if (
-      update.type === 'select' &&
-      update.selected?.type === 'item' &&
-      update.selected?.ids.length === 1 &&
-      canvasElements
-    ) {
-      const id = update.selected.ids[0];
-
-      const tree = getCanvasTreeById(canvasElements, id);
-
-      const isStepEditorOpened = tree?.getData().type === 'step';
-
-      dispatch(toggleStepEditor(isStepEditorOpened));
+    if (update.type === 'select' && update.selected?.type === 'event') {
+      dispatch(toggleStepEditor(true));
 
       return;
     }
