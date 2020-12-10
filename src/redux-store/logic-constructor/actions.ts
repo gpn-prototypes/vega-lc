@@ -521,11 +521,13 @@ const addActivityToCanvasElement = (
 };
 
 const mapDropEventToRelatedAction = (
-  intersectionId: string,
+  intersectionId?: string,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
   const { groupObjects, activities } = getState();
   const { draggingElements: groupObjectsDraggingElements } = groupObjects;
   const { draggingElements: activitiesDraggingElements } = activities;
+
+  if (!intersectionId) return;
 
   if (groupObjectsDraggingElements?.length) {
     dispatch(addGroupObjectsToCanvasElement(intersectionId));
