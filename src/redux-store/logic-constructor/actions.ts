@@ -182,7 +182,7 @@ const updateScenarioStep = async (
 const addCanvasElement = (
   canvasDataTree: CanvasData,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState): Promise<void> => {
-  const { groupObjects, activities } = getState();
+  const { activities } = getState();
   const { isDroppingOnExistingStep } = activities;
 
   if (isDroppingOnExistingStep) {
@@ -191,14 +191,13 @@ const addCanvasElement = (
     return;
   }
 
-  const objectsGroup = groupObjects.nodeList;
   const { Tree } = entities;
   const { position, width, stepData, type } = canvasDataTree;
   const nodeType = canvasNodeTypes[type];
 
   let nodeRef = null;
 
-  if (nodeType === 'domainObject' && stepData?.events.length && objectsGroup?.length) {
+  if (nodeType === 'domainObject' && stepData?.events.length) {
     const scenarioStepData = await createScenarioStep(stepData.events[0].id);
 
     if (scenarioStepData) {
@@ -646,7 +645,6 @@ const mapDropEventToRelatedAction = ({
   const { draggingElements: groupObjectsDraggingElements } = groupObjects;
   const { draggingElements: activitiesDraggingElements } = activities;
   const { draggingElements: projectStructureDraggingElements } = projectStructure;
-
 
   if (groupObjectsDraggingElements?.length && intersectionId) {
     dispatch(addGroupObjectsToCanvasElement(intersectionId));
