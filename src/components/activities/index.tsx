@@ -1,6 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IconSearch, TargetData, Text, TextField, Tree } from '@gpn-prototypes/vega-ui';
+import {
+  Button,
+  IconArrowDown,
+  IconArrowUp,
+  IconSearch,
+  TargetData,
+  Text,
+  TextField,
+  Tree,
+  useMount,
+} from '@gpn-prototypes/vega-ui';
 
 import { cnActivities } from './cn-activities';
 import { BlueLineSvg } from './icons';
@@ -25,6 +35,9 @@ const icons = {
 export const ActivitiesWidget: React.FC = (): React.ReactElement => {
   const dispatch = useDispatch();
 
+  const [isActivitiesHidden, setActivitiesHidden] = useState(false);
+  const [optionsWrapperWidth, setOptionsWrapperWidth] = useState(0);
+
   const activitiesRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -48,33 +61,55 @@ export const ActivitiesWidget: React.FC = (): React.ReactElement => {
     dispatch(setActivitiesDraggingElements([]));
   };
 
-  return (
-    <div ref={activitiesRef} className={cnActivities()}>
-      <div className={cnActivities('Head')}>
-        <Text className={cnActivities('Title').toString()}>Мероприятия</Text>
+  const switchActivitiesVisibility = (): void => {
+    setActivitiesHidden(!isActivitiesHidden);
+  };
 
-        <TextField
-          autoFocus={autoFocus}
-          className={cnActivities('Search').toString()}
-          leftSide={IconSearch}
-          size="s"
-          inputRef={inputRef}
-          type="input"
-          onChange={handleSearch}
-          value={searchString}
-          placeholder="Поиск"
+  useMount(() => {
+    const optionsWrapper = document.querySelector('.VegaCanvas__OptionsPanelWrapper');
+    if (optionsWrapper) {
+      setOptionsWrapperWidth(optionsWrapper.getBoundingClientRect().width);
+    }
+  });
+
+  return (
+    <>
+      <div ref={activitiesRef} className={cnActivities()} hidden={isActivitiesHidden}>
+        <div className={cnActivities('Head')}>
+          <Text className={cnActivities('Title').toString()}>Мероприятия</Text>
+
+          <TextField
+            autoFocus={autoFocus}
+            className={cnActivities('Search').toString()}
+            leftSide={IconSearch}
+            size="s"
+            inputRef={inputRef}
+            type="input"
+            onChange={handleSearch}
+            value={searchString}
+            placeholder="Поиск"
+          />
+        </div>
+
+        <Tree
+          icons={icons}
+          nodeList={activities || []}
+          withVisibilitySwitcher={false}
+          withDropZoneIndicator={false}
+          showIndentGuides={false}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
         />
       </div>
-
-      <Tree
-        icons={icons}
-        nodeList={activities || []}
-        withVisibilitySwitcher={false}
-        withDropZoneIndicator={false}
-        showIndentGuides={false}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
+      <Button
+        style={{ right: `calc(${optionsWrapperWidth}px + var(--space-m) + var(--space-xl))` }}
+        label="Мероприятия"
+        className={cnActivities('Switch').toString()}
+        view={isActivitiesHidden ? 'ghost' : 'primary'}
+        onClick={switchActivitiesVisibility}
+        iconRight={isActivitiesHidden ? IconArrowDown : IconArrowUp}
+        iconSize="xs"
       />
-    </div>
+    </>
   );
 };
