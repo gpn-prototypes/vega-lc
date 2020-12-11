@@ -161,7 +161,7 @@ const updateScenarioStep = async (
             }`,
     variables: {
       vid: scenarioStepId,
-      activity: activityId,
+      activity: activityId !== '0' ? activityId : undefined,
       objectGroup: objectGroupId,
       objects,
       version,
@@ -519,6 +519,8 @@ const addGroupObjectsToCanvasElement = (
       }),
     );
 
+    if (!domainObjects?.length) return;
+
     const defaultEvent = {
       id: '0',
       name: 'Мероприятие',
@@ -563,8 +565,7 @@ const addActivityToCanvasElement = (
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
   dispatch(setIsDroppingOnExistingStep(true));
 
-  const { logicConstructor, activities, groupObjects } = getState();
-  const { nodeList: objectsGroup } = groupObjects;
+  const { logicConstructor, activities } = getState();
   const { canvasElements } = logicConstructor;
   const { draggingElements, nodeList: activitiesList } = activities;
 
@@ -573,7 +574,7 @@ const addActivityToCanvasElement = (
     const activity = getTreeNodeById(draggingElements[0].id, activitiesList);
     const treeData = tree?.getData();
 
-    if (!treeData?.stepData && activity?.id && objectsGroup?.length) {
+    if (!treeData?.stepData && activity?.id) {
       const stepData: StepData = {
         id: '0',
         name: 'Шаг',
@@ -588,7 +589,7 @@ const addActivityToCanvasElement = (
 
       let nodeRef = null;
 
-      const scenarioStepData = await createScenarioStep(activity?.id, objectsGroup[0].id);
+      const scenarioStepData = await createScenarioStep(activity?.id);
 
       if (scenarioStepData) {
         nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
