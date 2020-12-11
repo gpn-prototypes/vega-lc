@@ -1,0 +1,11 @@
+.ProjectStructure {
+  position: relative;
+
+  height: 100%;
+
+  & > .VegaTree {
+    overflow-y: auto;
+
+    height: 100%;
+  }
+}

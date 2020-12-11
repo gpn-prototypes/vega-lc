@@ -12,7 +12,7 @@ export type QueryBody = {
 type GraphqlRequestProps = { body: QueryBody; appendProjectId?: boolean; isMutation?: boolean };
 type ResponseProp = { [key: string]: any };
 
-const baseApiUrl = process.env.BASE_API_URL || 'http://ababakov2-lt-vega-builder.code013.org:38080';
+const baseApiUrl = process.env.BASE_API_URL || 'http://ababakov-lt-vega-builder.code013.org:38080';
 
 export function graphQlRequest({
   body,

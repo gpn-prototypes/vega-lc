@@ -2,21 +2,12 @@
 
 exports[`Geological Exploration рендерится без ошибок 1`] = `
 <div
-  className="VegaTree"
+  className="ProjectStructure"
 >
   <div
-    className={
-      Object {
-        "has": [Function],
-        "is": [Function],
-        "mix": [Function],
-        "split": [Function],
-        "state": [Function],
-        "toString": [Function],
-      }
-    }
+    className="VegaTree"
   >
-    <ul
+    <div
       className={
         Object {
           "has": [Function],
@@ -27,9 +18,22 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
           "toString": [Function],
         }
       }
-      role="tree"
-      tabIndex={0}
-    />
+    >
+      <ul
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+        role="tree"
+        tabIndex={0}
+      />
+    </div>
   </div>
 </div>
 `;
