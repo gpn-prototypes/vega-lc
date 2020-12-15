@@ -2,10 +2,12 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, NormalizedCacheObject } from '@apollo/client';
+import { Loader } from '@gpn-prototypes/vega-ui';
+import { PersistGate } from 'redux-persist/es/integration/react';
 
 import { ProjectProvider } from './ProjectProvider';
 
-import getStore from '@/redux-store';
+import { persistor, store } from '@/redux-store';
 import { Identity } from '@/types';
 import { vegaApi } from '@/utils/api-clients/vega-api';
 
@@ -18,13 +20,15 @@ export const Providers: React.FC<ProvidersProps> = (props) => {
   const { graphqlClient = vegaApi, identity, children } = props;
 
   return (
-    <Provider store={getStore()}>
+    <Provider store={store}>
       <ApolloProvider client={graphqlClient}>
-        <BrowserRouter>
-          <ProjectProvider graphqlClient={graphqlClient} identity={identity}>
-            {children}
-          </ProjectProvider>
-        </BrowserRouter>
+        <PersistGate loading={<Loader size="m" />} persistor={persistor}>
+          <BrowserRouter>
+            <ProjectProvider graphqlClient={graphqlClient} identity={identity}>
+              {children}
+            </ProjectProvider>
+          </BrowserRouter>
+        </PersistGate>
       </ApolloProvider>
     </Provider>
   );

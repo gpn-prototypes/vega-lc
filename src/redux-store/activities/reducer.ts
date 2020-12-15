@@ -1,9 +1,18 @@
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage/session';
+
 import createReducer from '../../utils/create-reducer';
 
 import { ActivitiesActionTypes } from './action-types';
 import initialState from './initial-state';
 
 import { ActivitiesState } from '@/types/redux-store';
+
+const persistConfig = {
+  key: 'activities',
+  storage,
+  whitelist: ['isActivitiesPanelOpen'],
+};
 
 const setActivitiesNodeListStrategy = (
   state: ActivitiesState,
@@ -53,6 +62,14 @@ const setIsDroppingOnExistingStepStrategy = (
   isDroppingOnExistingStep,
 });
 
+const setActivitiesPanelOpenStrategy = (
+  state: ActivitiesState,
+  { isActivitiesPanelOpen = false },
+): ActivitiesState => ({
+  ...state,
+  isActivitiesPanelOpen,
+});
+
 const strategyMap = {
   [ActivitiesActionTypes.SET_ACTIVITIES_LIST]: setActivitiesNodeListStrategy,
   [ActivitiesActionTypes.SET_SEARCH_STRING]: setSearchStringStrategy,
@@ -60,8 +77,9 @@ const strategyMap = {
   [ActivitiesActionTypes.SET_ACTIVITIES_REF]: setActivitiesRefStrategy,
   [ActivitiesActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
   [ActivitiesActionTypes.SET_IS_DROPPING_ON_EXISTING_STEP]: setIsDroppingOnExistingStepStrategy,
+  [ActivitiesActionTypes.SET_ACTIVITIES_PANEL_OPEN]: setActivitiesPanelOpenStrategy,
 };
 
 const activitiesReducer = createReducer(strategyMap, initialState);
 
-export default activitiesReducer;
+export default persistReducer(persistConfig, activitiesReducer);

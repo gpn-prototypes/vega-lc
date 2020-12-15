@@ -19,11 +19,13 @@ import './index.css';
 
 import {
   setActivitiesDraggingElements,
+  setActivitiesPanelOpen,
   setActivitiesRef,
   setSearchString,
 } from '@/redux-store/activities/actions';
 import {
   getActivitiesNodeList,
+  getIsActivitiesPanelOpen,
   getIsAutoFocus,
   getSearchStringValue,
 } from '@/redux-store/activities/selectors';
@@ -35,7 +37,7 @@ const icons = {
 export const ActivitiesWidget: React.FC = (): React.ReactElement => {
   const dispatch = useDispatch();
 
-  const [isActivitiesHidden, setActivitiesHidden] = useState(false);
+  const isActivitiesPanelOpen = useSelector(getIsActivitiesPanelOpen);
   const [optionsWrapperWidth, setOptionsWrapperWidth] = useState(0);
 
   const activitiesRef = useRef(null);
@@ -62,7 +64,7 @@ export const ActivitiesWidget: React.FC = (): React.ReactElement => {
   };
 
   const switchActivitiesVisibility = (): void => {
-    setActivitiesHidden(!isActivitiesHidden);
+    dispatch(setActivitiesPanelOpen(!isActivitiesPanelOpen));
   };
 
   useMount(() => {
@@ -74,7 +76,7 @@ export const ActivitiesWidget: React.FC = (): React.ReactElement => {
 
   return (
     <>
-      <div ref={activitiesRef} className={cnActivities()} hidden={isActivitiesHidden}>
+      <div ref={activitiesRef} className={cnActivities()} hidden={!isActivitiesPanelOpen}>
         <div className={cnActivities('Head')}>
           <Text className={cnActivities('Title').toString()}>Мероприятия</Text>
 
@@ -105,9 +107,9 @@ export const ActivitiesWidget: React.FC = (): React.ReactElement => {
         style={{ right: `calc(${optionsWrapperWidth}px + var(--space-m) + var(--space-xl))` }}
         label="Мероприятия"
         className={cnActivities('Switch').toString()}
-        view={isActivitiesHidden ? 'ghost' : 'primary'}
+        view={!isActivitiesPanelOpen ? 'ghost' : 'primary'}
         onClick={switchActivitiesVisibility}
-        iconRight={isActivitiesHidden ? IconArrowDown : IconArrowUp}
+        iconRight={!isActivitiesPanelOpen ? IconArrowDown : IconArrowUp}
         iconSize="xs"
       />
     </>

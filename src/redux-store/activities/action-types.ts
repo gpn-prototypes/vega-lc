@@ -6,7 +6,8 @@ export type ActivitiesActions =
   | 'SET_IS_AUTO_FOCUS'
   | 'SET_ACTIVITIES_REF'
   | 'SET_DRAGGING_ELEMENTS'
-  | 'SET_IS_DROPPING_ON_EXISTING_STEP';
+  | 'SET_IS_DROPPING_ON_EXISTING_STEP'
+  | 'SET_ACTIVITIES_PANEL_OPEN';
 
 const ActivitiesActionTypes: Record<ActivitiesActions, string> = {
   SET_ACTIVITIES_LIST: '',
@@ -15,6 +16,7 @@ const ActivitiesActionTypes: Record<ActivitiesActions, string> = {
   SET_ACTIVITIES_REF: '',
   SET_DRAGGING_ELEMENTS: '',
   SET_IS_DROPPING_ON_EXISTING_STEP: '',
+  SET_ACTIVITIES_PANEL_OPEN: '',
 };
 
 applyActionTypesNames(ActivitiesActionTypes, 'Activities');
