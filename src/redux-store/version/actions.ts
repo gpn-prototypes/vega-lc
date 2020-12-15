@@ -9,20 +9,20 @@ import { VersionActionTypes } from './action-types';
 
 import { projectQuery } from '@/utils/graphql-request';
 
-interface SetVersionSuccessType {
+type SetVersionSuccess = {
   type: typeof VersionActionTypes.SET_VERSION_SUCCESS;
   version: number;
-}
+};
 
-interface SetVersionErrorsType {
+type SetVersionErrors = {
   type: typeof VersionActionTypes.SET_VERSION_ERRORS;
   errors: string[];
-}
+};
 
-interface DeleteVersionErrorType {
+type DeleteVersionError = {
   type: typeof VersionActionTypes.DELETE_VERSION_ERROR;
   index: number;
-}
+};
 
 interface Entity {
   name: string;
@@ -42,22 +42,22 @@ interface EntityImage {
   entity: Entity;
 }
 
-const SetVersionSuccess = (version: number): SetVersionSuccessType => ({
+const setVersionSuccess = (version: number): SetVersionSuccess => ({
   type: VersionActionTypes.SET_VERSION_SUCCESS,
   version,
 });
 
-const SetVersionErrors = (errors: string[]): SetVersionErrorsType => ({
+const setVersionErrors = (errors: string[]): SetVersionErrors => ({
   type: VersionActionTypes.SET_VERSION_ERRORS,
   errors,
 });
 
-const DeleteVersionError = (index: number): DeleteVersionErrorType => ({
+const deleteVersionError = (index: number): DeleteVersionError => ({
   type: VersionActionTypes.DELETE_VERSION_ERROR,
   index,
 });
 
-const SetProjectStructureQuery = (projectStructureQuery: ProjectStructureQuery) => ({
+const setProjectStructureQuery = (projectStructureQuery: ProjectStructureQuery) => ({
   type: ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_QUERY,
   projectStructureQuery,
 });
@@ -114,20 +114,20 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
 
       const structureQuery = buildStructureQuery(response.data?.project.domainSchema.entityImages);
 
-      dispatch(SetVersionSuccess(response.data?.project.version));
-      dispatch(SetProjectStructureQuery(structureQuery));
+      dispatch(setVersionSuccess(response.data?.project.version));
+      dispatch(setProjectStructureQuery(structureQuery));
     } else {
-      dispatch(SetVersionErrors(['Response has no data']));
+      dispatch(setVersionErrors(['Response has no data']));
       console.error('Response has no data', response);
     }
   } catch (e) {
     if (Array.isArray(e)) {
-      dispatch(SetVersionErrors(e.map((error) => error.message)));
+      dispatch(setVersionErrors(e.map((error) => error.message)));
     } else {
-      dispatch(SetVersionErrors([e.message]));
+      dispatch(setVersionErrors([e.message]));
     }
     console.error(e);
   }
 };
 
-export { fetchVersion, DeleteVersionError };
+export { fetchVersion, deleteVersionError };

@@ -7,7 +7,7 @@ import { cnProjectErrors } from './cn-project-errors';
 
 import './index.css';
 
-import { DeleteVersionError } from '@/redux-store/version/actions';
+import { deleteVersionError } from '@/redux-store/version/actions';
 import { StoreLC } from '@/types/redux-store';
 
 export const ProjectErrors = (): React.ReactElement => {
@@ -23,7 +23,7 @@ export const ProjectErrors = (): React.ReactElement => {
         icon: IconAlert,
         status: 'alert',
         onClose: () => {
-          dispatch(DeleteVersionError(index));
+          dispatch(deleteVersionError(index));
         },
       } as Item),
   );
