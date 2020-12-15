@@ -6,7 +6,7 @@ import ResizeObserver from 'resize-observer-polyfill';
 import '../../src/types/global';
 
 import { ActivitiesWidget } from '../../src/components/activities';
-import getStore from '../../src/redux-store';
+import { store } from '../../src/redux-store';
 
 describe('Geological Exploration', () => {
   test('рендерится без ошибок', () => {
@@ -14,7 +14,7 @@ describe('Geological Exploration', () => {
 
     const dom = renderer
       .create(
-        <Provider store={getStore()}>
+        <Provider store={store}>
           <ActivitiesWidget />
         </Provider>,
       )
