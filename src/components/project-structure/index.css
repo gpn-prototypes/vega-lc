@@ -8,4 +8,20 @@
 
     height: 100%;
   }
+
+  &__NoStructure {
+    display: flex;
+    justify-content: center;
+
+    height: 100%;
+
+    & > p {
+      margin: 0;
+      padding: var(--space-xs) 0;
+
+      font-size: var(--size-text-s);
+
+      text-align: center;
+    }
+  }
 }
