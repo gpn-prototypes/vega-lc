@@ -161,7 +161,7 @@ const addCanvasElement = (
     const scenarioStepData = await createScenarioStep(stepData.events[0].id);
 
     if (scenarioStepData) {
-      nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+      nodeRef = scenarioStepData.data.project?.logic?.scenarioStep?.create?.result?.vid;
     }
   }
 
@@ -182,7 +182,7 @@ const addCanvasElement = (
       : canvasDataTree;
 
     const canvasElement = Tree.of<CanvasData>({
-      id: response.data.logic?.canvas?.create?.result?.vid,
+      id: response.data.project?.logic?.canvas?.create?.result?.vid,
       data: canvasData,
     });
 
@@ -206,7 +206,7 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
     })
     .then(async (response) => {
       if (response.networkStatus === NetworkStatus.ready) {
-        const { logic } = response.data;
+        const { logic } = response.data.project;
         const { canvas, stepList }: { canvas?: CanvasElements[]; stepList?: Step[] } = logic;
 
         const getCanvasElements = (): CanvasTree[] => {
@@ -328,7 +328,7 @@ const syncCanvasState = (
           const scenarioStepData = await createScenarioStep();
 
           if (scenarioStepData) {
-            nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+            nodeRef = scenarioStepData.data.project?.logic?.scenarioStep?.create?.result?.vid;
           }
         }
 
@@ -509,7 +509,7 @@ const addActivityToCanvasElement = (
       const scenarioStepData = await createScenarioStep(activity?.id);
 
       if (scenarioStepData) {
-        nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+        nodeRef = scenarioStepData.data.project?.logic?.scenarioStep?.create?.result?.vid;
 
         stepData.id = nodeRef || '0';
       }

@@ -26,13 +26,15 @@ export const ACTIVITY_LIST_QUERY = gql`
 
 export const GROUP_OBJECT_LIST_QUERY = gql`
   {
-    domain {
-      objectGroupList {
-        vid
-        name
-        objects {
+    project {
+      domain {
+        objectGroupList {
           vid
           name
+          objects {
+            vid
+            name
+          }
         }
       }
     }
@@ -41,12 +43,21 @@ export const GROUP_OBJECT_LIST_QUERY = gql`
 
 export const OBJECT_GROUP_UPDATE_MUTATION = gql`
   mutation($vid: UUID!, $vids: [UUID], $version: Int!) {
-    domain {
-      objectGroup {
-        update(vid: $vid, vids: $vids, version: $version) {
-          ok
-          name
-          vids
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        domain {
+          objectGroup {
+            update(vid: $vid, vids: $vids) {
+              ok
+              name
+              vids
+            }
+          }
         }
       }
     }
@@ -55,12 +66,21 @@ export const OBJECT_GROUP_UPDATE_MUTATION = gql`
 
 export const OBJECT_GROUP_CREATE_MUTATION = gql`
   mutation($version: Int!, $name: String!) {
-    domain {
-      objectGroup {
-        create(name: $name, version: $version) {
-          vid
-          ok
-          vids
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        domain {
+          objectGroup {
+            create(name: $name) {
+              vid
+              ok
+              vids
+            }
+          }
         }
       }
     }
@@ -69,17 +89,20 @@ export const OBJECT_GROUP_CREATE_MUTATION = gql`
 
 export const SCENARIO_STEP_CREATE_MUTATION = gql`
   mutation($version: Int!, $activity: UUID, $name: String, $objectGroup: UUID, $objects: [UUID]) {
-    logic {
-      scenarioStep {
-        create(
-          activity: $activity
-          version: $version
-          name: $name
-          objectGroup: $objectGroup
-          objects: $objects
-        ) {
-          result {
-            vid
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          scenarioStep {
+            create(activity: $activity, name: $name, objectGroup: $objectGroup, objects: $objects) {
+              result {
+                vid
+              }
+            }
           }
         }
       }
@@ -89,17 +112,20 @@ export const SCENARIO_STEP_CREATE_MUTATION = gql`
 
 export const SCENARIO_STEP_UPDATE_MUTATION = gql`
   mutation($vid: UUID!, $version: Int!, $activity: UUID, $objectGroup: UUID, $objects: [UUID]) {
-    logic {
-      scenarioStep {
-        update(
-          vid: $vid
-          activity: $activity
-          version: $version
-          objectGroup: $objectGroup
-          objects: $objects
-        ) {
-          result {
-            vid
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          scenarioStep {
+            update(vid: $vid, activity: $activity, objectGroup: $objectGroup, objects: $objects) {
+              result {
+                vid
+              }
+            }
           }
         }
       }
@@ -109,27 +135,34 @@ export const SCENARIO_STEP_UPDATE_MUTATION = gql`
 
 export const CANVAS_NODE_CREATE_MUTATION = gql`
   mutation(
-    $vid: UUID
-    $title: String
     $nodeType: String!
-    $width: Float
-    $position: [Float]
     $nodeRef: UUID
     $version: Int!
+    $title: String
+    $width: Float
+    $x: Float
+    $y: Float
   ) {
-    logic {
-      canvas {
-        create(
-          vid: $vid
-          title: $title
-          width: $width
-          nodeType: $nodeType
-          nodeRef: $nodeRef
-          position: $position
-          version: $version
-        ) {
-          result {
-            vid
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          canvas {
+            create(
+              title: $title
+              width: $width
+              nodeType: $nodeType
+              nodeRef: $nodeRef
+              position: [$x, $y]
+            ) {
+              result {
+                vid
+              }
+            }
           }
         }
       }
@@ -149,21 +182,29 @@ export const CANVAS_NODE_UPDATE_MUTATION = gql`
     $parentVids: [UUID]
     $version: Int!
   ) {
-    logic {
-      canvas {
-        update(
-          vid: $vid
-          title: $title
-          width: $width
-          nodeType: $nodeType
-          nodeRef: $nodeRef
-          position: $position
-          childrenVids: $childrenVids
-          parentVids: $parentVids
-          version: $version
-        ) {
-          result {
-            vid
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          canvas {
+            update(
+              vid: $vid
+              title: $title
+              width: $width
+              nodeType: $nodeType
+              nodeRef: $nodeRef
+              position: $position
+              childrenVids: $childrenVids
+              parentVids: $parentVids
+            ) {
+              result {
+                vid
+              }
+            }
           }
         }
       }
@@ -173,10 +214,19 @@ export const CANVAS_NODE_UPDATE_MUTATION = gql`
 
 export const CANVAS_NODE_DELETE_MUTATION = gql`
   mutation($vid: UUID!, $version: Int!) {
-    logic {
-      canvas {
-        delete(vid: $vid, version: $version) {
-          ok
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          canvas {
+            delete(vid: $vid) {
+              ok
+            }
+          }
         }
       }
     }

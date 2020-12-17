@@ -83,7 +83,7 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
     });
 
     if (response?.data) {
-      const { domain } = response.data;
+      const { domain } = response.data.project;
 
       const nodeList = buildTree(domain, tree, 0);
 
