@@ -9,7 +9,7 @@ const initialState: ActivitiesState = {
   activitiesRef: null,
   draggingElements: [],
   isDroppingOnExistingStep: false,
-  isActivitiesPanelOpen: false,
+  isActivitiesPanelOpen: true,
 };
 
 export default initialState;
