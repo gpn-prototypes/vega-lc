@@ -20,6 +20,9 @@ export const getActivitiesDraggingElements = (state: StoreLC): TargetData[] | un
 export const getIsDroppingOnExistingStep = (state: StoreLC): boolean | undefined =>
   getCurrentState(state).isDroppingOnExistingStep;
 
+export const getIsActivitiesPanelOpen = (state: StoreLC): boolean =>
+  getCurrentState(state).isActivitiesPanelOpen;
+
 export const getActivitiesNodeList = (searchString: string | null | undefined) => (
   state: StoreLC,
 ): TreeItem[] | undefined => {

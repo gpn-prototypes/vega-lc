@@ -30,6 +30,11 @@ type SetIsDroppingOnExisting = {
   isDroppingOnExistingStep: boolean;
 };
 
+type SetActivitiesPanelOpen = {
+  type: typeof ActivitiesActionTypes.SET_ACTIVITIES_PANEL_OPEN;
+  isActivitiesPanelOpen: boolean;
+};
+
 const setActivitiesList = (nodeList: TreeItem[]): SetActivitiesList => ({
   type: ActivitiesActionTypes.SET_ACTIVITIES_LIST,
   nodeList,
@@ -55,6 +60,11 @@ const setIsDroppingOnExistingStep = (
 ): SetIsDroppingOnExisting => ({
   type: ActivitiesActionTypes.SET_IS_DROPPING_ON_EXISTING_STEP,
   isDroppingOnExistingStep,
+});
+
+const setActivitiesPanelOpen = (isActivitiesPanelOpen: boolean): SetActivitiesPanelOpen => ({
+  type: ActivitiesActionTypes.SET_ACTIVITIES_PANEL_OPEN,
+  isActivitiesPanelOpen,
 });
 
 const setSearchString = (searchString: string | null) => (
@@ -120,4 +130,5 @@ export {
   setActivitiesRef,
   setIsDroppingOnExistingStep,
   setActivitiesDraggingElements,
+  setActivitiesPanelOpen,
 };

@@ -63,6 +63,7 @@ export type ActivitiesState = {
   activitiesRef?: React.RefObject<HTMLElement> | null;
   draggingElements?: TargetData[] | [];
   isDroppingOnExistingStep?: boolean;
+  isActivitiesPanelOpen: boolean;
 };
 
 export type LogicConstructorState = {
