@@ -17,6 +17,7 @@ import {
   canvasNodeCreateMutation,
   canvasNodeDeleteMutation,
   canvasNodeUpdateMutation,
+  getGraphqlUri,
   scenarioStepCreateMutation,
   scenarioStepUpdateMutation,
   serviceConfig,
@@ -200,6 +201,9 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
     ?.query({
       query: FETCH_CANVAS_ITEMS_DATA,
       fetchPolicy: 'network-only',
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
     })
     .then(async (response) => {
       if (response.networkStatus === NetworkStatus.ready) {
