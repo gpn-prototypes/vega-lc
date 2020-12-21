@@ -57,7 +57,7 @@ export function activityListQuery() {
   });
 }
 
-async function versionModifier<T>(action: Promise<T> | undefined): Promise<T | undefined | void> {
+async function versionModifier<T>(action: Promise<T> | undefined): Promise<T | undefined> {
   if (action) {
     const result = await action;
     incrementVersion();
