@@ -1,9 +1,10 @@
+import { gql } from '@apollo/client';
 import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { StoreLC } from '../../types/redux-store';
-import { graphQlRequest } from '../../utils/graphql-request';
+import { getGraphqlUri, serviceConfig } from '../../utils/graphql-request';
 
 import { ProjectStructureActionTypes } from './action-types';
 
@@ -75,15 +76,17 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
   try {
     const state = getState();
 
-    const query = state.projectStructure.projectStructureQuery?.query || DEFAULT_QUERY;
+    const query = gql(state.projectStructure.projectStructureQuery?.query || DEFAULT_QUERY);
     const tree = state.projectStructure.projectStructureQuery?.tree || DEFAULT_TREE;
 
-    const response = await graphQlRequest({
-      body: { query },
-      appendProjectId: true,
+    const response = await serviceConfig.client?.query({
+      query,
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
     });
 
-    if (response.data) {
+    if (response?.data) {
       const { domain } = response.data;
 
       const nodeList = buildTree(domain, tree, 0);

@@ -3,7 +3,11 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { NewGroupParams, StoreLC } from '../../types/redux-store';
-import { graphQlRequest } from '../../utils/graphql-request';
+import {
+  groupObjectListQuery,
+  objectGroupCreateMutation,
+  objectGroupUpdateMutation,
+} from '../../utils/graphql-request';
 import { getCurrentVersion } from '../../utils/version';
 
 import { GroupObjectsActionTypes } from './action-types';
@@ -52,21 +56,10 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
   dispatch,
 ): Promise<void> => {
   try {
-    const response = await graphQlRequest({
-      body: {
-        query: `query {domain{objectGroupList{
-          vid,
-          name,
-          objects{
-          vid,
-          name
-        }}}}`,
-      },
-      appendProjectId: true,
-    });
+    const response = await groupObjectListQuery();
 
-    if (response.data) {
-      const { domain } = response.data;
+    if (response?.data) {
+      const { domain } = response.data.project;
       const { objectGroupList } = domain;
 
       const collection: { [x: string]: TreeItem } = {};
@@ -130,18 +123,10 @@ const updateGroupObject = (
 
   try {
     const version = getCurrentVersion();
-    const requestBody = {
-      query: `mutation($vid: UUID!,$vids: [UUID], $version: Int!){domain{objectGroup{update(vid: $vid,vids: $vids, version: $version){ok, name, vids}}}}`,
-      variables: { vids, vid: groupObjectId, version },
-    };
 
-    const response = await graphQlRequest({
-      body: requestBody,
-      appendProjectId: true,
-      isMutation: true,
-    });
+    const response = await objectGroupUpdateMutation({ vids, vid: groupObjectId, version });
 
-    if (response.data) {
+    if (response?.data) {
       dispatch(fetchGroupObjectList());
     }
   } catch (e) {
@@ -154,21 +139,12 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
 ): Promise<void> => {
   try {
     const version = getCurrentVersion();
-    const requestBody = {
-      query: `mutation ($version: Int!, $name: String!) {domain{objectGroup{create(name: $name, version: $version){vid,ok,vids}}}}`,
-      variables: {
-        name,
-        version,
-      },
-    };
-
-    const response = await graphQlRequest({
-      body: requestBody,
-      appendProjectId: true,
-      isMutation: true,
+    const response = await objectGroupCreateMutation({
+      name,
+      version,
     });
 
-    if (response.data) {
+    if (response?.data) {
       dispatch(fetchGroupObjectList());
     }
   } catch (e) {

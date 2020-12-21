@@ -14,9 +14,14 @@ import { canvasNodeTypes } from '@/utils/constants/canvas-node-types';
 import { debounce, DebounceFunction } from '@/utils/debounce';
 import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '@/utils/get-tree-node-by-id';
-import { graphQlRequest, QueryBody } from '@/utils/graphql-request';
+import {
+  canvasNodeCreateMutation,
+  canvasNodeDeleteMutation,
+  canvasNodeUpdateMutation,
+  scenarioStepCreateMutation,
+  scenarioStepUpdateMutation,
+} from '@/utils/graphql-request';
 import { getStepDataFromScenarioStep } from '@/utils/step-data';
-import { syncCanvasRequest } from '@/utils/sync-canvas-request-body';
 import { getCurrentVersion } from '@/utils/version';
 
 const CANVAS_BASE_ELEMENTS_WIDTH = 67;
@@ -38,33 +43,33 @@ type ToggleStepEditor = {
   isStepEditorOpened: boolean;
 };
 
-type CreateScenarioStepResponse = {
-  data: {
-    logic?: {
-      scenarioStep?: {
-        create?: {
-          result?: {
-            vid?: string;
-          };
-        };
-      };
-    };
-  };
-};
+// type CreateScenarioStepResponse = {
+//   data: {
+//     logic?: {
+//       scenarioStep?: {
+//         create?: {
+//           result?: {
+//             vid?: string;
+//           };
+//         };
+//       };
+//     };
+//   };
+// };
 
-type CreateCanvasNodeResponse = {
-  data: {
-    logic?: {
-      canvas?: {
-        create?: {
-          result?: {
-            vid?: string;
-          };
-        };
-      };
-    };
-  };
-};
+// type CreateCanvasNodeResponse = {
+//   data: {
+//     logic?: {
+//       canvas?: {
+//         create?: {
+//           result?: {
+//             vid?: string;
+//           };
+//         };
+//       };
+//     };
+//   };
+// };
 
 // type AddCanvasElement = {
 //   type: typeof LogicConstructorActionTypes.ADD_CANVAS_ELEMENT;
@@ -104,35 +109,15 @@ const createScenarioStep = async (
   activityId?: string,
   objectsGroupId?: string,
   objects?: string[],
-): Promise<CreateScenarioStepResponse | undefined> => {
+): Promise<any> => {
   const version = getCurrentVersion();
-
-  const requestBody: QueryBody = {
-    query: `mutation($version: Int!, $activity: UUID, $name: String, $objectGroup: UUID, $objects: [UUID]) {
-              logic {
-                scenarioStep {
-                  create (activity: $activity, version: $version, name: $name, objectGroup: $objectGroup, objects: $objects) {
-                    result {
-                      vid
-                    }
-                  }
-                }
-              }
-            }`,
-    variables: {
+  try {
+    return await scenarioStepCreateMutation({
       version,
       activity: activityId,
       objectGroup: objectsGroupId,
       objects,
       name: 'Шаг',
-    },
-  };
-
-  try {
-    return await graphQlRequest({
-      body: requestBody,
-      appendProjectId: true,
-      isMutation: true,
     });
   } catch (e) {
     return undefined;
@@ -144,35 +129,16 @@ const updateScenarioStep = async (
   activityId?: string,
   objectGroupId?: string,
   objects?: string[],
-): Promise<CreateScenarioStepResponse | undefined> => {
+): Promise<any> => {
   const version = getCurrentVersion();
 
-  const requestBody: QueryBody = {
-    query: `mutation($vid: UUID!, $version: Int!, $activity: UUID, $objectGroup: UUID, $objects: [UUID]) {
-              logic {
-                scenarioStep {
-                  update (vid: $vid, activity: $activity, version: $version, objectGroup: $objectGroup, objects: $objects) {
-                    result {
-                      vid
-                    }
-                  }
-                }
-              }
-            }`,
-    variables: {
+  try {
+    return await scenarioStepUpdateMutation({
       vid: scenarioStepId,
       activity: activityId !== '0' ? activityId : undefined,
       objectGroup: objectGroupId,
       objects,
       version,
-    },
-  };
-
-  try {
-    return await graphQlRequest({
-      body: requestBody,
-      appendProjectId: true,
-      isMutation: true,
     });
   } catch (e) {
     return undefined;
@@ -195,7 +161,7 @@ const addCanvasElement = (
   const { position, width, stepData, type } = canvasDataTree;
   const nodeType = canvasNodeTypes[type];
 
-  let nodeRef = null;
+  let nodeRef;
 
   if (nodeType === 'domainObject' && stepData?.events.length) {
     const scenarioStepData = await createScenarioStep(stepData.events[0].id);
@@ -205,38 +171,16 @@ const addCanvasElement = (
     }
   }
 
-  const requestBody: QueryBody = {
-    query: `mutation($nodeType: String!, $nodeRef: UUID, $version: Int!, $title: String,
-              $width: Float, $x: Float, $y: Float) {
-                logic {
-                  canvas {
-                    create (title: $title, width: $width, nodeType: $nodeType, nodeRef: $nodeRef,
-                      position: [$x, $y], version: $version) {
-                        result {
-                          vid
-                        }
-                      }
-                  }
-                }
-              }`,
-    variables: {
-      title: stepData?.name,
-      width,
-      nodeType,
-      nodeRef,
-      version: getCurrentVersion(),
-      x: position.x,
-      y: position.y,
-    },
-  };
-
-  const response: CreateCanvasNodeResponse = await graphQlRequest({
-    body: requestBody,
-    appendProjectId: true,
-    isMutation: true,
+  const response = await canvasNodeCreateMutation({
+    title: stepData?.name,
+    width,
+    nodeType,
+    nodeRef,
+    version: getCurrentVersion(),
+    position: [position.x, position.y],
   });
 
-  if (response.data) {
+  if (response?.data) {
     const canvasData: CanvasData = nodeRef
       ? ({
           ...canvasDataTree,
@@ -335,60 +279,49 @@ const syncCanvasState = (
     if (!canvasElements) return;
 
     if (updateData.type === 'change' && 'position' in updateData.changes) {
-      const queryString = `position: [${updateData.changes.position?.x}, ${updateData.changes.position?.y}]`;
+      const position = [updateData.changes.position?.x, updateData.changes.position?.y];
 
-      await syncCanvasRequest(updateData.id, queryString);
+      await canvasNodeUpdateMutation({ vid: updateData.id, position });
 
       return;
     }
 
     if (updateData.type === 'change-multiple') {
       const multipleData = updateData.ids.map((id: string, index: number) => {
-        const { position } = updateData.changes[index];
-
-        const queryString = `position: [${position?.x}, ${position?.y}]`;
-
-        return { id, queryString };
+        const { position: { x, y } = {} } = updateData.changes[index];
+        const position = [x, y];
+        return { vid: id, position };
       });
 
-      await multipleData.reduce((promise, update) => {
-        return promise
-          .then(() => syncCanvasRequest(update.id, update.queryString))
-          .catch(console.error);
-      }, Promise.resolve());
-
-      return;
+      await Promise.all(
+        multipleData.map((i) => async () => {
+          try {
+            await canvasNodeUpdateMutation(i);
+          } catch (e) {
+            console.error(e);
+          }
+        }),
+      );
     }
 
     if (updateData.type === 'connect-tree' || updateData.type === 'disconnect-tree') {
       const { parentId, childId } = updateData;
-      const child = {
-        targetId: parentId,
-        queryString: `childrenVids: $vids`,
-        variables: {
-          pattern: '$vids: [UUID]',
-          vids: getCanvasTreeById(canvasElements, parentId)?.getChildren(),
-        },
+      const childVariables = {
+        vid: parentId,
+        childrenVids: getCanvasTreeById(canvasElements, parentId)?.getChildren(),
       };
 
-      const parent = {
-        targetId: childId,
-        queryString: `parentVids: $vids`,
-        variables: {
-          pattern: '$vids: [UUID]',
-          vids: getCanvasTreeById(canvasElements, childId)?.getParents(),
-        },
+      const parentVariables = {
+        vid: childId,
+        parentVids: getCanvasTreeById(canvasElements, childId)?.getParents(),
       };
 
-      await syncCanvasRequest(child.targetId, child.queryString, {
-        variables: child.variables,
-      })
-        .then(() => {
-          syncCanvasRequest(parent.targetId, parent.queryString, {
-            variables: parent.variables,
-          });
-        })
-        .catch(console.error);
+      try {
+        await canvasNodeUpdateMutation(childVariables);
+        await canvasNodeUpdateMutation(parentVariables);
+      } catch (e) {
+        console.error(e);
+      }
 
       return;
     }
@@ -400,7 +333,7 @@ const syncCanvasState = (
         const { type, position: pos, title } = tree.getData();
         const nodeType = type === 'step' ? 'domainObject' : type;
 
-        let nodeRef = null;
+        let nodeRef;
 
         if (nodeType === 'domainObject') {
           const scenarioStepData = await createScenarioStep();
@@ -411,23 +344,18 @@ const syncCanvasState = (
         }
 
         const treeWidth = type === 'step' ? CANVAS_STEP_WIDTH : CANVAS_BASE_ELEMENTS_WIDTH;
-        const queryString = `title: $title, nodeType: $nodeType, width: $width, position: $position, nodeRef: $nodeRef`;
+        // const queryString = `title: $title, nodeType: $nodeType, width: $width, position: $position, nodeRef: $nodeRef`;
 
         if (nodeRef) {
           tree.setData({ stepData: { id: nodeRef, name: 'Шаг', events: [] } });
         }
 
-        await syncCanvasRequest(updateData.id, queryString, {
-          method: 'create',
-          variables: {
-            pattern:
-              '$title: String, $nodeType: String!, $width: Float, $position: [Float], $nodeRef: UUID',
-            title,
-            nodeType,
-            width: treeWidth,
-            position: [pos.x, pos.y],
-            nodeRef,
-          },
+        await canvasNodeCreateMutation({
+          title,
+          nodeType,
+          width: treeWidth,
+          position: [pos.x, pos.y],
+          nodeRef,
         });
       }
 
@@ -435,18 +363,15 @@ const syncCanvasState = (
     }
 
     if (updateData.type === 'remove-trees') {
-      const multipleData = updateData.ids.map((id: string): {
-        id: string;
-        options: { method: 'delete'; responseFields: string };
-      } => {
-        return { id, options: { method: 'delete', responseFields: '{ ok }' } };
-      });
-
-      await multipleData.reduce((promise, update) => {
-        return promise
-          .then(() => syncCanvasRequest(update.id, '', update.options))
-          .catch(console.error);
-      }, Promise.resolve());
+      await Promise.all(
+        updateData.ids.map((i) => async () => {
+          try {
+            await canvasNodeDeleteMutation({ vid: i });
+          } catch (e) {
+            console.error(e);
+          }
+        }),
+      );
     }
   };
 };
@@ -588,7 +513,7 @@ const addActivityToCanvasElement = (
         ],
       };
 
-      let nodeRef = null;
+      let nodeRef;
 
       const scenarioStepData = await createScenarioStep(activity?.id);
 
@@ -598,13 +523,9 @@ const addActivityToCanvasElement = (
         stepData.id = nodeRef || '0';
       }
 
-      const queryString = `nodeRef: $nodeRef`;
-
-      await syncCanvasRequest(CanvasTreeId, queryString, {
-        variables: {
-          pattern: '$nodeRef: UUID',
-          nodeRef,
-        },
+      await canvasNodeUpdateMutation({
+        vid: CanvasTreeId,
+        nodeRef,
       });
 
       tree?.setData({ stepData });
