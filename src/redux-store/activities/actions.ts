@@ -6,7 +6,7 @@ import { ThunkAction } from 'redux-thunk';
 import { ActivitiesActionTypes } from './action-types';
 
 import { StoreLC } from '@/types/redux-store';
-import { graphQlRequest } from '@/utils/graphql-request';
+import { activityListQuery } from '@/utils/graphql-request';
 
 type SetIsAutoFocus = { type: typeof ActivitiesActionTypes.SET_IS_AUTO_FOCUS; autoFocus: boolean };
 
@@ -74,28 +74,9 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
   dispatch,
 ): Promise<void> => {
   try {
-    const response = await graphQlRequest({
-      body: {
-        query: `{activityList{
-          vid,
-          code,
-          createdAt,
-          editedAt,
-          name,
-          title,
-          description,
-          category{
-          vid,
-          code,
-          name,
-          parent{
-          vid,
-          code,
-          name}}}}`,
-      },
-    });
+    const response = await activityListQuery();
 
-    if (response.data) {
+    if (response?.data) {
       const { activityList } = response.data;
       const collection: { [x: string]: any } = {};
 

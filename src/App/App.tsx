@@ -8,13 +8,15 @@ import { cnApp } from './cn-app';
 import './App.css';
 
 import { Providers } from '@/react-context/providers';
+import { Identity } from '@/types';
 
 interface AppProps {
   graphqlClient?: ApolloClient<NormalizedCacheObject>;
+  identity?: Identity;
 }
 
 export const App: React.FC<AppProps> = (props) => {
-  const { graphqlClient } = props;
+  const { graphqlClient, identity } = props;
 
   return (
     <Root
@@ -22,7 +24,7 @@ export const App: React.FC<AppProps> = (props) => {
       defaultTheme="dark"
       className={cnApp('App-Wrapper').toString()}
     >
-      <Providers graphqlClient={graphqlClient}>
+      <Providers graphqlClient={graphqlClient} identity={identity}>
         <AppView />
       </Providers>
     </Root>

@@ -2,12 +2,12 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { ProjectStructureQuery, StoreLC } from '../../types/redux-store';
-import { graphQlRequest } from '../../utils/graphql-request';
-import { getProjectId } from '../../utils/project-id';
 import { setCurrentVersion } from '../../utils/version';
 import { ProjectStructureActionTypes } from '../project-structure/action-types';
 
 import { VersionActionTypes } from './action-types';
+
+import { projectQuery } from '@/utils/graphql-request';
 
 interface SetVersionSuccessType {
   type: typeof VersionActionTypes.SET_VERSION_SUCCESS;
@@ -85,46 +85,9 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
   dispatch,
 ): Promise<void> => {
   try {
-    const response = await graphQlRequest({
-      body: {
-        query: `{
-            project(vid:"${getProjectId()}") {
-              __typename
-              ... on Project {
-                version
-                rootEntity
-                domainSchema {
-                  entityImages {
-                    vid
-                    name
-                    entity {
-                      vid
-                      name
-                    }
-                    attributes {
-                      title
-                      name
-                      attrType
-                      unit
-                      description
-                      entity {
-                        vid
-                        name
-                      }
-                    }
-                  }
-                }
-              }
-              ... on Error {
-                code
-                message
-              }
-            }
-          }`,
-      },
-    });
+    const response = await projectQuery();
 
-    if (response.data) {
+    if (response?.data) {
       setCurrentVersion(response.data?.project.version);
 
       const structureQuery = buildStructureQuery(response.data?.project.domainSchema.entityImages);
