@@ -22,7 +22,6 @@ import {
   scenarioStepUpdateMutation,
 } from '@/utils/graphql-request';
 import { getStepDataFromScenarioStep } from '@/utils/step-data';
-import { getCurrentVersion } from '@/utils/version';
 
 const CANVAS_BASE_ELEMENTS_WIDTH = 67;
 const CANVAS_STEP_WIDTH = 250;
@@ -110,10 +109,8 @@ const createScenarioStep = async (
   objectsGroupId?: string,
   objects?: string[],
 ): Promise<any> => {
-  const version = getCurrentVersion();
   try {
     return await scenarioStepCreateMutation({
-      version,
       activity: activityId,
       objectGroup: objectsGroupId,
       objects,
@@ -130,15 +127,12 @@ const updateScenarioStep = async (
   objectGroupId?: string,
   objects?: string[],
 ): Promise<any> => {
-  const version = getCurrentVersion();
-
   try {
     return await scenarioStepUpdateMutation({
       vid: scenarioStepId,
       activity: activityId !== '0' ? activityId : undefined,
       objectGroup: objectGroupId,
       objects,
-      version,
     });
   } catch (e) {
     return undefined;
@@ -176,7 +170,6 @@ const addCanvasElement = (
     width,
     nodeType,
     nodeRef,
-    version: getCurrentVersion(),
     position: [position.x, position.y],
   });
 
@@ -293,15 +286,9 @@ const syncCanvasState = (
         return { vid: id, position };
       });
 
-      await Promise.all(
-        multipleData.map((i) => async () => {
-          try {
-            await canvasNodeUpdateMutation(i);
-          } catch (e) {
-            console.error(e);
-          }
-        }),
-      );
+      await multipleData.reduce((promise, i) => {
+        return promise.then(() => canvasNodeUpdateMutation(i)).catch(console.error);
+      }, Promise.resolve());
     }
 
     if (updateData.type === 'connect-tree' || updateData.type === 'disconnect-tree') {
@@ -351,6 +338,7 @@ const syncCanvasState = (
         }
 
         await canvasNodeCreateMutation({
+          vid: updateData.id,
           title,
           nodeType,
           width: treeWidth,
@@ -363,15 +351,9 @@ const syncCanvasState = (
     }
 
     if (updateData.type === 'remove-trees') {
-      await Promise.all(
-        updateData.ids.map((i) => async () => {
-          try {
-            await canvasNodeDeleteMutation({ vid: i });
-          } catch (e) {
-            console.error(e);
-          }
-        }),
-      );
+      await updateData.ids.reduce((promise, vid) => {
+        return promise.then(() => canvasNodeDeleteMutation({ vid })).catch(console.error);
+      }, Promise.resolve());
     }
   };
 };

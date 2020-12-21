@@ -7,7 +7,7 @@ import { authHeader } from '../set-auth-token';
 import { config } from '@/config.public';
 
 const headers = {
-  ...authHeader(),
+  ...authHeader(config.authToken),
 };
 
 export const getMainLink = (): HttpLink =>
