@@ -286,7 +286,7 @@ const syncCanvasState = (
         return { vid: id, position };
       });
 
-      await multipleData.reduce((promise, i) => {
+      await multipleData.reduce<Promise<any>>((promise, i) => {
         return promise.then(() => canvasNodeUpdateMutation(i)).catch(console.error);
       }, Promise.resolve());
     }
@@ -351,7 +351,7 @@ const syncCanvasState = (
     }
 
     if (updateData.type === 'remove-trees') {
-      await updateData.ids.reduce((promise, vid) => {
+      await updateData.ids.reduce<Promise<any>>((promise, vid) => {
         return promise.then(() => canvasNodeDeleteMutation({ vid })).catch(console.error);
       }, Promise.resolve());
     }
