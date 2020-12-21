@@ -1,10 +1,9 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, FetchPolicy, NormalizedCacheObject } from '@apollo/client';
 
-import { getHeaders } from './headers';
-import { getProjectId } from './project-id';
 import {
   ACTIVITY_LIST_QUERY,
   CANVAS_NODE_CREATE_MUTATION,
+  CANVAS_NODE_DELETE_MUTATION,
   CANVAS_NODE_UPDATE_MUTATION,
   GROUP_OBJECT_LIST_QUERY,
   OBJECT_GROUP_CREATE_MUTATION,
@@ -25,9 +24,6 @@ export type QueryBody = {
   };
 };
 
-type GraphqlRequestProps = { body: QueryBody; appendProjectId?: boolean; isMutation?: boolean };
-type ResponseProp = { [key: string]: any };
-
 export const getGraphqlUri = (projectId: string): string =>
   `${config.baseApiUrl}/graphql/${projectId}`;
 
@@ -35,13 +31,21 @@ export interface ServiceConfig {
   client?: ApolloClient<NormalizedCacheObject>;
   identity?: Identity;
   projectId: string;
+  fetchPolicy: FetchPolicy;
+}
+
+export interface ServiceInitProps {
+  client?: ApolloClient<NormalizedCacheObject>;
+  identity?: Identity;
+  projectId: string;
 }
 
 export const serviceConfig: ServiceConfig = {
   projectId: '',
+  fetchPolicy: 'no-cache',
 };
 
-export function initServiceConfig({ client, identity, projectId }: ServiceConfig): void {
+export function initServiceConfig({ client, identity, projectId }: ServiceInitProps): void {
   serviceConfig.client = client;
   serviceConfig.identity = identity;
   serviceConfig.projectId = projectId;
@@ -53,9 +57,19 @@ export function activityListQuery() {
   });
 }
 
+async function versionModifier<T>(action: Promise<T> | undefined): Promise<T | undefined | void> {
+  if (action) {
+    const result = await action;
+    incrementVersion();
+    return result;
+  }
+  return undefined;
+}
+
 export function groupObjectListQuery() {
   return serviceConfig.client?.query({
     query: GROUP_OBJECT_LIST_QUERY,
+    fetchPolicy: serviceConfig.fetchPolicy,
     context: {
       uri: getGraphqlUri(serviceConfig.projectId),
     },
@@ -69,13 +83,15 @@ export interface ObjectGroupUpdateMutationVariables {
 }
 
 export function objectGroupUpdateMutation(variables: ObjectGroupUpdateMutationVariables) {
-  return serviceConfig.client?.mutate({
-    mutation: OBJECT_GROUP_UPDATE_MUTATION,
-    variables: { version: getCurrentVersion(), ...variables },
-    context: {
-      uri: getGraphqlUri(serviceConfig.projectId),
-    },
-  });
+  return versionModifier(
+    serviceConfig.client?.mutate({
+      mutation: OBJECT_GROUP_UPDATE_MUTATION,
+      variables: { version: getCurrentVersion(), ...variables },
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
+    }),
+  );
 }
 
 export interface ObjectGroupCreateMutationVariables {
@@ -84,13 +100,15 @@ export interface ObjectGroupCreateMutationVariables {
 }
 
 export function objectGroupCreateMutation(variables: ObjectGroupCreateMutationVariables) {
-  return serviceConfig.client?.mutate({
-    mutation: OBJECT_GROUP_CREATE_MUTATION,
-    variables: { version: getCurrentVersion(), ...variables },
-    context: {
-      uri: getGraphqlUri(serviceConfig.projectId),
-    },
-  });
+  return versionModifier(
+    serviceConfig.client?.mutate({
+      mutation: OBJECT_GROUP_CREATE_MUTATION,
+      variables: { version: getCurrentVersion(), ...variables },
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
+    }),
+  );
 }
 
 export interface ScenarioStepCreateMutationVariables {
@@ -102,13 +120,15 @@ export interface ScenarioStepCreateMutationVariables {
 }
 
 export function scenarioStepCreateMutation(variables: ScenarioStepCreateMutationVariables) {
-  return serviceConfig.client?.mutate({
-    mutation: SCENARIO_STEP_CREATE_MUTATION,
-    variables: { version: getCurrentVersion(), ...variables },
-    context: {
-      uri: getGraphqlUri(serviceConfig.projectId),
-    },
-  });
+  return versionModifier(
+    serviceConfig.client?.mutate({
+      mutation: SCENARIO_STEP_CREATE_MUTATION,
+      variables: { version: getCurrentVersion(), ...variables },
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
+    }),
+  );
 }
 
 export interface ScenarioStepUpdateMutationVariables {
@@ -121,16 +141,19 @@ export interface ScenarioStepUpdateMutationVariables {
 }
 
 export function scenarioStepUpdateMutation(variables: ScenarioStepUpdateMutationVariables) {
-  return serviceConfig.client?.mutate({
-    mutation: SCENARIO_STEP_UPDATE_MUTATION,
-    variables: { version: getCurrentVersion(), ...variables },
-    context: {
-      uri: getGraphqlUri(serviceConfig.projectId),
-    },
-  });
+  return versionModifier(
+    serviceConfig.client?.mutate({
+      mutation: SCENARIO_STEP_UPDATE_MUTATION,
+      variables: { version: getCurrentVersion(), ...variables },
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
+    }),
+  );
 }
 
 export interface CreateCanvasNodeMutationVariables {
+  vid?: string;
   title?: string;
   width?: number;
   nodeType: string;
@@ -140,13 +163,15 @@ export interface CreateCanvasNodeMutationVariables {
 }
 
 export function canvasNodeCreateMutation(variables: CreateCanvasNodeMutationVariables) {
-  return serviceConfig.client?.mutate({
-    mutation: CANVAS_NODE_CREATE_MUTATION,
-    variables: { version: getCurrentVersion(), ...variables },
-    context: {
-      uri: getGraphqlUri(serviceConfig.projectId),
-    },
-  });
+  return versionModifier(
+    serviceConfig.client?.mutate({
+      mutation: CANVAS_NODE_CREATE_MUTATION,
+      variables: { version: getCurrentVersion(), ...variables },
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
+    }),
+  );
 }
 
 export interface UpdateCanvasNodeMutationVariables {
@@ -162,13 +187,15 @@ export interface UpdateCanvasNodeMutationVariables {
 }
 
 export function canvasNodeUpdateMutation(variables: UpdateCanvasNodeMutationVariables) {
-  return serviceConfig.client?.mutate({
-    mutation: CANVAS_NODE_UPDATE_MUTATION,
-    variables: { version: getCurrentVersion(), ...variables },
-    context: {
-      uri: getGraphqlUri(serviceConfig.projectId),
-    },
-  });
+  return versionModifier(
+    serviceConfig.client?.mutate({
+      mutation: CANVAS_NODE_UPDATE_MUTATION,
+      variables: { version: getCurrentVersion(), ...variables },
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
+    }),
+  );
 }
 
 export interface DeleteCanvasNodeMutationVariables {
@@ -177,48 +204,23 @@ export interface DeleteCanvasNodeMutationVariables {
 }
 
 export function canvasNodeDeleteMutation(variables: DeleteCanvasNodeMutationVariables) {
-  return serviceConfig.client?.mutate({
-    mutation: CANVAS_NODE_UPDATE_MUTATION,
-    variables: { version: getCurrentVersion(), ...variables },
-    context: {
-      uri: getGraphqlUri(serviceConfig.projectId),
-    },
-  });
+  return versionModifier(
+    serviceConfig.client?.mutate({
+      mutation: CANVAS_NODE_DELETE_MUTATION,
+      variables: { version: getCurrentVersion(), ...variables },
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
+    }),
+  );
 }
 
 export function projectQuery() {
   return serviceConfig.client?.query({
     query: PROJECT_QUERY,
+    fetchPolicy: serviceConfig.fetchPolicy,
     variables: {
       projectId: serviceConfig.projectId,
     },
-  });
-}
-
-export function graphQlRequest({
-  body,
-  appendProjectId = false,
-  isMutation = false,
-}: GraphqlRequestProps): Promise<{ data: ResponseProp; errors?: ResponseProp }> {
-  const uri = appendProjectId ? `graphql/${getProjectId()}` : 'graphql';
-
-  return new Promise((resolve, reject) => {
-    fetch(`${config.baseApiUrl}/${uri}`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify(body),
-    })
-      .then(async (resp) => {
-        const parsedResponse = await resp.json();
-
-        if (resp.ok && !parsedResponse.errors) {
-          if (isMutation) incrementVersion();
-
-          resolve(parsedResponse);
-        } else {
-          throw new Error(parsedResponse.errors || 'Request failed');
-        }
-      })
-      .catch(reject);
   });
 }

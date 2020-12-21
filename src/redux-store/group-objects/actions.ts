@@ -8,7 +8,6 @@ import {
   objectGroupCreateMutation,
   objectGroupUpdateMutation,
 } from '../../utils/graphql-request';
-import { getCurrentVersion } from '../../utils/version';
 
 import { GroupObjectsActionTypes } from './action-types';
 
@@ -59,7 +58,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
     const response = await groupObjectListQuery();
 
     if (response?.data) {
-      const { domain } = response.data.project;
+      const { domain } = response.data;
       const { objectGroupList } = domain;
 
       const collection: { [x: string]: TreeItem } = {};
@@ -122,9 +121,7 @@ const updateGroupObject = (
   const vids = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
 
   try {
-    const version = getCurrentVersion();
-
-    const response = await objectGroupUpdateMutation({ vids, vid: groupObjectId, version });
+    const response = await objectGroupUpdateMutation({ vids, vid: groupObjectId });
 
     if (response?.data) {
       dispatch(fetchGroupObjectList());
@@ -138,10 +135,8 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
   dispatch,
 ): Promise<void> => {
   try {
-    const version = getCurrentVersion();
     const response = await objectGroupCreateMutation({
       name,
-      version,
     });
 
     if (response?.data) {

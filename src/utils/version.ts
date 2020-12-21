@@ -1,6 +1,6 @@
 const sessionStorageKey = 'currentVersion';
 
-export function getCurrentVersion(): number {
+export function getCurrentVersion(increment = false): number {
   const value = sessionStorage.getItem(sessionStorageKey) || '';
   return +value;
 }
