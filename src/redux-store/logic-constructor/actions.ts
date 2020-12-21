@@ -9,7 +9,6 @@ import { FETCH_CANVAS_ITEMS_DATA } from './queries';
 
 import { setIsDroppingOnExistingStep } from '@/redux-store/activities/actions';
 import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '@/types/redux-store';
-import { getProjectLink, vegaApi } from '@/utils/api-clients/vega-api';
 import { canvasNodeTypes } from '@/utils/constants/canvas-node-types';
 import { debounce, DebounceFunction } from '@/utils/debounce';
 import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
@@ -20,6 +19,7 @@ import {
   canvasNodeUpdateMutation,
   scenarioStepCreateMutation,
   scenarioStepUpdateMutation,
+  serviceConfig,
 } from '@/utils/graphql-request';
 import { getStepDataFromScenarioStep } from '@/utils/step-data';
 
@@ -196,9 +196,8 @@ const addCanvasElement = (
 const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  vegaApi.setLink(getProjectLink());
-  vegaApi
-    .query({
+  serviceConfig.client
+    ?.query({
       query: FETCH_CANVAS_ITEMS_DATA,
       fetchPolicy: 'network-only',
     })
