@@ -200,7 +200,7 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
   serviceConfig.client
     ?.query({
       query: FETCH_CANVAS_ITEMS_DATA,
-      fetchPolicy: 'network-only',
+      fetchPolicy: serviceConfig.fetchPolicy,
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
       },
