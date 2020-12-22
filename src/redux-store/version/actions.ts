@@ -3,6 +3,7 @@ import { ThunkAction } from 'redux-thunk';
 
 import { ProjectStructureQuery, StoreLC } from '../../types/redux-store';
 import { setCurrentVersion } from '../../utils/version';
+import { setNotification } from '../notifications/actions';
 import { ProjectStructureActionTypes } from '../project-structure/action-types';
 
 import { VersionActionTypes } from './action-types';
@@ -12,16 +13,6 @@ import { projectQuery } from '@/utils/graphql-request';
 type SetVersionSuccess = {
   type: typeof VersionActionTypes.SET_VERSION_SUCCESS;
   version: number;
-};
-
-type SetVersionErrors = {
-  type: typeof VersionActionTypes.SET_VERSION_ERRORS;
-  errors: string[];
-};
-
-type DeleteVersionError = {
-  type: typeof VersionActionTypes.DELETE_VERSION_ERROR;
-  index: number;
 };
 
 interface Entity {
@@ -45,16 +36,6 @@ interface EntityImage {
 const setVersionSuccess = (version: number): SetVersionSuccess => ({
   type: VersionActionTypes.SET_VERSION_SUCCESS,
   version,
-});
-
-const setVersionErrors = (errors: string[]): SetVersionErrors => ({
-  type: VersionActionTypes.SET_VERSION_ERRORS,
-  errors,
-});
-
-const deleteVersionError = (index: number): DeleteVersionError => ({
-  type: VersionActionTypes.DELETE_VERSION_ERROR,
-  index,
 });
 
 const setProjectStructureQuery = (projectStructureQuery: ProjectStructureQuery) => ({
@@ -117,17 +98,19 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
       dispatch(setVersionSuccess(response.data?.project.version));
       dispatch(setProjectStructureQuery(structureQuery));
     } else {
-      dispatch(setVersionErrors(['Response has no data']));
-      console.error('Response has no data', response);
+      dispatch(setNotification({ message: 'Пустой ответ сервера', status: 'alert' }));
     }
   } catch (e) {
-    if (Array.isArray(e)) {
-      dispatch(setVersionErrors(e.map((error) => error.message)));
-    } else {
-      dispatch(setVersionErrors([e.message]));
+    let message = 'Серверная ошибка';
+    if (
+      (Array.isArray(e) &&
+        e.find((error) => error.message === 'badly formed hexadecimal UUID string')) ||
+      e.message === 'badly formed hexadecimal UUID string'
+    ) {
+      message = 'В url не корректный UUID проекта';
     }
-    console.error(e);
+    dispatch(setNotification({ message, status: 'alert' }));
   }
 };
 
-export { fetchVersion, deleteVersionError };
+export { fetchVersion };

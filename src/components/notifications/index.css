@@ -1,10 +1,12 @@
-.LC_ProjectErrors {
+.LC_Notifications {
   position: absolute;
   z-index: 2;
-  top: calc(var(--space-s) + 38px);
-  right: var(--space-xs);
+  left: 50%;
+  bottom: 0;
 
   width: 400px;
+
+  transform: translate(-50%, 0);
 
   &__SnackBar {
     padding-right: var(--space-xs);

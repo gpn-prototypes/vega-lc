@@ -9,7 +9,6 @@ import { cnLogicConstructor } from './cn-lc';
 
 import './index.css';
 
-import { InProgress } from '@/components/in-progress';
 import { getIsStepEditorOpened } from '@/redux-store/logic-constructor/selectors';
 
 export const LogicConstructorWidget: React.FC = () => {
@@ -21,7 +20,6 @@ export const LogicConstructorWidget: React.FC = () => {
       <CanvasWidget />
 
       {isStepEditorOpened && <StepEditor />}
-      <InProgress />
     </div>
   );
 };

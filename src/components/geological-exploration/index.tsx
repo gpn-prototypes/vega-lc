@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import {
   GridState,
   GridUpdate,
+  IconProcessing,
   Layout,
   LayoutWidget,
   LayoutWidgetsOverrides,
@@ -19,6 +20,7 @@ import './index.css';
 import { fetchActivitiesList } from '@/redux-store/activities/actions';
 import { fetchGroupObjectList } from '@/redux-store/group-objects/actions';
 import { fetchCanvasItemsData } from '@/redux-store/logic-constructor/actions';
+import { setNotification } from '@/redux-store/notifications/actions';
 import { fetchProjectStructureList } from '@/redux-store/project-structure/actions';
 
 export const GeologicalExploration = (): React.ReactElement => {
@@ -33,6 +35,13 @@ export const GeologicalExploration = (): React.ReactElement => {
     dispatch(fetchGroupObjectList());
     dispatch(fetchProjectStructureList());
     dispatch(fetchCanvasItemsData());
+    dispatch(
+      setNotification({
+        message: 'Раздел находится в разработке',
+        status: 'warning',
+        icon: IconProcessing,
+      }),
+    );
   }, [dispatch]);
 
   const widgets: LayoutWidget[] = [
