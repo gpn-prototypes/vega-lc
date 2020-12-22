@@ -12,6 +12,10 @@ type DeleteNotification = {
   index: number;
 };
 
+type FlushNotifications = {
+  type: typeof VersionActionTypes.FLUSH_NOTIFICATIONS;
+};
+
 const setNotification = (notification: Notification): SetNotification => ({
   type: VersionActionTypes.SET_NOTIFICATION,
   notification,
@@ -22,4 +26,8 @@ const deleteNotification = (index: number): DeleteNotification => ({
   index,
 });
 
-export { setNotification, deleteNotification };
+const flushNotifications = (): FlushNotifications => ({
+  type: VersionActionTypes.FLUSH_NOTIFICATIONS,
+});
+
+export { setNotification, deleteNotification, flushNotifications };

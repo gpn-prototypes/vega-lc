@@ -24,9 +24,15 @@ const deleteNotificationStrategy = (
   list: state.list.filter((value, idx) => idx !== index),
 });
 
+const flushNotificationsStrategy = (state: NotificationState): NotificationState => ({
+  ...state,
+  list: [],
+});
+
 const strategyMap = {
   [VersionActionTypes.SET_NOTIFICATION]: setNotificationStrategy,
   [VersionActionTypes.DELETE_NOTIFICATION]: deleteNotificationStrategy,
+  [VersionActionTypes.FLUSH_NOTIFICATIONS]: flushNotificationsStrategy,
 };
 
 const notificationsReducer = createReducer(strategyMap, initialState);

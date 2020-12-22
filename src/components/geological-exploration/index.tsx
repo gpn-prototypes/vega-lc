@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   GridState,
@@ -17,6 +17,7 @@ import { cnGeologicalExploration } from './cn-geoexploration';
 
 import './index.css';
 
+import { ProjectContext } from '@/react-context/providers';
 import { fetchActivitiesList } from '@/redux-store/activities/actions';
 import { fetchGroupObjectList } from '@/redux-store/group-objects/actions';
 import { fetchCanvasItemsData } from '@/redux-store/logic-constructor/actions';
@@ -29,19 +30,25 @@ export const GeologicalExploration = (): React.ReactElement => {
   }
 
   const dispatch = useDispatch();
+  const { projectId } = useContext(ProjectContext);
+
+  useEffect(() => {
+    if (projectId) {
+      dispatch(
+        setNotification({
+          message: 'Раздел находится в разработке',
+          status: 'warning',
+          icon: IconProcessing,
+        }),
+      );
+    }
+  }, [dispatch, projectId]);
 
   useEffect(() => {
     dispatch(fetchActivitiesList());
     dispatch(fetchGroupObjectList());
     dispatch(fetchProjectStructureList());
     dispatch(fetchCanvasItemsData());
-    dispatch(
-      setNotification({
-        message: 'Раздел находится в разработке',
-        status: 'warning',
-        icon: IconProcessing,
-      }),
-    );
   }, [dispatch]);
 
   const widgets: LayoutWidget[] = [
