@@ -8,7 +8,14 @@ import { LogicConstructorActionTypes } from './action-types';
 import { FETCH_CANVAS_ITEMS_DATA } from './queries';
 
 import { setIsDroppingOnExistingStep } from '@/redux-store/activities/actions';
-import { CanvasElement, CanvasElements, Step, StepData, StoreLC } from '@/types/redux-store';
+import {
+  CanvasElement,
+  CanvasElements,
+  CanvasViewEntity,
+  Step,
+  StepData,
+  StoreLC,
+} from '@/types/redux-store';
 import { canvasNodeTypes } from '@/utils/constants/canvas-node-types';
 import { debounce, DebounceFunction } from '@/utils/debounce';
 import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
@@ -38,44 +45,6 @@ type SetCanvasElements = {
   canvasElements: CanvasTree[];
 };
 
-type ToggleStepEditor = {
-  type: typeof LogicConstructorActionTypes.TOGGLE_STEP_EDITOR;
-  isStepEditorOpened: boolean;
-};
-
-// type CreateScenarioStepResponse = {
-//   data: {
-//     logic?: {
-//       scenarioStep?: {
-//         create?: {
-//           result?: {
-//             vid?: string;
-//           };
-//         };
-//       };
-//     };
-//   };
-// };
-
-// type CreateCanvasNodeResponse = {
-//   data: {
-//     logic?: {
-//       canvas?: {
-//         create?: {
-//           result?: {
-//             vid?: string;
-//           };
-//         };
-//       };
-//     };
-//   };
-// };
-
-// type AddCanvasElement = {
-//   type: typeof LogicConstructorActionTypes.ADD_CANVAS_ELEMENT;
-//   canvasElement: CanvasTree | [];
-// };
-
 const setScenarioList = (scenarioList: Step[]): SetScenarioList => ({
   type: LogicConstructorActionTypes.SET_SCENARIO_LIST,
   scenarioList,
@@ -86,10 +55,31 @@ const setCanvasElements = (canvasElements: CanvasTree[]): SetCanvasElements => (
   canvasElements,
 });
 
-const toggleStepEditor = (isStepEditorOpened: boolean): ToggleStepEditor => ({
-  type: LogicConstructorActionTypes.TOGGLE_STEP_EDITOR,
-  isStepEditorOpened,
-});
+const setCanvasViewRef = (
+  canvasViewRef: React.MutableRefObject<CanvasViewEntity | null>,
+): ThunkAction<void, StoreLC, unknown, AnyAction> => (dispatch, getState): void => {
+  const viewRef = getState().logicConstructor.canvasViewRef;
+
+  if (viewRef?.current) return;
+
+  dispatch({
+    type: LogicConstructorActionTypes.SET_CANVAS_VIEW_REF,
+    canvasViewRef,
+  });
+};
+
+const toggleStepEditor = (
+  isStepEditorOpened: boolean,
+): ThunkAction<void, StoreLC, unknown, AnyAction> => (dispatch, getState): void => {
+  const isOpen = getState().logicConstructor.isStepEditorOpened;
+
+  if (isOpen === isStepEditorOpened) return;
+
+  dispatch({
+    type: LogicConstructorActionTypes.TOGGLE_STEP_EDITOR,
+    isStepEditorOpened,
+  });
+};
 
 let debouncedSetCanvasElements: DebounceFunction<CanvasTree[]>;
 export const setDebouncedCanvasElements = (
@@ -601,6 +591,7 @@ export {
   setScenarioList,
   toggleStepEditor,
   addCanvasElement,
+  setCanvasViewRef,
   setCanvasElements,
   createScenarioStep,
   fetchCanvasItemsData,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IconClose, Tabs } from '@gpn-prototypes/vega-ui';
 
 import { cnStepEditor } from './cn-lc';
@@ -10,6 +10,7 @@ import Effects from './Effects';
 import './index.css';
 
 import { toggleStepEditor } from '@/redux-store/logic-constructor/actions';
+import { getCanvasViewRef } from '@/redux-store/logic-constructor/selectors';
 
 type Item = {
   name: string;
@@ -17,9 +18,12 @@ type Item = {
 
 const StepEditor: React.FC = () => {
   const dispatch = useDispatch();
+  const canvasViewRef = useSelector(getCanvasViewRef);
 
   const handleClose = (): void => {
     dispatch(toggleStepEditor(false));
+
+    canvasViewRef?.current?.updateState({ selectedData: null });
   };
 
   const tabs = [

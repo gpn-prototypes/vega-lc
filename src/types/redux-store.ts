@@ -1,4 +1,5 @@
 import React from 'react';
+import { CanvasView } from '@gpn-prototypes/vega-canvas/dist/src/entities/CanvasView';
 import { CanvasData, CanvasTree, TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 
 type NodeList = TreeItem[];
@@ -18,6 +19,8 @@ export declare type StepData = {
   name: string;
   events: Event[];
 };
+
+export type CanvasViewEntity = CanvasView;
 
 export type StepContent = {
   activity?: {
@@ -70,6 +73,7 @@ export type LogicConstructorState = {
   scenarioList?: Step[];
   canvasElements?: CanvasTree[];
   isStepEditorOpened?: boolean;
+  canvasViewRef?: React.MutableRefObject<CanvasViewEntity | null>;
 };
 
 export type NewGroupParams = {

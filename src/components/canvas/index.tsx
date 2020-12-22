@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CanvasView as CanvasViewEntity } from '@gpn-prototypes/vega-canvas/dist/src/entities/CanvasView';
 import { Canvas, CanvasUpdate, Change, useInterval } from '@gpn-prototypes/vega-ui';
 
 import './index.css';
@@ -8,6 +9,7 @@ import { cnCanvasWidget } from '@/components/canvas/cn-canvas';
 import {
   mapDropEventToRelatedAction,
   setCanvasElements,
+  setCanvasViewRef,
   syncCanvasState,
   toggleStepEditor,
 } from '@/redux-store/logic-constructor/actions';
@@ -17,9 +19,19 @@ import { canvasActionsForImmediateSync } from '@/utils/constants/canvas-actions-
 export const CanvasWidget: React.FC = () => {
   const [changes, setChanges] = useState<CanvasUpdate[]>([]);
 
-  const dispatch = useDispatch();
+  const canvasViewRef = useRef<CanvasViewEntity | null>(null);
 
   const canvasElements = useSelector(getCanvasElements);
+
+  const dispatch = useDispatch();
+
+  const canvasViewRefSetter = (view: CanvasViewEntity): void => {
+    if (canvasViewRef.current) return;
+
+    canvasViewRef.current = view;
+
+    dispatch(setCanvasViewRef(canvasViewRef));
+  };
 
   useInterval(2000, () => {
     if (changes.length) {
@@ -35,10 +47,18 @@ export const CanvasWidget: React.FC = () => {
 
     dispatch(setCanvasElements(state));
 
-    if (update.type === 'select' && update.selected?.type === 'event') {
-      dispatch(toggleStepEditor(true));
+    if (update.type === 'select') {
+      if (update.selected?.type === 'event') {
+        dispatch(toggleStepEditor(true));
 
-      return;
+        return;
+      }
+
+      if (update.selected?.type === 'item') {
+        dispatch(toggleStepEditor(false));
+
+        return;
+      }
     }
 
     if (type === 'unselect' || type === 'remove-trees') {
@@ -67,7 +87,11 @@ export const CanvasWidget: React.FC = () => {
 
   return (
     <div className={cnCanvasWidget()}>
-      <Canvas state={canvasElements} onChange={updateTree} />
+      <Canvas
+        canvasViewAccessor={canvasViewRefSetter}
+        state={canvasElements}
+        onChange={updateTree}
+      />
     </div>
   );
 };

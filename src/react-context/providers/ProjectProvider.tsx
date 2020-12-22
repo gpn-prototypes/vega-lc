@@ -9,6 +9,7 @@ import { initServiceConfig } from '@/utils/graphql-request';
 const ROUTE_MATCH_PROJECT_ID = '/projects/show/:projectId';
 
 type MatchedData = { projectId: string };
+
 export interface ProjectContextData {
   projectId: string;
   initialized: boolean;
