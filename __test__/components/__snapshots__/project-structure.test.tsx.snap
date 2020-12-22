@@ -5,35 +5,20 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
   className="ProjectStructure"
 >
   <div
-    className="VegaTree"
-  >
-    <div
-      className={
-        Object {
-          "has": [Function],
-          "is": [Function],
-          "mix": [Function],
-          "split": [Function],
-          "state": [Function],
-          "toString": [Function],
-        }
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
       }
-    >
-      <ul
-        className={
-          Object {
-            "has": [Function],
-            "is": [Function],
-            "mix": [Function],
-            "split": [Function],
-            "state": [Function],
-            "toString": [Function],
-          }
-        }
-        role="tree"
-        tabIndex={0}
-      />
-    </div>
+    }
+  >
+    <p>
+      Структура проекта отсутствует
+    </p>
   </div>
 </div>
 `;
