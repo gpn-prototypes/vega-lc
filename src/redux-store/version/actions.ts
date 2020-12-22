@@ -87,30 +87,32 @@ function buildStructureQuery(entityImages: EntityImage[]): ProjectStructureQuery
 const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  try {
-    const response = await projectQuery();
+  projectQuery()
+    ?.then((response) => {
+      if (response?.data) {
+        setCurrentVersion(response.data?.project.version);
 
-    if (response?.data) {
-      setCurrentVersion(response.data?.project.version);
+        const structureQuery = buildStructureQuery(
+          response.data?.project.domainSchema.entityImages,
+        );
 
-      const structureQuery = buildStructureQuery(response.data?.project.domainSchema.entityImages);
-
-      dispatch(setVersionSuccess(response.data?.project.version));
-      dispatch(setProjectStructureQuery(structureQuery));
-    } else {
-      dispatch(setNotification({ message: 'Пустой ответ сервера', status: 'alert' }));
-    }
-  } catch (e) {
-    let message = 'Серверная ошибка';
-    if (
-      (Array.isArray(e) &&
-        e.find((error) => error.message === 'badly formed hexadecimal UUID string')) ||
-      e.message === 'badly formed hexadecimal UUID string'
-    ) {
-      message = 'В url не корректный UUID проекта';
-    }
-    dispatch(setNotification({ message, status: 'alert' }));
-  }
+        dispatch(setVersionSuccess(response.data?.project.version));
+        dispatch(setProjectStructureQuery(structureQuery));
+      } else {
+        dispatch(setNotification({ message: 'Пустой ответ сервера', status: 'alert' }));
+      }
+    })
+    .catch((e) => {
+      let message = 'Серверная ошибка';
+      const { errors } = e.networkError.result;
+      if (
+        Array.isArray(errors) &&
+        errors.find((error) => error.message === 'badly formed hexadecimal UUID string')
+      ) {
+        message = 'В url не корректный UUID проекта';
+      }
+      dispatch(setNotification({ message, status: 'alert' }));
+    });
 };
 
 export { fetchVersion };
