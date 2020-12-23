@@ -1,5 +1,12 @@
 import { NetworkStatus } from '@apollo/client';
-import { CanvasData, CanvasTree, CanvasUpdate, entities } from '@gpn-prototypes/vega-ui';
+import {
+  CanvasData,
+  CanvasTree,
+  CanvasUpdate,
+  entities,
+  TargetData,
+  TreeItem,
+} from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,13 +16,15 @@ import { FETCH_CANVAS_ITEMS_DATA } from './queries';
 
 import { setIsDroppingOnExistingStep } from '@/redux-store/activities/actions';
 import {
-  CanvasElement,
   CanvasElements,
+  CanvasElement,
   CanvasViewEntity,
   Step,
   StepData,
   StoreLC,
 } from '@/types/redux-store';
+import { clearArrayFromDuplicates } from '@/utils/clear-array-from-duplicates';
+import { composeDomainObjectsArray } from '@/utils/compose-domain-objects-array';
 import { canvasNodeTypes } from '@/utils/constants/canvas-node-types';
 import { debounce, DebounceFunction } from '@/utils/debounce';
 import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
@@ -355,32 +364,38 @@ const addProjectStructureObjectToCanvasElement = (
   CanvasTreeId: string,
 ): ThunkAction<void, StoreLC, unknown, AnyAction> => async (dispatch, getState) => {
   const { logicConstructor, projectStructure } = getState();
-  const { nodeList, draggingElements } = projectStructure;
+  const {
+    nodeList,
+    draggingElements,
+  }: {
+    nodeList?: TreeItem[];
+    draggingElements?: TargetData[];
+  } = projectStructure;
   const { canvasElements } = logicConstructor;
 
   if (draggingElements?.length && canvasElements && nodeList) {
-    const tree = getCanvasTreeById(canvasElements, CanvasTreeId);
-    const treeNode = getTreeNodeById(draggingElements[0].id, nodeList);
+    const canvasTree = getCanvasTreeById(canvasElements, CanvasTreeId);
+    const treeData = canvasTree?.getData();
 
-    if (!treeNode) return;
-
-    const object = {
-      id: treeNode.id,
-      name: treeNode.name,
-      type: 'domain',
-    };
-    const treeData = tree?.getData();
-
-    if (treeData?.stepData && object.id) {
+    if (treeData?.stepData) {
       const { stepData: existStepData } = treeData;
 
+      const draggingElementsIds = draggingElements.map((el: TargetData) => el.id);
+      const newObjectsIds = composeDomainObjectsArray(draggingElementsIds, nodeList)?.map(
+        (object) => object.id,
+      );
+
+      if (!newObjectsIds) return; // TODO: process error
+
       const existObjectsIds = existStepData.events[0]?.content.map((item) => item.id) || [];
+
+      const resultIdsArray = clearArrayFromDuplicates([...existObjectsIds, ...newObjectsIds]);
 
       const response = await updateScenarioStep(
         existStepData.id,
         existStepData.events[0]?.id,
         undefined,
-        [...existObjectsIds, object.id],
+        resultIdsArray,
       );
 
       // TODO: process error
@@ -388,17 +403,17 @@ const addProjectStructureObjectToCanvasElement = (
 
       const id = existStepData.events[0]?.id || '0';
       const name = existStepData.events[0]?.name || 'Мероприятие';
-      const content = existStepData.events[0]?.content || [];
+      const content = composeDomainObjectsArray(resultIdsArray, nodeList);
 
       const events = [
         {
           id,
           name,
-          content: [...content, object],
+          content,
         },
       ];
 
-      tree?.setData({ stepData: { ...existStepData, events } });
+      canvasTree?.setData({ stepData: { ...existStepData, events } });
     }
   }
 };
