@@ -13,8 +13,6 @@ export const composeDomainObjectsArray = (ids: string[], source: TreeItem[]): Do
         name: treeNode.name,
         type: 'domain',
       });
-
-      return acc;
     }
 
     return acc;
