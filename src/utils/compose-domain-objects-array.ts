@@ -4,19 +4,19 @@ import { Content as DomainObject } from '@/types/redux-store';
 import { getTreeNodeById } from '@/utils/get-tree-node-by-id';
 
 export const composeDomainObjectsArray = (ids: string[], source: TreeItem[]): DomainObject[] => {
-  const domainObjects: DomainObject[] = [];
-
-  ids.forEach((id) => {
+  return ids.reduce((acc: DomainObject[], id) => {
     const treeNode = getTreeNodeById(id, source);
 
     if (treeNode) {
-      domainObjects.push({
+      acc.push({
         id: treeNode.id,
         name: treeNode.name,
         type: 'domain',
       });
-    }
-  });
 
-  return domainObjects;
+      return acc;
+    }
+
+    return acc;
+  }, []);
 };

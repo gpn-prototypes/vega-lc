@@ -379,6 +379,9 @@ const addProjectStructureObjectToCanvasElement = (
 
     if (treeData?.stepData) {
       const { stepData: existStepData } = treeData;
+      const existObjectsIds = existStepData.events[0]?.content.map((item) => item.id) || [];
+
+      if (draggingElements.length === 1 && existObjectsIds.includes(draggingElements[0].id)) return;
 
       const draggingElementsIds = draggingElements.map((el: TargetData) => el.id);
       const newObjectsIds = composeDomainObjectsArray(draggingElementsIds, nodeList)?.map(
@@ -386,8 +389,6 @@ const addProjectStructureObjectToCanvasElement = (
       );
 
       if (!newObjectsIds) return; // TODO: process error
-
-      const existObjectsIds = existStepData.events[0]?.content.map((item) => item.id) || [];
 
       const resultIdsArray = clearArrayFromDuplicates([...existObjectsIds, ...newObjectsIds]);
 
