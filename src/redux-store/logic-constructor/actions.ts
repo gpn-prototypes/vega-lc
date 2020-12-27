@@ -12,7 +12,6 @@ import { ThunkAction } from 'redux-thunk';
 import { v4 as uuidv4 } from 'uuid';
 
 import { LogicConstructorActionTypes } from './action-types';
-import { FETCH_CANVAS_ITEMS_DATA } from './queries';
 
 import { setIsDroppingOnExistingStep } from '@/redux-store/activities/actions';
 import {
@@ -38,6 +37,7 @@ import {
   scenarioStepUpdateMutation,
   serviceConfig,
 } from '@/utils/graphql-request';
+import { CANVAS_ITEMS_QUERY } from '@/utils/queries';
 import { getStepDataFromScenarioStep } from '@/utils/step-data';
 
 const CANVAS_BASE_ELEMENTS_WIDTH = 67;
@@ -52,6 +52,11 @@ type SetScenarioList = {
 type SetCanvasElements = {
   type: typeof LogicConstructorActionTypes.SET_CANVAS_ELEMENTS;
   canvasElements: CanvasTree[];
+};
+
+type ToggleStepEditor = {
+  type: typeof LogicConstructorActionTypes.TOGGLE_STEP_EDITOR;
+  isStepEditorOpened: boolean;
 };
 
 const setScenarioList = (scenarioList: Step[]): SetScenarioList => ({
@@ -161,7 +166,7 @@ const addCanvasElement = (
     const scenarioStepData = await createScenarioStep(stepData.events[0].id);
 
     if (scenarioStepData) {
-      nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+      nodeRef = scenarioStepData.data.project?.logic?.scenarioStep?.create?.result?.vid;
     }
   }
 
@@ -182,7 +187,7 @@ const addCanvasElement = (
       : canvasDataTree;
 
     const canvasElement = Tree.of<CanvasData>({
-      id: response.data.logic?.canvas?.create?.result?.vid,
+      id: response.data.project?.logic?.canvas?.create?.result?.vid,
       data: canvasData,
     });
 
@@ -198,7 +203,7 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
 ): Promise<void> => {
   serviceConfig.client
     ?.query({
-      query: FETCH_CANVAS_ITEMS_DATA,
+      query: CANVAS_ITEMS_QUERY,
       fetchPolicy: serviceConfig.fetchPolicy,
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
@@ -206,7 +211,7 @@ const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
     })
     .then(async (response) => {
       if (response.networkStatus === NetworkStatus.ready) {
-        const { logic } = response.data;
+        const { logic } = response.data.project;
         const { canvas, stepList }: { canvas?: CanvasElements[]; stepList?: Step[] } = logic;
 
         const getCanvasElements = (): CanvasTree[] => {
@@ -328,7 +333,7 @@ const syncCanvasState = (
           const scenarioStepData = await createScenarioStep();
 
           if (scenarioStepData) {
-            nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+            nodeRef = scenarioStepData.data.project?.logic?.scenarioStep?.create?.result?.vid;
           }
         }
 
@@ -509,7 +514,7 @@ const addActivityToCanvasElement = (
       const scenarioStepData = await createScenarioStep(activity?.id);
 
       if (scenarioStepData) {
-        nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+        nodeRef = scenarioStepData.data.project?.logic?.scenarioStep?.create?.result?.vid;
 
         stepData.id = nodeRef || '0';
       }

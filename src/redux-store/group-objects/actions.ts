@@ -58,7 +58,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
     const response = await groupObjectListQuery();
 
     if (response?.data) {
-      const { domain } = response.data;
+      const { domain } = response.data.project;
       const { objectGroupList } = domain;
 
       const collection: { [x: string]: TreeItem } = {};

@@ -1,4 +1,5 @@
 import { ApolloClient, FetchPolicy, NormalizedCacheObject } from '@apollo/client';
+import { ApolloQueryResult } from '@apollo/client/core/types';
 
 import {
   ACTIVITY_LIST_QUERY,
@@ -17,12 +18,9 @@ import { getCurrentVersion, incrementVersion } from './version';
 import { config } from '@/config.public';
 import { Identity } from '@/types';
 
-export type QueryBody = {
-  query: string;
-  variables?: {
-    [key: string]: unknown;
-  };
-};
+type QueryResult = Promise<ApolloQueryResult<any>> | undefined;
+
+export type Data = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export const getGraphqlUri = (projectId: string): string =>
   `${config.baseApiUrl}/graphql/${projectId}`;
@@ -32,6 +30,7 @@ export interface ServiceConfig {
   identity?: Identity;
   projectId: string;
   fetchPolicy: FetchPolicy;
+  getDiffResolvingConfig: () => Data;
 }
 
 export interface ServiceInitProps {
@@ -43,6 +42,31 @@ export interface ServiceInitProps {
 export const serviceConfig: ServiceConfig = {
   projectId: '',
   fetchPolicy: 'no-cache',
+  getDiffResolvingConfig: () => ({
+    maxAttempts: 20,
+    errorTypename: 'UpdateProjectInnerDiff',
+    mergeStrategy: {
+      default: 'smart',
+    },
+    projectAccessor: {
+      fromDiffError: (data: Record<string, unknown>) => ({
+        remote: data.remoteProject,
+        local: {
+          vid: serviceConfig.projectId,
+          version: getCurrentVersion(),
+        },
+      }),
+      fromVariables: (vars: Record<string, any>) => ({
+        version: vars.version,
+        ...vars,
+      }),
+      toVariables: (vars: Record<string, unknown>, patched: Record<string, any>) => ({
+        ...vars,
+        version: patched.version,
+        ...patched,
+      }),
+    },
+  }),
 };
 
 export function initServiceConfig({ client, identity, projectId }: ServiceInitProps): void {
@@ -51,7 +75,7 @@ export function initServiceConfig({ client, identity, projectId }: ServiceInitPr
   serviceConfig.projectId = projectId;
 }
 
-export function activityListQuery() {
+export function activityListQuery(): QueryResult {
   return serviceConfig.client?.query({
     query: ACTIVITY_LIST_QUERY,
   });
@@ -66,12 +90,13 @@ async function versionModifier<T>(action: Promise<T> | undefined): Promise<T | u
   return undefined;
 }
 
-export function groupObjectListQuery() {
+export function groupObjectListQuery(): QueryResult {
   return serviceConfig.client?.query({
     query: GROUP_OBJECT_LIST_QUERY,
     fetchPolicy: serviceConfig.fetchPolicy,
     context: {
       uri: getGraphqlUri(serviceConfig.projectId),
+      projectDiffResolving: serviceConfig.getDiffResolvingConfig(),
     },
   });
 }
@@ -89,6 +114,7 @@ export function objectGroupUpdateMutation(variables: ObjectGroupUpdateMutationVa
       variables: { version: getCurrentVersion(), ...variables },
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
+        projectDiffResolving: serviceConfig.getDiffResolvingConfig(),
       },
     }),
   );
@@ -106,6 +132,7 @@ export function objectGroupCreateMutation(variables: ObjectGroupCreateMutationVa
       variables: { version: getCurrentVersion(), ...variables },
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
+        projectDiffResolving: serviceConfig.getDiffResolvingConfig(),
       },
     }),
   );
@@ -126,6 +153,7 @@ export function scenarioStepCreateMutation(variables: ScenarioStepCreateMutation
       variables: { version: getCurrentVersion(), ...variables },
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
+        projectDiffResolving: serviceConfig.getDiffResolvingConfig(),
       },
     }),
   );
@@ -147,6 +175,7 @@ export function scenarioStepUpdateMutation(variables: ScenarioStepUpdateMutation
       variables: { version: getCurrentVersion(), ...variables },
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
+        projectDiffResolving: serviceConfig.getDiffResolvingConfig(),
       },
     }),
   );
@@ -169,6 +198,7 @@ export function canvasNodeCreateMutation(variables: CreateCanvasNodeMutationVari
       variables: { version: getCurrentVersion(), ...variables },
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
+        projectDiffResolving: serviceConfig.getDiffResolvingConfig(),
       },
     }),
   );
@@ -193,6 +223,7 @@ export function canvasNodeUpdateMutation(variables: UpdateCanvasNodeMutationVari
       variables: { version: getCurrentVersion(), ...variables },
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
+        projectDiffResolving: serviceConfig.getDiffResolvingConfig(),
       },
     }),
   );
@@ -210,12 +241,13 @@ export function canvasNodeDeleteMutation(variables: DeleteCanvasNodeMutationVari
       variables: { version: getCurrentVersion(), ...variables },
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
+        projectDiffResolving: serviceConfig.getDiffResolvingConfig(),
       },
     }),
   );
 }
 
-export function projectQuery() {
+export function projectQuery(): QueryResult {
   return serviceConfig.client?.query({
     query: PROJECT_QUERY,
     fetchPolicy: serviceConfig.fetchPolicy,
