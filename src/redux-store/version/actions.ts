@@ -45,10 +45,8 @@ const setProjectStructureQuery = (projectStructureQuery: ProjectStructureQuery) 
 });
 
 function buildStructureQuery(entityImages: EntityImage[]): ProjectStructureQuery {
-  if (!entityImages.length) return { query: '', tree: [] };
-
   const image = entityImages.find((ei) => ei.name === 'GeoEconomicAppraisalProject');
-  let query = `{ domain { geoEconomicAppraisalProjectList { typename:__typename vid name `;
+  let query = `{ project { domain { geoEconomicAppraisalProjectList { typename:__typename vid name `;
   const tree = ['geoEconomicAppraisalProjectList'];
   const loadedImages: string[] = [];
 
@@ -77,7 +75,7 @@ function buildStructureQuery(entityImages: EntityImage[]): ProjectStructureQuery
     query += buildAttributeQuery(attributeFound);
   }
 
-  query += '} } }';
+  query += '} } } }';
 
   return {
     query,

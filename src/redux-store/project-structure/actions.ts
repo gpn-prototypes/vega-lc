@@ -30,6 +30,14 @@ const setProjectStructureDraggingElements = (
   draggingElements,
 });
 
+const DEFAULT_QUERY = `{
+  domain{
+    geoEconomicAppraisalProjectList{
+      vid name
+    }
+  }
+}`;
+
 const DEFAULT_TREE = ['geoEconomicAppraisalProjectList'];
 
 interface DomainObject {
@@ -69,12 +77,8 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
   try {
     const state = getState();
 
-    const query = state.projectStructure.projectStructureQuery?.query
-      ? gql(state.projectStructure.projectStructureQuery?.query)
-      : '';
+    const query = gql(state.projectStructure.projectStructureQuery?.query || DEFAULT_QUERY);
     const tree = state.projectStructure.projectStructureQuery?.tree || DEFAULT_TREE;
-
-    if (!query) return;
 
     const response = await serviceConfig.client?.query({
       query,
@@ -84,7 +88,7 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
     });
 
     if (response?.data) {
-      const { domain } = response.data;
+      const { domain } = response.data.project;
 
       const nodeList = buildTree(domain, tree, 0);
 
