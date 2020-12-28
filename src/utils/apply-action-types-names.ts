@@ -1,6 +1,6 @@
 import Prefixer from './prefixier';
 
-function applyActionTypesNames(actionTypes: { [x: string]: any }, prefix: string): void {
+function applyActionTypesNames(actionTypes: Record<string, string>, prefix: string): void {
   const prefixer = new Prefixer(prefix, { delimiter: '_' });
 
   Object.keys(actionTypes).forEach((type) => {
