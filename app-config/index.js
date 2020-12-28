@@ -13,9 +13,7 @@ const getAppConfig = () => ({
   port: process.env.PORT || 3000,
   apiURL: process.env.API_URL || '',
   analyze: process.env.ANALYZE || 0,
-  baseApiUrl:
-    process.env.BASE_API_URL ||
-    process.env.VEGA_API_PROXY
+  baseApiUrl: process.env.BASE_API_URL || process.env.VEGA_API_PROXY,
 });
 
 module.exports = { getAppConfig };

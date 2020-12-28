@@ -27,10 +27,10 @@ const StepEditor: React.FC = () => {
       name: 'Общая информация',
     },
     {
-      name: 'Эффекты',
+      name: 'Условия начала и завершения',
     },
     {
-      name: 'Условия выполнения',
+      name: 'Эффекты',
     },
   ];
 
@@ -41,9 +41,9 @@ const StepEditor: React.FC = () => {
       case tabs[0].name:
         return <CommonInfo />;
       case tabs[1].name:
-        return <Effects />;
-      case tabs[2].name:
         return <Conditions />;
+      case tabs[2].name:
+        return <Effects />;
       default:
         return <CommonInfo />;
     }

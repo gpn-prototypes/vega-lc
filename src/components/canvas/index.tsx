@@ -2,19 +2,18 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Canvas, CanvasUpdate, Change, useInterval } from '@gpn-prototypes/vega-ui';
 
+import './index.css';
+
+import { cnCanvasWidget } from '@/components/canvas/cn-canvas';
 import {
   mapDropEventToRelatedAction,
   setCanvasElements,
   syncCanvasState,
   toggleStepEditor,
-} from '../../redux-store/logic-constructor/actions';
-import { getCanvasElements } from '../../redux-store/logic-constructor/selectors';
-import { canvasActionsForImmediateSync } from '../../utils/constants/canvas-actions-to-sync';
-import { getCanvasTreeById } from '../../utils/get-canvas-tree-by-id';
-
-import { cnCanvasWidget } from './cn-canvas';
-
-import './index.css';
+} from '@/redux-store/logic-constructor/actions';
+import { getCanvasElements } from '@/redux-store/logic-constructor/selectors';
+import { canvasActionsForImmediateSync } from '@/utils/constants/canvas-actions-to-sync';
+import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
 
 export const CanvasWidget: React.FC = () => {
   const [changes, setChanges] = useState<CanvasUpdate[]>([]);

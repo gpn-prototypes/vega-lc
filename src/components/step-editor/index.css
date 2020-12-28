@@ -2,7 +2,8 @@
   --step-editor-content-height: calc(100% - 50px);
   --step-editor-height: calc(100vh - 170px);
   --step-editor-select-top-indent: 12px;
-  --step-editor-min-width: 528px;
+  --step-editor-padding-left: 12px;
+  --step-editor-min-width: 584px;
 }
 
 .StepEditor {
@@ -19,7 +20,7 @@
     position: relative;
 
     margin-bottom: 2px;
-    padding-left: 12px;
+    padding-left: var(--step-editor-padding-left);
 
     height: 35px;
 
@@ -30,10 +31,34 @@
 
       top: 2px;
     }
+
+    .VegaTabs__InnerContent {
+      margin: 0;
+    }
+  }
+
+  &__SelectContainer {
+    margin-bottom: calc(var(--step-editor-select-top-indent) + 2px);
+
+    display: flex;
+  }
+
+  &__RemoveBtn {
+    justify-content: center;
+    align-self: center;
+
+    width: 10%;
+
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-type-primary);
+    }
   }
 
   &__Content {
-    padding: 24px var(--step-editor-select-top-indent);
+    padding-top: calc(var(--step-editor-select-top-indent) + 2px);
+    padding-left: var(--step-editor-padding-left);
 
     width: 100%;
     height: var(--step-editor-content-height);
@@ -51,6 +76,15 @@
 
   &__ChanceSelect {
     width: 100%;
+  }
+
+  &__SectionLabel {
+    margin: 0 0 12px;
+
+    font-size: 16px;
+    line-height: 150%;
+
+    color: var(--color-type-primary);
   }
 
   &__SelectLabel {
@@ -97,15 +131,11 @@
     width: calc(50% - 6px);
   }
 
-  &__Cost {
-    margin-top: var(--step-editor-select-top-indent);
-  }
-
-  &__CostSelect {
-    width: calc(50% - 6px);
-  }
-
-  &__ParameterAppender {
+  &__Parameters {
     margin-top: calc(var(--step-editor-select-top-indent) * 2);
+  }
+
+  &__ParametersSelect {
+    width: calc(50% - 6px);
   }
 }
