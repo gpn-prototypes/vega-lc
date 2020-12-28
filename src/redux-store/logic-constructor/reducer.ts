@@ -1,4 +1,4 @@
-import { CanvasTree } from '@gpn-prototypes/vega-ui';
+import { CanvasData, CanvasTree, entities } from '@gpn-prototypes/vega-ui';
 
 import { ClearActionTypes } from '../clear/action-types';
 
@@ -56,9 +56,33 @@ const clearStoreStrategy = (): LogicConstructorState => ({
   ...initialState,
 });
 
+const replaceCanvasElementIdStrategy = (
+  state: LogicConstructorState,
+  { id, replaceId }: { id: string; replaceId: string },
+): LogicConstructorState => {
+  const canvasElements = state.canvasElements || [];
+  const found = canvasElements.find((i) => i.getId() === id);
+
+  if (!found) return state; // todo: throw error?
+
+  return {
+    ...state,
+    canvasElements: [
+      ...canvasElements.filter((i) => i.getId() !== id),
+      entities.Tree.of<CanvasData>({
+        id: replaceId,
+        childrenIds: found.getChildren(),
+        parentIds: found.getParents(),
+        data: found.getData(),
+      }),
+    ],
+  };
+};
+
 const strategyMap = {
   [LogicConstructorActionTypes.SET_SCENARIO_LIST]: setScenarioListStrategy,
   [LogicConstructorActionTypes.SET_CANVAS_ELEMENTS]: setCanvasElementsStrategy,
+  [LogicConstructorActionTypes.REPLACE_CANVAS_ELEMENT_ID]: replaceCanvasElementIdStrategy,
   [LogicConstructorActionTypes.ADD_CANVAS_ELEMENT]: addCanvasElementStrategy,
   [LogicConstructorActionTypes.TOGGLE_STEP_EDITOR]: toggleStepEditorStrategy,
   [LogicConstructorActionTypes.SET_CANVAS_VIEW_REF]: setCanvasViewRefStrategy,

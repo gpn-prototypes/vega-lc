@@ -3,6 +3,7 @@ import { applyActionTypesNames } from '@/utils/apply-action-types-names';
 type LogicConstructorActions =
   | 'SET_SCENARIO_LIST'
   | 'SET_CANVAS_ELEMENTS'
+  | 'REPLACE_CANVAS_ELEMENT_ID'
   | 'ADD_CANVAS_ELEMENT'
   | 'CREATE_STEP'
   | 'UPDATE_STEP'
@@ -13,6 +14,7 @@ type LogicConstructorActions =
 const LogicConstructorActionTypes: Record<LogicConstructorActions, string> = {
   SET_SCENARIO_LIST: '',
   SET_CANVAS_ELEMENTS: '',
+  REPLACE_CANVAS_ELEMENT_ID: '',
   ADD_CANVAS_ELEMENT: '',
   CREATE_STEP: '',
   UPDATE_STEP: '',

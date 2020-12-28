@@ -55,6 +55,12 @@ type SetCanvasElements = {
   canvasElements: CanvasTree[];
 };
 
+type ReplaceCanvasElementId = {
+  type: typeof LogicConstructorActionTypes.REPLACE_CANVAS_ELEMENT_ID;
+  id: string;
+  replaceId: string;
+};
+
 const setScenarioList = (scenarioList: Step[]): SetScenarioList => ({
   type: LogicConstructorActionTypes.SET_SCENARIO_LIST,
   scenarioList,
@@ -90,6 +96,11 @@ const toggleStepEditor = (
     isStepEditorOpened,
   });
 };
+const replaceCanvasElementId = (id: string, replaceId: string): ReplaceCanvasElementId => ({
+  type: LogicConstructorActionTypes.REPLACE_CANVAS_ELEMENT_ID,
+  id,
+  replaceId,
+});
 
 let debouncedSetCanvasElements: DebounceFunction<CanvasTree[]>;
 export const setDebouncedCanvasElements = (
@@ -340,14 +351,16 @@ const syncCanvasState = (
           tree.setData({ stepData: { id: nodeRef, name: 'Шаг', events: [] } });
         }
 
-        await canvasNodeCreateMutation({
-          vid: updateData.id,
+        const response = await canvasNodeCreateMutation({
           title,
           nodeType,
           width: treeWidth,
           position: [pos.x, pos.y],
           nodeRef,
         });
+        const id = response?.data?.logic?.canvas?.create?.result?.vid;
+
+        dispatch(replaceCanvasElementId(updateData.id, id));
       }
 
       return;
