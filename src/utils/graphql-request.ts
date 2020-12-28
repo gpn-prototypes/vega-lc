@@ -13,7 +13,7 @@ import {
   SCENARIO_STEP_CREATE_MUTATION,
   SCENARIO_STEP_UPDATE_MUTATION,
 } from './queries';
-import { getCurrentVersion, incrementVersion } from './version';
+import { getCurrentVersion, incrementVersion, setCurrentVersion } from './version';
 
 import { config } from '@/config.public';
 import { Identity } from '@/types';
@@ -57,14 +57,18 @@ export const serviceConfig: ServiceConfig = {
         },
       }),
       fromVariables: (vars: Record<string, any>) => ({
-        version: vars.version,
         ...vars,
       }),
-      toVariables: (vars: Record<string, unknown>, patched: Record<string, any>) => ({
-        ...vars,
-        version: patched.version,
-        ...patched,
-      }),
+      toVariables: (vars: Record<string, unknown>, patched: Record<string, any>) => {
+        setCurrentVersion(patched.version);
+
+        return {
+          ...vars,
+          ...patched,
+          vid: vars.vid,
+          version: patched.version,
+        };
+      },
     },
   }),
 };

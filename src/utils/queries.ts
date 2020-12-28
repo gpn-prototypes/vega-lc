@@ -166,14 +166,14 @@ export const OBJECT_GROUP_UPDATE_MUTATION = gql`
           ... on ProjectInner {
             vid
             version
-            ...GroupObjectListFragment
+            ...GroupObjectList
           }
         }
         localProject {
           ... on ProjectInner {
             vid
             version
-            ...GroupObjectListFragment
+            ...GroupObjectList
           }
         }
       }
@@ -207,14 +207,14 @@ export const OBJECT_GROUP_CREATE_MUTATION = gql`
           ... on ProjectInner {
             vid
             version
-            ...GroupObjectListFragment
+            ...GroupObjectList
           }
         }
         localProject {
           ... on ProjectInner {
             vid
             version
-            ...GroupObjectListFragment
+            ...GroupObjectList
           }
         }
       }
