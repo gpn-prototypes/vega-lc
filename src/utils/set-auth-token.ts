@@ -1,7 +1,7 @@
-import { serviceConfig } from './graphql-request';
+import { logicConstructorService } from './lc-service';
 
 export function authHeader(defaultToken: string | undefined) {
-  const token = serviceConfig.identity?.getToken() || defaultToken;
+  const token = logicConstructorService.identity?.getToken() || defaultToken;
 
   return { Authorization: `Bearer ${token}` };
 }

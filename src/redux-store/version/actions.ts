@@ -1,7 +1,6 @@
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { ProjectStructureQuery, StoreLC } from '../../types/redux-store';
 import { setCurrentVersion } from '../../utils/version';
 import { clearStores } from '../clear/actions';
 import { setNotification } from '../notifications/actions';
@@ -9,7 +8,8 @@ import { ProjectStructureActionTypes } from '../project-structure/action-types';
 
 import { VersionActionTypes } from './action-types';
 
-import { projectQuery } from '@/utils/graphql-request';
+import { ProjectStructureQuery, StoreLC } from '@/types/redux-store';
+import { logicConstructorService } from '@/utils/lc-service';
 
 type SetVersionSuccess = {
   type: typeof VersionActionTypes.SET_VERSION_SUCCESS;
@@ -88,10 +88,10 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
 ): Promise<void> => {
   dispatch(clearStores());
 
-  projectQuery()
+  logicConstructorService.projectStructureQuery()
     ?.then((response) => {
       if (response?.data) {
-        setCurrentVersion(response.data?.project.version);
+        logicConstructorService.setProjectVersion(response.data?.project.version);
 
         const structureQuery = buildStructureQuery(
           response.data?.project.domainSchema.entityImages,

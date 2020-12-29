@@ -6,7 +6,7 @@ import { ThunkAction } from 'redux-thunk';
 import { ProjectStructureActionTypes } from './action-types';
 
 import { StoreLC } from '@/types/redux-store';
-import { getGraphqlUri, serviceConfig } from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service';
 
 type SetProjectStructureList = {
   type: typeof ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST;
@@ -80,10 +80,10 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
     const query = gql(state.projectStructure.projectStructureQuery?.query || DEFAULT_QUERY);
     const tree = state.projectStructure.projectStructureQuery?.tree || DEFAULT_TREE;
 
-    const response = await serviceConfig.client?.query({
+    const response = await logicConstructorService.client?.query({
       query,
       context: {
-        uri: getGraphqlUri(serviceConfig.projectId),
+        uri: logicConstructorService.getGraphQlUri(),
       },
     });
 

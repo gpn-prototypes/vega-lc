@@ -103,7 +103,7 @@ export const CANVAS_ITEMS_QUERY = gql`
   }
 `;
 
-export const PROJECT_QUERY = gql`
+export const PROJECT_STRUCTURE_QUERY = gql`
   query($projectId: UUID!) {
     project(vid: $projectId) {
       __typename
