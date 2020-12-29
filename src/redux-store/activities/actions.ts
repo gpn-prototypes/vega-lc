@@ -6,7 +6,7 @@ import { ThunkAction } from 'redux-thunk';
 import { ActivitiesActionTypes } from './action-types';
 
 import { StoreLC } from '@/types/redux-store';
-import { activityListQuery } from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service';
 
 type SetIsAutoFocus = { type: typeof ActivitiesActionTypes.SET_IS_AUTO_FOCUS; autoFocus: boolean };
 
@@ -84,7 +84,7 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
   dispatch,
 ): Promise<void> => {
   try {
-    const response = await activityListQuery();
+    const response = await logicConstructorService.activityListQuery();
 
     if (response?.data) {
       const { activityList } = response.data;

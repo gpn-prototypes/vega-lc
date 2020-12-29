@@ -2,14 +2,10 @@ import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { NewGroupParams, StoreLC } from '../../types/redux-store';
-import {
-  groupObjectListQuery,
-  objectGroupCreateMutation,
-  objectGroupUpdateMutation,
-} from '../../utils/graphql-request';
-
 import { GroupObjectsActionTypes } from './action-types';
+
+import { NewGroupParams, StoreLC } from '@/types/redux-store';
+import { logicConstructorService } from '@/utils/lc-service';
 
 type SetDraggingElements = {
   type: typeof GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS;
@@ -55,7 +51,7 @@ const fetchGroupObjectList = (): ThunkAction<void, StoreLC, unknown, AnyAction> 
   dispatch,
 ): Promise<void> => {
   try {
-    const response = await groupObjectListQuery();
+    const response = await logicConstructorService.groupObjectListQuery();
 
     if (response?.data) {
       const { domain } = response.data.project;
@@ -121,7 +117,10 @@ const updateGroupObject = (
   const vids = existingObjectsIds?.length ? [...existingObjectsIds, ...objectsId] : objectsId;
 
   try {
-    const response = await objectGroupUpdateMutation({ vids, vid: groupObjectId });
+    const response = await logicConstructorService.objectGroupUpdateMutation({
+      vids,
+      vid: groupObjectId,
+    });
 
     if (response?.data) {
       dispatch(fetchGroupObjectList());
@@ -135,7 +134,7 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
   dispatch,
 ): Promise<void> => {
   try {
-    const response = await objectGroupCreateMutation({
+    const response = await logicConstructorService.objectGroupCreateMutation({
       name,
     });
 

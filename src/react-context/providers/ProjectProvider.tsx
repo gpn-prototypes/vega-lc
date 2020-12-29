@@ -4,7 +4,7 @@ import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { defaultTo } from 'lodash';
 
 import { Identity } from '@/types';
-import { initServiceConfig } from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service';
 
 const ROUTE_MATCH_PROJECT_ID = '/projects/show/:projectId';
 
@@ -36,11 +36,12 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children, graphqlClie
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    initServiceConfig({
+    logicConstructorService.init({
       client: graphqlClient,
       projectId: matchedData.projectId,
       identity,
     });
+
     setInitialized(true);
   }, [identity, graphqlClient, matchedData]);
 

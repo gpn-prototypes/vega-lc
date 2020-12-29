@@ -28,15 +28,7 @@ import { canvasNodeTypes } from '@/utils/constants/canvas-node-types';
 import { debounce, DebounceFunction } from '@/utils/debounce';
 import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '@/utils/get-tree-node-by-id';
-import {
-  canvasNodeCreateMutation,
-  canvasNodeDeleteMutation,
-  canvasNodeUpdateMutation,
-  getGraphqlUri,
-  scenarioStepCreateMutation,
-  scenarioStepUpdateMutation,
-  serviceConfig,
-} from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service';
 import { CANVAS_ITEMS_QUERY } from '@/utils/queries';
 import { getStepDataFromScenarioStep } from '@/utils/step-data';
 
@@ -115,7 +107,7 @@ const createScenarioStep = async (
   objects?: string[],
 ): Promise<any> => {
   try {
-    return await scenarioStepCreateMutation({
+    return await logicConstructorService.scenarioStepCreateMutation({
       activity: activityId,
       objectGroup: objectsGroupId,
       objects,
@@ -133,7 +125,7 @@ const updateScenarioStep = async (
   objects?: string[],
 ): Promise<any> => {
   try {
-    return await scenarioStepUpdateMutation({
+    return await logicConstructorService.scenarioStepUpdateMutation({
       vid: scenarioStepId,
       activity: activityId !== '0' ? activityId : undefined,
       objectGroup: objectGroupId,
@@ -170,7 +162,7 @@ const addCanvasElement = (
     }
   }
 
-  const response = await canvasNodeCreateMutation({
+  const response = await logicConstructorService.canvasNodeCreateMutation({
     title: stepData?.name,
     width,
     nodeType,
@@ -201,12 +193,12 @@ const addCanvasElement = (
 const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  serviceConfig.client
+  logicConstructorService.client
     ?.query({
       query: CANVAS_ITEMS_QUERY,
-      fetchPolicy: serviceConfig.fetchPolicy,
+      fetchPolicy: logicConstructorService.fetchPolicy,
       context: {
-        uri: getGraphqlUri(serviceConfig.projectId),
+        uri: logicConstructorService.getGraphQlUri(),
       },
     })
     .then(async (response) => {
@@ -281,7 +273,7 @@ const syncCanvasState = (
     if (updateData.type === 'change' && 'position' in updateData.changes) {
       const position = [updateData.changes.position?.x, updateData.changes.position?.y];
 
-      await canvasNodeUpdateMutation({ vid: updateData.id, position });
+      await logicConstructorService.canvasNodeUpdateMutation({ vid: updateData.id, position });
 
       return;
     }
@@ -294,7 +286,9 @@ const syncCanvasState = (
       });
 
       await multipleData.reduce<Promise<any>>((promise, i) => {
-        return promise.then(() => canvasNodeUpdateMutation(i)).catch(console.error);
+        return promise
+          .then(() => logicConstructorService.canvasNodeUpdateMutation(i))
+          .catch(console.error);
       }, Promise.resolve());
     }
 
@@ -311,8 +305,8 @@ const syncCanvasState = (
       };
 
       try {
-        await canvasNodeUpdateMutation(childVariables);
-        await canvasNodeUpdateMutation(parentVariables);
+        await logicConstructorService.canvasNodeUpdateMutation(childVariables);
+        await logicConstructorService.canvasNodeUpdateMutation(parentVariables);
       } catch (e) {
         console.error(e);
       }
@@ -344,7 +338,7 @@ const syncCanvasState = (
           tree.setData({ stepData: { id: nodeRef, name: 'Шаг', events: [] } });
         }
 
-        await canvasNodeCreateMutation({
+        await logicConstructorService.canvasNodeCreateMutation({
           vid: updateData.id,
           title,
           nodeType,
@@ -359,7 +353,9 @@ const syncCanvasState = (
 
     if (updateData.type === 'remove-trees') {
       await updateData.ids.reduce<Promise<any>>((promise, vid) => {
-        return promise.then(() => canvasNodeDeleteMutation({ vid })).catch(console.error);
+        return promise
+          .then(() => logicConstructorService.canvasNodeDeleteMutation({ vid }))
+          .catch(console.error);
       }, Promise.resolve());
     }
   };
@@ -519,7 +515,7 @@ const addActivityToCanvasElement = (
         stepData.id = nodeRef || '0';
       }
 
-      await canvasNodeUpdateMutation({
+      await logicConstructorService.canvasNodeUpdateMutation({
         vid: CanvasTreeId,
         nodeRef,
       });

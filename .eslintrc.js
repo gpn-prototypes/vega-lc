@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/no-redeclare': ['error'],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
+    'no-underscore-dangle': 'off',
   },
   settings: {
     'import/resolver': {
