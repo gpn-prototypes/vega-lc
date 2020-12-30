@@ -103,15 +103,14 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
       }
     })
     .catch((e) => {
-      let message = 'Серверная ошибка';
       const { errors } = e.networkError.result;
       if (
         Array.isArray(errors) &&
         errors.find((error) => error.message === 'badly formed hexadecimal UUID string')
       ) {
-        message = 'В url не корректный UUID проекта';
+        const message = 'В url не корректный UUID проекта';
+        dispatch(setNotification({ message, status: 'alert' }));
       }
-      dispatch(setNotification({ message, status: 'alert' }));
     });
 };
 
