@@ -16,8 +16,8 @@ import { FETCH_CANVAS_ITEMS_DATA } from './queries';
 
 import { setIsDroppingOnExistingStep } from '@/redux-store/activities/actions';
 import {
-  CanvasElements,
   CanvasElement,
+  CanvasElements,
   CanvasViewEntity,
   Step,
   StepData,
