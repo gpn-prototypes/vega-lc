@@ -3,16 +3,17 @@ import { ThunkAction } from 'redux-thunk';
 
 import { ProjectStructureQuery, StoreLC } from '../../types/redux-store';
 import { setCurrentVersion } from '../../utils/version';
+import { setNotification } from '../notifications/actions';
 import { ProjectStructureActionTypes } from '../project-structure/action-types';
 
 import { VersionActionTypes } from './action-types';
 
 import { projectQuery } from '@/utils/graphql-request';
 
-interface SetVersionSuccessType {
+type SetVersionSuccess = {
   type: typeof VersionActionTypes.SET_VERSION_SUCCESS;
   version: number;
-}
+};
 
 interface Entity {
   name: string;
@@ -32,12 +33,12 @@ interface EntityImage {
   entity: Entity;
 }
 
-const SetVersionSuccess = (version: number): SetVersionSuccessType => ({
+const setVersionSuccess = (version: number): SetVersionSuccess => ({
   type: VersionActionTypes.SET_VERSION_SUCCESS,
   version,
 });
 
-const SetProjectStructureQuery = (projectStructureQuery: ProjectStructureQuery) => ({
+const setProjectStructureQuery = (projectStructureQuery: ProjectStructureQuery) => ({
   type: ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_QUERY,
   projectStructureQuery,
 });
@@ -86,25 +87,31 @@ function buildStructureQuery(entityImages: EntityImage[]): ProjectStructureQuery
 const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  try {
-    const response = await projectQuery();
+  projectQuery()
+    ?.then((response) => {
+      if (response?.data) {
+        setCurrentVersion(response.data?.project.version);
 
-    if (response?.data) {
-      setCurrentVersion(response.data?.project.version);
+        const structureQuery = buildStructureQuery(
+          response.data?.project.domainSchema.entityImages,
+        );
 
-      const structureQuery = buildStructureQuery(response.data?.project.domainSchema.entityImages);
-
-      dispatch(SetVersionSuccess(response.data?.project.version));
-      dispatch(SetProjectStructureQuery(structureQuery));
-    } else {
-      // TODO: throw error | show error
-      //
-      console.error('Response has no data', response);
-    }
-  } catch (e) {
-    // TODO: throw error | show error
-    console.error(e);
-  }
+        dispatch(setVersionSuccess(response.data?.project.version));
+        dispatch(setProjectStructureQuery(structureQuery));
+      } else {
+        dispatch(setNotification({ message: 'Пустой ответ сервера', status: 'alert' }));
+      }
+    })
+    .catch((e) => {
+      const { errors } = e.networkError.result;
+      if (
+        Array.isArray(errors) &&
+        errors.find((error) => error.message === 'badly formed hexadecimal UUID string')
+      ) {
+        const message = 'В url не корректный UUID проекта';
+        dispatch(setNotification({ message, status: 'alert' }));
+      }
+    });
 };
 
 export { fetchVersion };

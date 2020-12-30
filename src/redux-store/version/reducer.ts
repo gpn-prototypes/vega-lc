@@ -16,6 +16,6 @@ const strategyMap = {
   [VersionActionTypes.SET_VERSION_SUCCESS]: setVersionSuccessStrategy,
 };
 
-const activitiesReducer = createReducer(strategyMap, initialState);
+const versionReducer = createReducer(strategyMap, initialState);
 
-export default activitiesReducer;
+export default versionReducer;
