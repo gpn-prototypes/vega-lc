@@ -43,7 +43,6 @@ const DEFAULT_TREE = ['geoEconomicAppraisalProjectList'];
 interface DomainObject {
   vid: string;
   name: string;
-  // eslint-disable-next-line no-underscore-dangle
   typename: string;
 
   [key: string]: DomainObject[] | string;
@@ -59,7 +58,6 @@ function buildTree(current: DomainObject, tree: string[], level: number): TreeIt
   const key = tree[level];
   const items: DomainObject[] = current[key] as DomainObject[];
   return items.map((item) => {
-    // eslint-disable-next-line no-underscore-dangle
     const iconId = ICONS_MAP[item.typename] || 'blue-line';
     return {
       name: item.name,

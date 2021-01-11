@@ -270,6 +270,12 @@ const syncCanvasState = (
 
       await logicConstructorService.canvasNodeUpdateMutation({ vid: updateData.id, position });
 
+      if (logicConstructorService.isMutationConflict) {
+        dispatch(fetchCanvasItemsData());
+
+        logicConstructorService.setIsMutationConflictResolved();
+      }
+
       return;
     }
 
@@ -285,6 +291,14 @@ const syncCanvasState = (
           .then(() => logicConstructorService.canvasNodeUpdateMutation(i))
           .catch(console.error);
       }, Promise.resolve());
+
+      if (logicConstructorService.isMutationConflict) {
+        dispatch(fetchCanvasItemsData());
+
+        logicConstructorService.setIsMutationConflictResolved();
+      }
+
+      return;
     }
 
     if (updateData.type === 'connect-tree' || updateData.type === 'disconnect-tree') {
@@ -302,6 +316,12 @@ const syncCanvasState = (
       try {
         await logicConstructorService.canvasNodeUpdateMutation(childVariables);
         await logicConstructorService.canvasNodeUpdateMutation(parentVariables);
+
+        if (logicConstructorService.isMutationConflict) {
+          dispatch(fetchCanvasItemsData());
+
+          logicConstructorService.setIsMutationConflictResolved();
+        }
       } catch (e) {
         console.error(e);
       }
@@ -341,6 +361,12 @@ const syncCanvasState = (
           position: [pos.x, pos.y],
           nodeRef,
         });
+
+        if (logicConstructorService.isMutationConflict) {
+          dispatch(fetchCanvasItemsData());
+
+          logicConstructorService.setIsMutationConflictResolved();
+        }
       }
 
       return;
@@ -352,6 +378,12 @@ const syncCanvasState = (
           .then(() => logicConstructorService.canvasNodeDeleteMutation({ vid }))
           .catch(console.error);
       }, Promise.resolve());
+
+      if (logicConstructorService.isMutationConflict) {
+        dispatch(fetchCanvasItemsData());
+
+        logicConstructorService.setIsMutationConflictResolved();
+      }
     }
   };
 };
