@@ -1,7 +1,6 @@
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { setCurrentVersion } from '../../utils/version';
 import { clearStores } from '../clear/actions';
 import { setNotification } from '../notifications/actions';
 import { ProjectStructureActionTypes } from '../project-structure/action-types';
@@ -88,7 +87,8 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
 ): Promise<void> => {
   dispatch(clearStores());
 
-  logicConstructorService.projectStructureQuery()
+  logicConstructorService
+    .projectStructureQuery()
     ?.then((response) => {
       if (response?.data) {
         logicConstructorService.setProjectVersion(response.data?.project.version);
