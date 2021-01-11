@@ -106,8 +106,14 @@ class LogicConstructorService {
 
   private _projectVersion = 1;
 
+  private _isMutationConflict = false;
+
   get client() {
     return this._client;
+  }
+
+  get isMutationConflict() {
+    return this._isMutationConflict;
   }
 
   get projectId() {
@@ -124,6 +130,10 @@ class LogicConstructorService {
 
   get fetchPolicy() {
     return this._fetchPolicy;
+  }
+
+  setIsMutationConflictResolved() {
+    this._isMutationConflict = false;
   }
 
   setProjectVersion(version: number) {
@@ -255,6 +265,7 @@ class LogicConstructorService {
         }),
         toVariables: (vars: Record<string, unknown>, patched: Record<string, any>) => {
           this.setProjectVersion(patched.version);
+          this._isMutationConflict = true;
 
           return {
             ...vars,
