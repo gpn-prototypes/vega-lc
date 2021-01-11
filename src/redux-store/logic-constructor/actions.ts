@@ -46,11 +46,6 @@ type SetCanvasElements = {
   canvasElements: CanvasTree[];
 };
 
-type ToggleStepEditor = {
-  type: typeof LogicConstructorActionTypes.TOGGLE_STEP_EDITOR;
-  isStepEditorOpened: boolean;
-};
-
 const setScenarioList = (scenarioList: Step[]): SetScenarioList => ({
   type: LogicConstructorActionTypes.SET_SCENARIO_LIST,
   scenarioList,
