@@ -5,6 +5,13 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
   className="ProjectStructure"
 >
   <div
+    className="ComponentHeader"
+  >
+    <p>
+      Структура проекта
+    </p>
+  </div>
+  <div
     className={
       Object {
         "has": [Function],
