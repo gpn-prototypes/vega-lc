@@ -8,6 +8,7 @@ import { ObjectsGroupDialog } from './ObjectsGroupDialog';
 
 import './index.css';
 
+import { ComponentHeader } from '@/components/components-header';
 import {
   setGroupObjectsDraggingElements,
   toggleDialog,
@@ -67,14 +68,22 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
 
   return (
     <div className={cnObjectGroup()}>
-      <Tree
-        icons={icons}
-        nodeList={objectGroupList || []}
-        showIndentGuides={false}
-        onPasteItem={handlePaste}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      />
+      <ComponentHeader title="Группы объектов" />
+
+      {objectGroupList?.length ? (
+        <Tree
+          icons={icons}
+          nodeList={objectGroupList}
+          showIndentGuides={false}
+          onPasteItem={handlePaste}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        />
+      ) : (
+        <div className={cnObjectGroup('NoStructure')}>
+          <p>Для создания группы нажмите на кнопку Добавить группу</p>
+        </div>
+      )}
 
       <div className={cnObjectGroup('GroupCreator')}>
         <Button

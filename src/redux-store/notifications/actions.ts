@@ -1,6 +1,6 @@
-import { Notification } from '../../types/redux-store';
-
 import { VersionActionTypes } from './action-types';
+
+import { Notification } from '@/types/redux-store';
 
 type SetNotification = {
   type: typeof VersionActionTypes.SET_NOTIFICATION;

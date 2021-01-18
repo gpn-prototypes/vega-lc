@@ -1,6 +1,8 @@
 .ObjectsGroupWidget {
-  position: relative;
+  display: flex;
+  flex-direction: column;
 
+  width: 100%;
   height: 100%;
 
   & > .VegaTree {
@@ -10,10 +12,10 @@
   }
 
   &__GroupCreator {
-    position: absolute;
     z-index: 1;
-    left: 0;
-    bottom: 16px;
+
+    margin-top: auto;
+    margin-bottom: 16px;
 
     padding: 0 16px;
 
@@ -94,5 +96,21 @@
     background-color: transparent;
     border: none;
     opacity: 0.4;
+  }
+
+  &__NoStructure {
+    display: flex;
+    justify-content: center;
+
+    & > p {
+      margin: 0;
+      padding: var(--space-xs) 0;
+
+      font-size: var(--size-text-xs);
+
+      text-align: center;
+
+      color: var(--color-typo-secondary);
+    }
   }
 }
