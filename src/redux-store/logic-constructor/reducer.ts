@@ -1,5 +1,7 @@
 import { CanvasTree } from '@gpn-prototypes/vega-ui';
 
+import { ClearActionTypes } from '../сlear/action-types';
+
 import { LogicConstructorActionTypes } from './action-types';
 import initialState from './initial-state';
 
@@ -50,12 +52,17 @@ const setCanvasViewRefStrategy = (
   canvasViewRef,
 });
 
+const setClearStoreStrategy = (): LogicConstructorState => ({
+  ...initialState,
+});
+
 const strategyMap = {
   [LogicConstructorActionTypes.SET_SCENARIO_LIST]: setScenarioListStrategy,
   [LogicConstructorActionTypes.SET_CANVAS_ELEMENTS]: setCanvasElementsStrategy,
   [LogicConstructorActionTypes.ADD_CANVAS_ELEMENT]: addCanvasElementStrategy,
   [LogicConstructorActionTypes.TOGGLE_STEP_EDITOR]: toggleStepEditorStrategy,
   [LogicConstructorActionTypes.SET_CANVAS_VIEW_REF]: setCanvasViewRefStrategy,
+  [ClearActionTypes.CL_CLEAR_STORES]: setClearStoreStrategy,
 };
 
 const logicConstructorReducer = createReducer(strategyMap, initialState);

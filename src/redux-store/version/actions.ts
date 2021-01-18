@@ -5,6 +5,7 @@ import { ProjectStructureQuery, StoreLC } from '../../types/redux-store';
 import { setCurrentVersion } from '../../utils/version';
 import { setNotification } from '../notifications/actions';
 import { ProjectStructureActionTypes } from '../project-structure/action-types';
+import { clearStores } from '../сlear/actions';
 
 import { VersionActionTypes } from './action-types';
 
@@ -87,6 +88,8 @@ function buildStructureQuery(entityImages: EntityImage[]): ProjectStructureQuery
 const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
+  dispatch(clearStores());
+
   projectQuery()
     ?.then((response) => {
       if (response?.data) {
