@@ -30,7 +30,7 @@ export const GeologicalExploration = (): React.ReactElement => {
   }
 
   const dispatch = useDispatch();
-  const { projectId } = useContext(ProjectContext);
+  const { projectId, initialized } = useContext(ProjectContext);
 
   useEffect(() => {
     if (projectId) {
@@ -45,11 +45,13 @@ export const GeologicalExploration = (): React.ReactElement => {
   }, [dispatch, projectId]);
 
   useEffect(() => {
-    dispatch(fetchActivitiesList());
-    dispatch(fetchGroupObjectList());
-    dispatch(fetchProjectStructureList());
-    dispatch(fetchCanvasItemsData());
-  }, [dispatch]);
+    if (initialized) {
+      dispatch(fetchActivitiesList());
+      dispatch(fetchGroupObjectList());
+      dispatch(fetchProjectStructureList());
+      dispatch(fetchCanvasItemsData());
+    }
+  }, [dispatch, initialized]);
 
   const widgets: LayoutWidget[] = [
     {
