@@ -18,17 +18,17 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
     role="tree"
   >
     <div
-      className={
+      aria-label="trees"
+      className="VegaSplitPanes__Pane"
+      role="treeitem"
+      style={
         Object {
-          "has": [Function],
-          "is": [Function],
-          "mix": [Function],
-          "split": [Function],
-          "state": [Function],
-          "toString": [Function],
+          "flexGrow": 0,
+          "maxWidth": "260px",
+          "minWidth": "24px",
+          "width": "260px",
         }
       }
-      role="group"
     >
       <div
         className={
@@ -41,277 +41,67 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
             "toString": [Function],
           }
         }
-        role="group"
+        role="tree"
       >
         <div
-          className={
+          aria-label="project-structure"
+          className="VegaSplitPanes__Pane"
+          role="treeitem"
+          style={
             Object {
-              "has": [Function],
-              "is": [Function],
-              "mix": [Function],
-              "split": [Function],
-              "state": [Function],
-              "toString": [Function],
+              "flex": "1",
+              "maxHeight": "calc(100% - 2px * 1)",
+              "minHeight": "50px",
             }
           }
-          role="treeitem"
         >
-          <header
-            className={
-              Object {
-                "has": [Function],
-                "is": [Function],
-                "mix": [Function],
-                "split": [Function],
-                "state": [Function],
-                "toString": [Function],
-              }
-            }
-          >
-            <button
-              aria-label="Открыть список виджетов"
-              className="Button Button_size_xs Button_view_clear Button_width_default Button_form_brick Button_withIcon MixFocus VegaLayout__MenuTrigger"
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="Button-Label"
-              >
-                Структура проекта
-              </span>
-              <span
-                className="Icon Icon_size_xs IconSelect Button-Icon Button-Icon_position_right"
-              >
-                <svg
-                  className="Icon-Svg"
-                  viewBox="0 0 12 12"
-                >
-                  <path
-                    d="M6 8.5L10 4H2l4 4.5z"
-                  />
-                </svg>
-              </span>
-            </button>
-            <button
-              aria-label="Открыть опции панели"
-              className="Button Button_size_xs Button_view_clear Button_width_default Button_form_brick Button_withIcon Button_onlyIcon MixFocus"
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="Icon Icon_size_s IconKebab Button-Icon"
-              >
-                <svg
-                  className="Icon-Svg"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
-                  />
-                </svg>
-              </span>
-            </button>
-          </header>
-          <div
-            className={
-              Object {
-                "has": [Function],
-                "is": [Function],
-                "mix": [Function],
-                "split": [Function],
-                "state": [Function],
-                "toString": [Function],
-              }
-            }
-          >
-            <div />
-          </div>
+          <div />
         </div>
         <div
-          aria-label="Потянуть"
-          className="VegaLayout__Resizer VegaLayout__Resizer_split_vertical"
+          aria-current={false}
+          aria-label="Изменить размер"
+          className="VegaSplitPanes__Resizer VegaSplitPanes__Resizer_split_horizontal"
           onMouseDown={[Function]}
-          role="button"
+          role="presentation"
           tabIndex={-1}
-          title="Потянуть"
         />
         <div
-          className={
-            Object {
-              "has": [Function],
-              "is": [Function],
-              "mix": [Function],
-              "split": [Function],
-              "state": [Function],
-              "toString": [Function],
-            }
-          }
+          aria-label="objects-groups"
+          className="VegaSplitPanes__Pane"
           role="treeitem"
-        >
-          <header
-            className={
-              Object {
-                "has": [Function],
-                "is": [Function],
-                "mix": [Function],
-                "split": [Function],
-                "state": [Function],
-                "toString": [Function],
-              }
-            }
-          >
-            <button
-              aria-label="Открыть список виджетов"
-              className="Button Button_size_xs Button_view_clear Button_width_default Button_form_brick Button_withIcon MixFocus VegaLayout__MenuTrigger"
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="Button-Label"
-              >
-                Группа объектов
-              </span>
-              <span
-                className="Icon Icon_size_xs IconSelect Button-Icon Button-Icon_position_right"
-              >
-                <svg
-                  className="Icon-Svg"
-                  viewBox="0 0 12 12"
-                >
-                  <path
-                    d="M6 8.5L10 4H2l4 4.5z"
-                  />
-                </svg>
-              </span>
-            </button>
-            <button
-              aria-label="Открыть опции панели"
-              className="Button Button_size_xs Button_view_clear Button_width_default Button_form_brick Button_withIcon Button_onlyIcon MixFocus"
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="Icon Icon_size_s IconKebab Button-Icon"
-              >
-                <svg
-                  className="Icon-Svg"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
-                  />
-                </svg>
-              </span>
-            </button>
-          </header>
-          <div
-            className={
-              Object {
-                "has": [Function],
-                "is": [Function],
-                "mix": [Function],
-                "split": [Function],
-                "state": [Function],
-                "toString": [Function],
-              }
-            }
-          >
-            <div />
-          </div>
-        </div>
-      </div>
-      <div
-        aria-label="Потянуть"
-        className="VegaLayout__Resizer VegaLayout__Resizer_split_horizontal"
-        onMouseDown={[Function]}
-        role="button"
-        tabIndex={-1}
-        title="Потянуть"
-      />
-      <div
-        className={
-          Object {
-            "has": [Function],
-            "is": [Function],
-            "mix": [Function],
-            "split": [Function],
-            "state": [Function],
-            "toString": [Function],
-          }
-        }
-        role="treeitem"
-      >
-        <header
-          className={
+          style={
             Object {
-              "has": [Function],
-              "is": [Function],
-              "mix": [Function],
-              "split": [Function],
-              "state": [Function],
-              "toString": [Function],
-            }
-          }
-        >
-          <button
-            aria-label="Открыть список виджетов"
-            className="Button Button_size_xs Button_view_clear Button_width_default Button_form_brick Button_withIcon MixFocus VegaLayout__MenuTrigger"
-            onClick={[Function]}
-            type="button"
-          >
-            <span
-              className="Button-Label"
-            >
-              Канвас
-            </span>
-            <span
-              className="Icon Icon_size_xs IconSelect Button-Icon Button-Icon_position_right"
-            >
-              <svg
-                className="Icon-Svg"
-                viewBox="0 0 12 12"
-              >
-                <path
-                  d="M6 8.5L10 4H2l4 4.5z"
-                />
-              </svg>
-            </span>
-          </button>
-          <button
-            aria-label="Открыть опции панели"
-            className="Button Button_size_xs Button_view_clear Button_width_default Button_form_brick Button_withIcon Button_onlyIcon MixFocus"
-            onClick={[Function]}
-            type="button"
-          >
-            <span
-              className="Icon Icon_size_s IconKebab Button-Icon"
-            >
-              <svg
-                className="Icon-Svg"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
-                />
-              </svg>
-            </span>
-          </button>
-        </header>
-        <div
-          className={
-            Object {
-              "has": [Function],
-              "is": [Function],
-              "mix": [Function],
-              "split": [Function],
-              "state": [Function],
-              "toString": [Function],
+              "flex": "1",
+              "maxHeight": "calc(100% - 2px * 1)",
+              "minHeight": "90px",
             }
           }
         >
           <div />
         </div>
       </div>
+    </div>
+    <div
+      aria-current={false}
+      aria-label="Изменить размер"
+      className="VegaSplitPanes__Resizer VegaSplitPanes__Resizer_split_vertical"
+      onMouseDown={[Function]}
+      role="presentation"
+      tabIndex={-1}
+    />
+    <div
+      aria-label="canvas"
+      className="VegaSplitPanes__Pane"
+      role="treeitem"
+      style={
+        Object {
+          "flex": "1",
+          "maxWidth": "calc(100% - 2px * 1)",
+          "minWidth": "0",
+        }
+      }
+    >
+      <div />
     </div>
   </div>
 </div>
