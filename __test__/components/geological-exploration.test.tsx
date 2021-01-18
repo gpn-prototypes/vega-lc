@@ -73,13 +73,13 @@ describe('Geological Exploration', () => {
     expect(dom).toMatchSnapshot();
   });
 
-  test('вызов fetch при initialized = true', async () => {
+  test('вызывать загрузку данных проекта если он инициализирован', async () => {
     renderComponent('', true);
 
     expect(mockDispatch).toHaveBeenCalledTimes(4);
   });
 
-  test('отсутствие вызова fetch при initialized = false', () => {
+  test('не вызывать загрузку данных проекта если он не инициализирован', () => {
     renderComponent('', false);
 
     expect(mockDispatch).not.toHaveBeenCalled();
