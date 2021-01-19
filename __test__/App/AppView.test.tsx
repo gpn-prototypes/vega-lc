@@ -10,14 +10,6 @@ import { AppView } from '../../src/App/AppView';
 import { ProjectContext } from '../../src/react-context/providers';
 import { store } from '../../src/redux-store';
 
-// jest.mock('../../src/components/geological-exploration', () => {
-//   return {
-//     GeologicalExploration: () => {
-//       return <div />;
-//     },
-//   };
-// });
-
 const mockClearStore = jest.fn();
 
 jest.mock('../../src/redux-store/clear/actions', () => {
