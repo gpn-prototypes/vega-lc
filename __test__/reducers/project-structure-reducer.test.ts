@@ -1,10 +1,10 @@
+import { clearStores } from '../../src/redux-store/clear/actions';
 import {
   setProjectStructureDraggingElements,
   setProjectStructureList,
 } from '../../src/redux-store/project-structure/actions';
 import initialState from '../../src/redux-store/project-structure/initial-state';
 import projectStructureReducer from '../../src/redux-store/project-structure/reducer';
-import { clearStores } from '../../src/redux-store/сlear/actions';
 import { ProjectStructureState } from '../../src/types/redux-store';
 
 describe('project structure reducer test', () => {

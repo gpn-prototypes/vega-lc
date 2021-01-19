@@ -1,3 +1,4 @@
+import { clearStores } from '../../src/redux-store/clear/actions';
 import {
   setGroupObjectsDraggingElements,
   setGroupObjectsList,
@@ -6,7 +7,6 @@ import {
 } from '../../src/redux-store/group-objects/actions';
 import initialState from '../../src/redux-store/group-objects/initial-state';
 import groupObjectsReducer from '../../src/redux-store/group-objects/reducer';
-import { clearStores } from '../../src/redux-store/сlear/actions';
 import { GroupObjectsState } from '../../src/types/redux-store';
 
 describe('group objects reducer test', () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import * as ReactRedux from 'react-redux';
+import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
 import ResizeObserver from 'resize-observer-polyfill';
@@ -51,11 +51,11 @@ beforeEach(() => {
 
 const renderComponent = (projectId = '', initialized = false) => {
   return render(
-    <ReactRedux.Provider store={store}>
+    <Provider store={store}>
       <ProjectContext.Provider value={{ projectId, initialized }}>
         <GeologicalExploration />
       </ProjectContext.Provider>
-    </ReactRedux.Provider>,
+    </Provider>,
   );
 };
 
@@ -65,9 +65,9 @@ describe('Geological Exploration', () => {
 
     const dom = renderer
       .create(
-        <ReactRedux.Provider store={store}>
+        <Provider store={store}>
           <GeologicalExploration />
-        </ReactRedux.Provider>,
+        </Provider>,
       )
       .toJSON();
     expect(dom).toMatchSnapshot();

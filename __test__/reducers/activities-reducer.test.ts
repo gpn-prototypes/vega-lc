@@ -8,7 +8,7 @@ import {
 } from '../../src/redux-store/activities/actions';
 import initialState from '../../src/redux-store/activities/initial-state';
 import activitiesReducer from '../../src/redux-store/activities/reducer';
-import { clearStores } from '../../src/redux-store/сlear/actions';
+import { clearStores } from '../../src/redux-store/clear/actions';
 import { ActivitiesState } from '../../src/types/redux-store';
 
 describe('activities reducer test', () => {

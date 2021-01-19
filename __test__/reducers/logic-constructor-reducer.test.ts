@@ -1,3 +1,4 @@
+import { clearStores } from '../../src/redux-store/clear/actions';
 import { LogicConstructorActionTypes } from '../../src/redux-store/logic-constructor/action-types';
 import {
   setCanvasElements,
@@ -5,10 +6,9 @@ import {
 } from '../../src/redux-store/logic-constructor/actions';
 import initialState from '../../src/redux-store/logic-constructor/initial-state';
 import logicConstructorReducer from '../../src/redux-store/logic-constructor/reducer';
-import { clearStores } from '../../src/redux-store/сlear/actions';
 import { LogicConstructorState } from '../../src/types/redux-store';
 
-describe('project structure reducer test', () => {
+describe('logic constructor reducer test', () => {
   let mockState: LogicConstructorState;
 
   beforeEach(() => {

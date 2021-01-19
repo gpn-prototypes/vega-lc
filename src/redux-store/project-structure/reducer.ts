@@ -1,6 +1,6 @@
 import { ProjectStructureQuery, ProjectStructureState } from '../../types/redux-store';
 import createReducer from '../../utils/create-reducer';
-import { ClearActionTypes } from '../сlear/action-types';
+import { ClearActionTypes } from '../clear/action-types';
 
 import { ProjectStructureActionTypes } from './action-types';
 import initialState from './initial-state';

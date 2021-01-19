@@ -2,7 +2,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage/session';
 
 import createReducer from '../../utils/create-reducer';
-import { ClearActionTypes } from '../сlear/action-types';
+import { ClearActionTypes } from '../clear/action-types';
 
 import { ActivitiesActionTypes } from './action-types';
 import initialState from './initial-state';

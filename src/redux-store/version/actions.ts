@@ -3,9 +3,9 @@ import { ThunkAction } from 'redux-thunk';
 
 import { ProjectStructureQuery, StoreLC } from '../../types/redux-store';
 import { setCurrentVersion } from '../../utils/version';
+import { clearStores } from '../clear/actions';
 import { setNotification } from '../notifications/actions';
 import { ProjectStructureActionTypes } from '../project-structure/action-types';
-import { clearStores } from '../сlear/actions';
 
 import { VersionActionTypes } from './action-types';
 

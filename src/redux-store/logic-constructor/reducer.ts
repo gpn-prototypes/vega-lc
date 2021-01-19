@@ -1,6 +1,6 @@
 import { CanvasTree } from '@gpn-prototypes/vega-ui';
 
-import { ClearActionTypes } from '../сlear/action-types';
+import { ClearActionTypes } from '../clear/action-types';
 
 import { LogicConstructorActionTypes } from './action-types';
 import initialState from './initial-state';
