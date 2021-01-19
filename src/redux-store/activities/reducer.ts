@@ -84,7 +84,7 @@ const strategyMap = {
   [ActivitiesActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
   [ActivitiesActionTypes.SET_IS_DROPPING_ON_EXISTING_STEP]: setIsDroppingOnExistingStepStrategy,
   [ActivitiesActionTypes.SET_ACTIVITIES_PANEL_OPEN]: setActivitiesPanelOpenStrategy,
-  [ClearActionTypes.CL_CLEAR_STORES]: setClearStoreStrategy,
+  [ClearActionTypes.LC_CLEAR_STORES]: setClearStoreStrategy,
 };
 
 const activitiesReducer = createReducer(strategyMap, initialState);

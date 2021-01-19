@@ -37,7 +37,7 @@ const strategyMap = {
   [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST]: setProjectStructureNodeListStrategy,
   [ProjectStructureActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
   [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_QUERY]: setProjectStructureQuerySuccessStrategy,
-  [ClearActionTypes.CL_CLEAR_STORES]: setClearStoreStrategy,
+  [ClearActionTypes.LC_CLEAR_STORES]: setClearStoreStrategy,
 };
 
 const projectStructureReducer = createReducer(strategyMap, initialState);

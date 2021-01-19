@@ -62,7 +62,7 @@ const strategyMap = {
   [LogicConstructorActionTypes.ADD_CANVAS_ELEMENT]: addCanvasElementStrategy,
   [LogicConstructorActionTypes.TOGGLE_STEP_EDITOR]: toggleStepEditorStrategy,
   [LogicConstructorActionTypes.SET_CANVAS_VIEW_REF]: setCanvasViewRefStrategy,
-  [ClearActionTypes.CL_CLEAR_STORES]: setClearStoreStrategy,
+  [ClearActionTypes.LC_CLEAR_STORES]: setClearStoreStrategy,
 };
 
 const logicConstructorReducer = createReducer(strategyMap, initialState);
