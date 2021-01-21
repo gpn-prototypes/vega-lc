@@ -9,6 +9,7 @@ import './App.css';
 
 import { Providers } from '@/react-context/providers';
 import { Identity } from '@/types';
+import { vegaApi } from '@/utils/api-clients/vega-api';
 
 interface AppProps {
   graphqlClient?: ApolloClient<NormalizedCacheObject>;
@@ -16,7 +17,7 @@ interface AppProps {
 }
 
 export const App: React.FC<AppProps> = (props) => {
-  const { graphqlClient, identity } = props;
+  const { graphqlClient = vegaApi, identity } = props;
 
   return (
     <Root

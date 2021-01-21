@@ -1,4 +1,4 @@
-import { logicConstructorService } from './lc-service';
+import { logicConstructorService } from './lc-service/lc-service';
 
 export function authHeader(defaultToken: string | undefined) {
   const token = logicConstructorService.identity?.getToken() || defaultToken;

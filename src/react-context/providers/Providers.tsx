@@ -9,15 +9,14 @@ import { ProjectProvider } from './ProjectProvider';
 
 import { persistor, store } from '@/redux-store';
 import { Identity } from '@/types';
-import { vegaApi } from '@/utils/api-clients/vega-api';
 
 interface ProvidersProps {
-  graphqlClient?: ApolloClient<NormalizedCacheObject>;
+  graphqlClient: ApolloClient<NormalizedCacheObject>;
   identity?: Identity;
 }
 
 export const Providers: React.FC<ProvidersProps> = (props) => {
-  const { graphqlClient = vegaApi, identity, children } = props;
+  const { graphqlClient, identity, children } = props;
 
   return (
     <Provider store={store}>

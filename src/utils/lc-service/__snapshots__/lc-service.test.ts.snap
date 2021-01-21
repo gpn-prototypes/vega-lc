@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Сервис конструктора логики:  Конкурентный доступ:  конфиг для разрешения конфликтов формируется c необходимыми свойствами и соответствует снэпшоту 1`] = `
+Object {
+  "errorTypename": "UpdateProjectInnerDiff",
+  "maxAttempts": 20,
+  "mergeStrategy": Object {
+    "default": "smart",
+  },
+  "projectAccessor": Object {
+    "fromDiffError": [Function],
+    "fromVariables": [Function],
+    "toVariables": [Function],
+  },
+}
+`;
