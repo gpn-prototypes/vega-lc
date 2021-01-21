@@ -90,7 +90,7 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
       tabIndex={-1}
     />
     <div
-      aria-label="canvas"
+      aria-label="logic-constructor"
       className="VegaSplitPanes__Pane"
       role="treeitem"
       style={

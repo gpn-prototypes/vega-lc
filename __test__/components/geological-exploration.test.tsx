@@ -73,6 +73,20 @@ describe('Geological Exploration', () => {
     expect(dom).toMatchSnapshot();
   });
 
+  test('Основные компоненты присутствуют в DOM', () => {
+    const { container } = render(
+      <ReactRedux.Provider store={store}>
+        <GeologicalExploration />
+      </ReactRedux.Provider>,
+    );
+
+    const mainComponentLabels = ['project-structure', 'objects-groups', 'logic-constructor'];
+
+    mainComponentLabels.forEach((label) =>
+      expect(container.querySelector(`[aria-label="${label}"]`)).toBeInTheDocument(),
+    );
+  });
+
   test('вызывать загрузку данных проекта если он инициализирован', async () => {
     renderComponent('', true);
 

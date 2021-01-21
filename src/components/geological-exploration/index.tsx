@@ -55,7 +55,7 @@ export const GeologicalExploration = (): React.ReactElement => {
             </SplitPanes.Pane>
           </SplitPanes>
         </SplitPanes.Pane>
-        <SplitPanes.Pane aria-label="canvas">
+        <SplitPanes.Pane aria-label="logic-constructor">
           <LogicConstructorWidget />
         </SplitPanes.Pane>
       </SplitPanes>
