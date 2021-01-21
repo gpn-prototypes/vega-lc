@@ -4,7 +4,7 @@ import fetch from 'cross-fetch';
 import { getProjectId } from '../project-id';
 import { authHeader } from '../set-auth-token';
 
-import { config } from '@/config.public';
+import { config } from '@/config/config.public';
 
 const headers = {
   ...authHeader(config.authToken),

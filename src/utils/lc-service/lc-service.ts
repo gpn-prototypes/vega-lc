@@ -19,9 +19,9 @@ import {
   PROJECT_STRUCTURE_QUERY,
   SCENARIO_STEP_CREATE_MUTATION,
   SCENARIO_STEP_UPDATE_MUTATION,
-} from './queries';
+} from '../queries';
 
-import { config } from '@/config.public';
+import { config } from '@/config/config.public';
 import { Identity } from '@/types';
 
 export type Data = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -245,7 +245,7 @@ class LogicConstructorService {
     return this.mutation(CANVAS_NODE_DELETE_MUTATION, variables);
   }
 
-  private getDiffResolvingConfig() {
+  public getDiffResolvingConfig() {
     return {
       maxAttempts: 20,
       errorTypename: 'UpdateProjectInnerDiff',

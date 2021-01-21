@@ -71,6 +71,7 @@
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "eslint-import-resolver-alias": "^1.1.2",
+    "fetch-mock": "^9.11.0",
     "file-loader": "^6.1.0",
     "final-form": "^4.20.1",
     "final-form-focus": "^1.1.2",
