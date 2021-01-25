@@ -10,16 +10,16 @@ import { AppView } from '../../src/App/AppView';
 import { ProjectContext } from '../../src/react-context/providers';
 import { store } from '../../src/redux-store';
 
-const mockClearStore = jest.fn();
+const mockClearStores = jest.fn();
 
 jest.mock('../../src/redux-store/clear/actions', () => {
   return {
-    clearStore: mockClearStore,
+    clearStores: () => mockClearStores,
   };
 });
 
 beforeEach(() => {
-  mockClearStore.mockClear();
+  mockClearStores.mockClear();
 });
 
 const renderComponent = (projectId = '', initialized = false) => {
@@ -47,8 +47,8 @@ describe('AppView', () => {
   });
 
   test('вызывается очистка store', async () => {
-    await renderComponent();
+    renderComponent('mock project id', true);
 
-    waitFor(() => expect(mockClearStore).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(mockClearStores).toHaveBeenCalledTimes(1));
   });
 });
