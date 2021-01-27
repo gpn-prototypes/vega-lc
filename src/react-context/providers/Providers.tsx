@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, NormalizedCacheObject } from '@apollo/client';
 import { Loader } from '@gpn-prototypes/vega-ui';
@@ -20,7 +20,7 @@ export const Providers: React.FC<ProvidersProps> = (props) => {
   const { graphqlClient = vegaApi, identity, children } = props;
 
   return (
-    <Provider store={store}>
+    <ReduxProvider store={store}>
       <ApolloProvider client={graphqlClient}>
         <PersistGate loading={<Loader size="m" />} persistor={persistor}>
           <BrowserRouter>
@@ -30,6 +30,6 @@ export const Providers: React.FC<ProvidersProps> = (props) => {
           </BrowserRouter>
         </PersistGate>
       </ApolloProvider>
-    </Provider>
+    </ReduxProvider>
   );
 };
