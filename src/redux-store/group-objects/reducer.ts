@@ -42,7 +42,7 @@ const setDraggingElementsStrategy = (
   draggingElements,
 });
 
-const setClearStoreStrategy = (): GroupObjectsState => ({
+const clearStoreStrategy = (): GroupObjectsState => ({
   ...initialState,
 });
 
@@ -51,7 +51,7 @@ const strategyMap = {
   [GroupObjectsActionTypes.TOGGLE_DIALOG]: toggleDialogStrategy,
   [GroupObjectsActionTypes.SET_NEW_GROUP_PARAMS]: setNewGroupParamsStrategy,
   [GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
-  [ClearActionTypes.LC_CLEAR_STORES]: setClearStoreStrategy,
+  [ClearActionTypes.CLEAR_STORES]: clearStoreStrategy,
 };
 
 const groupObjectsReducer = createReducer(strategyMap, initialState);

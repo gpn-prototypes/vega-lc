@@ -52,7 +52,7 @@ const setCanvasViewRefStrategy = (
   canvasViewRef,
 });
 
-const setClearStoreStrategy = (): LogicConstructorState => ({
+const clearStoreStrategy = (): LogicConstructorState => ({
   ...initialState,
 });
 
@@ -62,7 +62,7 @@ const strategyMap = {
   [LogicConstructorActionTypes.ADD_CANVAS_ELEMENT]: addCanvasElementStrategy,
   [LogicConstructorActionTypes.TOGGLE_STEP_EDITOR]: toggleStepEditorStrategy,
   [LogicConstructorActionTypes.SET_CANVAS_VIEW_REF]: setCanvasViewRefStrategy,
-  [ClearActionTypes.LC_CLEAR_STORES]: setClearStoreStrategy,
+  [ClearActionTypes.CLEAR_STORES]: clearStoreStrategy,
 };
 
 const logicConstructorReducer = createReducer(strategyMap, initialState);

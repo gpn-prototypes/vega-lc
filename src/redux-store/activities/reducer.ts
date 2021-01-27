@@ -71,7 +71,7 @@ const setActivitiesPanelOpenStrategy = (
   isActivitiesPanelOpen,
 });
 
-const setClearStoreStrategy = (state: ActivitiesState): ActivitiesState => ({
+const clearStoreStrategy = (state: ActivitiesState): ActivitiesState => ({
   ...initialState,
   isActivitiesPanelOpen: state.isActivitiesPanelOpen,
 });
@@ -84,7 +84,7 @@ const strategyMap = {
   [ActivitiesActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
   [ActivitiesActionTypes.SET_IS_DROPPING_ON_EXISTING_STEP]: setIsDroppingOnExistingStepStrategy,
   [ActivitiesActionTypes.SET_ACTIVITIES_PANEL_OPEN]: setActivitiesPanelOpenStrategy,
-  [ClearActionTypes.LC_CLEAR_STORES]: setClearStoreStrategy,
+  [ClearActionTypes.CLEAR_STORES]: clearStoreStrategy,
 };
 
 const activitiesReducer = createReducer(strategyMap, initialState);

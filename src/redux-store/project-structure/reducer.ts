@@ -29,7 +29,7 @@ const setProjectStructureQuerySuccessStrategy = (
   projectStructureQuery,
 });
 
-const setClearStoreStrategy = (): ProjectStructureState => ({
+const clearStoreStrategy = (): ProjectStructureState => ({
   ...initialState,
 });
 
@@ -37,7 +37,7 @@ const strategyMap = {
   [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST]: setProjectStructureNodeListStrategy,
   [ProjectStructureActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
   [ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_QUERY]: setProjectStructureQuerySuccessStrategy,
-  [ClearActionTypes.LC_CLEAR_STORES]: setClearStoreStrategy,
+  [ClearActionTypes.CLEAR_STORES]: clearStoreStrategy,
 };
 
 const projectStructureReducer = createReducer(strategyMap, initialState);
