@@ -1,6 +1,6 @@
 import React from 'react';
-import { CanvasView } from '@gpn-prototypes/vega-canvas/dist/src/entities/CanvasView';
 import { CanvasData, CanvasTree, TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
+import { CanvasView } from '@gpn-prototypes/vega-ui/dist/components/canvas/entities/CanvasView';
 
 type NodeList = TreeItem[];
 
