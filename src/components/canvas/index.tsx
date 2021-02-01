@@ -15,6 +15,7 @@ import {
   toggleStepEditor,
 } from '@/redux-store/logic-constructor/actions';
 import { getCanvasElements } from '@/redux-store/logic-constructor/selectors';
+import { CanvasViewEntity } from '@/types/redux-store';
 import { canvasActionsForImmediateSync } from '@/utils/constants/canvas-actions-to-sync';
 
 export const CanvasWidget: React.FC = () => {

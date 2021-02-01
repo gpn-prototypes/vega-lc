@@ -300,7 +300,13 @@ const syncCanvasState = (
       await multipleData.reduce<Promise<any>>((promise, i) => {
         return promise
           .then(() => logicConstructorService.canvasNodeUpdateMutation(i))
-          .catch(console.error);
+          .catch((err) => {
+            if (err.toString()?.includes('Can not find node')) {
+              dispatch(fetchCanvasItemsData());
+            } else {
+              console.error(err);
+            }
+          });
       }, Promise.resolve());
 
       if (logicConstructorService.isMutationConflict) {
@@ -398,7 +404,13 @@ const syncCanvasState = (
               await logicConstructorService.scenarioStepDeleteMutation({ vid: tree.stepDataId });
             }
           })
-          .catch(console.error);
+          .catch((err) => {
+            if (err.toString()?.includes('Can not find node')) {
+              dispatch(fetchCanvasItemsData());
+            } else {
+              console.error(err);
+            }
+          });
       }, Promise.resolve());
 
       if (logicConstructorService.isMutationConflict) {
