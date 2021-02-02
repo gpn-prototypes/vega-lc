@@ -1,5 +1,6 @@
 import { GroupObjectsState } from '../../types/redux-store';
 import createReducer from '../../utils/create-reducer';
+import { ClearActionTypes } from '../clear/action-types';
 
 import { GroupObjectsActionTypes } from './action-types';
 import initialState from './initial-state';
@@ -41,11 +42,16 @@ const setDraggingElementsStrategy = (
   draggingElements,
 });
 
+const clearStoreStrategy = (): GroupObjectsState => ({
+  ...initialState,
+});
+
 const strategyMap = {
   [GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST]: setGroupObjectsNodeListStrategy,
   [GroupObjectsActionTypes.TOGGLE_DIALOG]: toggleDialogStrategy,
   [GroupObjectsActionTypes.SET_NEW_GROUP_PARAMS]: setNewGroupParamsStrategy,
   [GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
+  [ClearActionTypes.CLEAR_STORES]: clearStoreStrategy,
 };
 
 const groupObjectsReducer = createReducer(strategyMap, initialState);

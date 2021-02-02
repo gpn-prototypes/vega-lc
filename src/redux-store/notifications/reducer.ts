@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import { Notification, NotificationState } from '../../types/redux-store';
 import createReducer from '../../utils/create-reducer';
+import { ClearActionTypes } from '../clear/action-types';
 
 import { VersionActionTypes } from './action-types';
 import initialState from './initial-state';
@@ -24,15 +25,14 @@ const deleteNotificationStrategy = (
   list: state.list.filter((value, idx) => idx !== index),
 });
 
-const flushNotificationsStrategy = (state: NotificationState): NotificationState => ({
-  ...state,
-  list: [],
+const clearStoreStrategy = (): NotificationState => ({
+  ...initialState,
 });
 
 const strategyMap = {
   [VersionActionTypes.SET_NOTIFICATION]: setNotificationStrategy,
   [VersionActionTypes.DELETE_NOTIFICATION]: deleteNotificationStrategy,
-  [VersionActionTypes.FLUSH_NOTIFICATIONS]: flushNotificationsStrategy,
+  [ClearActionTypes.CLEAR_STORES]: clearStoreStrategy,
 };
 
 const notificationsReducer = createReducer(strategyMap, initialState);
