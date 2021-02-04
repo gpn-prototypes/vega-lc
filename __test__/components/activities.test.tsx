@@ -8,17 +8,11 @@ import '../../src/types/global';
 
 import { ActivitiesWidget } from '../../src/components/activities';
 import { getStore } from '../../src/redux-store';
-import { StoreLC } from '../../src/types/redux-store';
 import { createInitState } from '../utils/create-init-state';
 
-let reduxStore: Store | null;
-
-const renderActivities = (initialState?: StoreLC) => {
-  const store = getStore(initialState);
-  reduxStore = store;
-
+const renderActivities = (store?: Store) => {
   return render(
-    <Provider store={store}>
+    <Provider store={store || getStore()}>
       <ActivitiesWidget />
     </Provider>,
   );
@@ -26,10 +20,6 @@ const renderActivities = (initialState?: StoreLC) => {
 
 beforeAll(() => {
   window.ResizeObserver = ResizeObserver;
-});
-
-afterEach(() => {
-  reduxStore = null;
 });
 
 describe('Список мероприятий', () => {
@@ -91,16 +81,18 @@ describe('Список мероприятий', () => {
       },
     });
 
-    const { container } = renderActivities(initialState);
+    const store = getStore(initialState);
+
+    const { container } = renderActivities(store);
 
     const element = container.querySelector('.VegaTree__TreeNode') as HTMLElement;
 
     fireEvent.dragStart(element);
 
-    expect(reduxStore?.getState().activities.draggingElements).toHaveLength(1);
+    expect(store?.getState().activities.draggingElements).toHaveLength(1);
 
     fireEvent.dragEnd(element);
 
-    expect(reduxStore?.getState().activities.draggingElements).toHaveLength(0);
+    expect(store?.getState().activities.draggingElements).toHaveLength(0);
   });
 });
