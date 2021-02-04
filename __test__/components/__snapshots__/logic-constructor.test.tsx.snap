@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`рендерится без ошибок 1`] = `
+<div
+  className="LogicConstructorWidget"
+>
+  <div
+    data-testid="activities"
+  />
+  <div
+    data-testid="canvas"
+  />
+</div>
+`;
