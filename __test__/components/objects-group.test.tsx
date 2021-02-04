@@ -1,24 +1,60 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
+import { Store } from 'redux';
 import ResizeObserver from 'resize-observer-polyfill';
 
 import '../../src/types/global';
 
 import { ObjectsGroupWidget } from '../../src/components/objects-group';
-import { store } from '../../src/redux-store';
+import { ObjectsGroupDialog } from '../../src/components/objects-group/ObjectsGroupDialog';
+import { getStore } from '../../src/redux-store';
+import ObjectsGroupInitialState from '../../src/redux-store/group-objects/initial-state';
+import { createInitState } from '../utils/create-init-state';
 
-describe('Geological Exploration', () => {
+beforeAll(() => {
+  window.ResizeObserver = ResizeObserver;
+});
+
+const renderObjectsGroup = (store: Store) => {
+  return render(
+    <Provider store={store}>
+      <ObjectsGroupWidget />
+    </Provider>,
+  );
+};
+
+describe('Группы объектов', () => {
   test('рендерится без ошибок', () => {
-    window.ResizeObserver = ResizeObserver;
+    const store = getStore();
 
-    const dom = renderer
-      .create(
-        <Provider store={store}>
-          <ObjectsGroupWidget />
-        </Provider>,
-      )
-      .toJSON();
-    expect(dom).toMatchSnapshot();
+    const { container } = renderObjectsGroup(store);
+
+    expect(container).toBeInTheDocument();
+  });
+});
+
+const renderObjectsGroupDialog = (store: Store) => {
+  return render(
+    <Provider store={store}>
+      <ObjectsGroupDialog />
+    </Provider>,
+  );
+};
+
+describe('Диалог создания группы объектов', () => {
+  test('рендерится без ошибок', () => {
+    const initState = createInitState({
+      groupObjects: {
+        ...ObjectsGroupInitialState,
+        isDialogOpened: true,
+      },
+    });
+
+    const store = getStore(initState);
+
+    const { container } = renderObjectsGroupDialog(store);
+
+    expect(container).toBeInTheDocument();
   });
 });
