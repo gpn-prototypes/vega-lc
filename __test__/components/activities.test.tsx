@@ -42,37 +42,33 @@ describe('Список мероприятий', () => {
 
     const search = container.getElementsByTagName('input')[0];
 
-    if (search) {
-      const searchString = 'Геодезия';
+    const searchString = 'Геодезия';
 
-      expect(search.value).toBe('');
+    expect(search.value).toBe('');
 
-      fireEvent.change(search, { target: { value: searchString } });
+    fireEvent.change(search, { target: { value: searchString } });
 
-      expect(search.value).toBe(searchString);
-    }
+    expect(search.value).toBe(searchString);
   });
 
   test('Мероприятия можно скрыть и раскрыть', () => {
     const { container } = renderActivities();
 
-    const button = container.querySelector('.ActivitiesWidget__Switch');
-    const activities = container.querySelector('.ActivitiesWidget');
+    const button = container.querySelector('.ActivitiesWidget__Switch') as HTMLElement;
+    const activities = container.querySelector('.ActivitiesWidget') as HTMLElement;
 
-    if (button instanceof HTMLElement && activities instanceof HTMLElement) {
-      expect(activities).toBeInTheDocument();
-      expect(button).toBeInTheDocument();
+    expect(activities).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
 
-      expect(activities.hidden).toBe(false);
+    expect(activities.hidden).toBe(false);
 
-      fireEvent.click(button);
+    fireEvent.click(button);
 
-      expect(activities.hidden).toBe(true);
+    expect(activities.hidden).toBe(true);
 
-      fireEvent.click(button);
+    fireEvent.click(button);
 
-      expect(activities.hidden).toBe(false);
-    }
+    expect(activities.hidden).toBe(false);
   });
 
   test('Перетягиваемый элемент корректно проставляется при событии drag-start и удаляется при drag-end', () => {
@@ -97,16 +93,14 @@ describe('Список мероприятий', () => {
 
     const { container } = renderActivities(initialState);
 
-    const element = container.querySelector('.VegaTree__TreeNode');
+    const element = container.querySelector('.VegaTree__TreeNode') as HTMLElement;
 
-    if (element) {
-      fireEvent.dragStart(element);
+    fireEvent.dragStart(element);
 
-      expect(reduxStore?.getState().activities.draggingElements).toHaveLength(1);
+    expect(reduxStore?.getState().activities.draggingElements).toHaveLength(1);
 
-      fireEvent.dragEnd(element);
+    fireEvent.dragEnd(element);
 
-      expect(reduxStore?.getState().activities.draggingElements).toHaveLength(0);
-    }
+    expect(reduxStore?.getState().activities.draggingElements).toHaveLength(0);
   });
 });
