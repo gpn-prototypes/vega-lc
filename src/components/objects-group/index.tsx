@@ -89,6 +89,7 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
         <Button
           width="full"
           type="button"
+          className={cnObjectGroup('AddGroupBtn').toString()}
           view="ghost"
           size="l"
           iconSize="s"

@@ -82,10 +82,10 @@ export type NewGroupParams = {
 };
 
 export type GroupObjectsState = {
-  nodeList?: NodeList;
-  isDialogOpened?: boolean;
-  newGroupParams?: NewGroupParams;
-  draggingElements?: TargetData[] | [];
+  nodeList: NodeList;
+  isDialogOpened: boolean;
+  newGroupParams: NewGroupParams;
+  draggingElements: TargetData[] | [];
 };
 
 export interface ProjectStructureQuery {

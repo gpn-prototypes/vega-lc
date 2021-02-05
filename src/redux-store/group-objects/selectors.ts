@@ -4,11 +4,10 @@ import { GroupObjectsState, NewGroupParams, StoreLC } from '../../types/redux-st
 
 const getCurrentState = (state: StoreLC): GroupObjectsState => state.groupObjects;
 
-export const getGroupObjectsNodeList = (state: StoreLC): TreeItem[] | undefined =>
+export const getGroupObjectsNodeList = (state: StoreLC): TreeItem[] =>
   getCurrentState(state).nodeList;
-export const getIsDialogOpened = (state: StoreLC): boolean =>
-  getCurrentState(state).isDialogOpened || false;
+export const getIsDialogOpened = (state: StoreLC): boolean => getCurrentState(state).isDialogOpened;
 export const getNewGroupParams = (state: StoreLC): NewGroupParams =>
-  getCurrentState(state).newGroupParams || { isDynamic: false, name: '' };
-export const getGroupObjectsDraggingElements = (state: StoreLC): TargetData[] | undefined =>
+  getCurrentState(state).newGroupParams;
+export const getGroupObjectsDraggingElements = (state: StoreLC): TargetData[] =>
   getCurrentState(state).draggingElements;
