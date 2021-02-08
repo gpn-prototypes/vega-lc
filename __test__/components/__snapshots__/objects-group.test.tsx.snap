@@ -5,35 +5,27 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
   className="ObjectsGroupWidget"
 >
   <div
-    className="VegaTree"
+    className="ComponentHeader"
   >
-    <div
-      className={
-        Object {
-          "has": [Function],
-          "is": [Function],
-          "mix": [Function],
-          "split": [Function],
-          "state": [Function],
-          "toString": [Function],
-        }
+    <p>
+      Группы объектов
+    </p>
+  </div>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
       }
-    >
-      <ul
-        className={
-          Object {
-            "has": [Function],
-            "is": [Function],
-            "mix": [Function],
-            "split": [Function],
-            "state": [Function],
-            "toString": [Function],
-          }
-        }
-        role="tree"
-        tabIndex={0}
-      />
-    </div>
+    }
+  >
+    <p>
+      Для создания группы нажмите на кнопку Добавить группу
+    </p>
   </div>
   <div
     className={

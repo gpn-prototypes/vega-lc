@@ -1,13 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  GridState,
-  GridUpdate,
-  IconProcessing,
-  Layout,
-  LayoutWidget,
-  LayoutWidgetsOverrides,
-} from '@gpn-prototypes/vega-ui';
+import { IconProcessing, SplitPanes } from '@gpn-prototypes/vega-ui';
 
 import { LogicConstructorWidget } from '../logic-constructor';
 import { ObjectsGroupWidget } from '../objects-group';
@@ -25,10 +18,6 @@ import { setNotification } from '@/redux-store/notifications/actions';
 import { fetchProjectStructureList } from '@/redux-store/project-structure/actions';
 
 export const GeologicalExploration = (): React.ReactElement => {
-  function action(change: { update: GridUpdate; state: GridState }): void {
-    console.log(change);
-  }
-
   const dispatch = useDispatch();
   const { projectId, initialized } = useContext(ProjectContext);
 
@@ -53,73 +42,23 @@ export const GeologicalExploration = (): React.ReactElement => {
     }
   }, [dispatch, initialized]);
 
-  const widgets: LayoutWidget[] = [
-    {
-      name: 'Группа объектов',
-      component: 'vega-group-objects',
-    },
-    {
-      name: 'Структура проекта',
-      component: 'vega-project-structure',
-    },
-    {
-      name: 'Канвас',
-      component: 'vega-canvas',
-    },
-  ];
-
-  const widgetsOverrides: LayoutWidgetsOverrides = {
-    'vega-group-objects': () => <ObjectsGroupWidget />,
-    'vega-project-structure': () => <ProjectStructureWidget />,
-    'vega-canvas': () => <LogicConstructorWidget />,
-  };
-
-  const state: GridState = {
-    0: {
-      type: 'branch',
-      data: {
-        splitDirection: 'right',
-        breakpoint: 14,
-      },
-    },
-    1: {
-      type: 'branch',
-      data: {
-        splitDirection: 'down',
-        breakpoint: 51,
-      },
-    },
-    2: {
-      type: 'leaf',
-      data: {
-        widget: 'vega-canvas',
-        context: {},
-      },
-    },
-    3: {
-      type: 'leaf',
-      data: {
-        widget: 'vega-project-structure',
-        context: {},
-      },
-    },
-    4: {
-      type: 'leaf',
-      data: {
-        widget: 'vega-group-objects',
-        context: {},
-      },
-    },
-  };
-
   return (
     <div className={cnGeologicalExploration()}>
-      <Layout
-        state={state}
-        widgets={widgets}
-        widgetsOverrides={widgetsOverrides}
-        onChange={action}
-      />
+      <SplitPanes split="vertical">
+        <SplitPanes.Pane aria-label="trees" initialSize="260px" min="24px" max="260px">
+          <SplitPanes split="horizontal">
+            <SplitPanes.Pane aria-label="project-structure" min="50px">
+              <ProjectStructureWidget />
+            </SplitPanes.Pane>
+            <SplitPanes.Pane aria-label="objects-groups" min="140px">
+              <ObjectsGroupWidget />
+            </SplitPanes.Pane>
+          </SplitPanes>
+        </SplitPanes.Pane>
+        <SplitPanes.Pane aria-label="logic-constructor">
+          <LogicConstructorWidget />
+        </SplitPanes.Pane>
+      </SplitPanes>
     </div>
   );
 };

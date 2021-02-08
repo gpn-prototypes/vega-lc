@@ -7,6 +7,7 @@ import { BlueLineSvg, OrangeLineSvg, RedLineSvg } from './icons';
 
 import './index.css';
 
+import { ComponentHeader } from '@/components/components-header';
 import { setProjectStructureDraggingElements } from '@/redux-store/project-structure/actions';
 import { getProjectStructureNodeList } from '@/redux-store/project-structure/selectors';
 
@@ -30,19 +31,23 @@ export const ProjectStructureWidget: React.FC = (): React.ReactElement => {
 
   return (
     <div className={cnProjectStructure()}>
-      {!projectStructure?.length ? (
-        <div className={cnProjectStructure('NoStructure')}>
-          <p>Структура проекта отсутствует</p>
-        </div>
-      ) : (
-        <Tree
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          icons={icons}
-          isContextMenuEnable
-          nodeList={projectStructure || []}
-        />
-      )}
+      <>
+        <ComponentHeader title="Структура проекта" />
+
+        {!projectStructure?.length ? (
+          <div className={cnProjectStructure('NoStructure')}>
+            <p>Структура проекта отсутствует</p>
+          </div>
+        ) : (
+          <Tree
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            icons={icons}
+            isContextMenuEnable
+            nodeList={projectStructure || []}
+          />
+        )}
+      </>
     </div>
   );
 };

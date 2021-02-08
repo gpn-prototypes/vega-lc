@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
 import ResizeObserver from 'resize-observer-polyfill';
@@ -51,11 +51,11 @@ beforeEach(() => {
 
 const renderComponent = (projectId = '', initialized = false) => {
   return render(
-    <Provider store={store}>
+    <ReduxProvider store={store}>
       <ProjectContext.Provider value={{ projectId, initialized }}>
         <GeologicalExploration />
       </ProjectContext.Provider>
-    </Provider>,
+    </ReduxProvider>,
   );
 };
 
@@ -65,12 +65,26 @@ describe('Geological Exploration', () => {
 
     const dom = renderer
       .create(
-        <Provider store={store}>
+        <ReduxProvider store={store}>
           <GeologicalExploration />
-        </Provider>,
+        </ReduxProvider>,
       )
       .toJSON();
     expect(dom).toMatchSnapshot();
+  });
+
+  test('Основные компоненты присутствуют в DOM', () => {
+    const { container } = render(
+      <ReduxProvider store={store}>
+        <GeologicalExploration />
+      </ReduxProvider>,
+    );
+
+    const mainComponentLabels = ['project-structure', 'objects-groups', 'logic-constructor'];
+
+    mainComponentLabels.forEach((label) =>
+      expect(container.querySelector(`[aria-label="${label}"]`)).toBeInTheDocument(),
+    );
   });
 
   test('вызывать загрузку данных проекта если он инициализирован', async () => {
