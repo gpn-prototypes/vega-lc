@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App соответствует снапшоту 1`] = `
+<div
+  className="Theme Theme_color_gpnDark Theme_control_gpnDefault Theme_font_gpnDefault Theme_size_gpnDefault Theme_space_gpnDefault LC__App-Wrapper"
+>
+  <div />
+</div>
+`;
