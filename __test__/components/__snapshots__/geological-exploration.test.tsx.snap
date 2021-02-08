@@ -73,7 +73,7 @@ exports[`Geological Exploration рендерится без ошибок 1`] = `
             Object {
               "flex": "1",
               "maxHeight": "calc(100% - 2px * 1)",
-              "minHeight": "90px",
+              "minHeight": "140px",
             }
           }
         >
