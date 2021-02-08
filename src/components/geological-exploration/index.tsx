@@ -50,7 +50,7 @@ export const GeologicalExploration = (): React.ReactElement => {
             <SplitPanes.Pane aria-label="project-structure" min="50px">
               <ProjectStructureWidget />
             </SplitPanes.Pane>
-            <SplitPanes.Pane aria-label="objects-groups" min="90px">
+            <SplitPanes.Pane aria-label="objects-groups" min="140px">
               <ObjectsGroupWidget />
             </SplitPanes.Pane>
           </SplitPanes>
