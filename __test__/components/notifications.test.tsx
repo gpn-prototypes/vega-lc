@@ -124,7 +124,7 @@ describe('Notifications', () => {
     const notifications = component.container.querySelectorAll('.SnackBar-Item');
     expect(notifications.length).toBe(1);
 
-    const closeButton = component.container.querySelector('.SnackBar-CloseButton');
+    const closeButton = component.container.querySelector('.SnackBar-CloseButton') as HTMLElement;
     fireEvent.click(closeButton);
 
     const action = {

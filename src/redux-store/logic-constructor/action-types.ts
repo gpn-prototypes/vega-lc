@@ -1,4 +1,4 @@
-import { applyActionTypesNames } from '../../utils/apply-action-types-names';
+import { applyActionTypesNames } from '@/utils/apply-action-types-names';
 
 type LogicConstructorActions =
   | 'SET_SCENARIO_LIST'

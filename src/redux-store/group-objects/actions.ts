@@ -2,14 +2,14 @@ import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { NewGroupParams, StoreLC } from '../../types/redux-store';
+import { GroupObjectsActionTypes } from './action-types';
+
+import { NewGroupParams, StoreLC } from '@/types/redux-store';
 import {
   groupObjectListQuery,
   objectGroupCreateMutation,
   objectGroupUpdateMutation,
-} from '../../utils/graphql-request';
-
-import { GroupObjectsActionTypes } from './action-types';
+} from '@/utils/graphql-request';
 
 type SetDraggingElements = {
   type: typeof GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS;

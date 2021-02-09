@@ -1,7 +1,7 @@
-import { Content, Event, Step, StepData } from '../types/redux-store';
+import { Content, Event, Step, StepData } from '@/types/redux-store';
 
 export function getStepDataFromScenarioStep(step: Step): StepData {
-  const events = [] as Event[];
+  const events: Event[] = [];
 
   step.itemList.forEach((item) => {
     const eventContent =
@@ -33,5 +33,5 @@ export function getStepDataFromScenarioStep(step: Step): StepData {
     id: step.vid,
     name: step.name,
     events,
-  } as StepData;
+  };
 }

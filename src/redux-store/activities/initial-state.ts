@@ -4,7 +4,7 @@ import { ActivitiesState } from '@/types/redux-store';
 
 const initialState: ActivitiesState = {
   nodeList: [] as TreeItem[],
-  searchString: '',
+  searchString: null,
   autoFocus: false,
   activitiesRef: null,
   draggingElements: [],
