@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
-import { TreeItem } from '@gpn-prototypes/vega-ui';
+import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { fireEvent, render } from '@testing-library/react';
 import { Store } from 'redux';
 import configureMockStore from 'redux-mock-store';
@@ -131,19 +131,19 @@ describe('Project Structure', () => {
 
     const component = renderComponent(store);
 
-    const firstProjectStructureElement: HTMLElement = component.container.querySelector(
-      '.VegaTree__Leaf',
-    );
+    const firstProjectStructureElement = component.container.querySelector('.VegaTree__Leaf');
 
-    fireEvent.dragStart(firstProjectStructureElement);
-
-    fireEvent.dragEnd(firstProjectStructureElement);
+    if (firstProjectStructureElement) {
+      fireEvent.dragStart(firstProjectStructureElement);
+      fireEvent.dragEnd(firstProjectStructureElement);
+    }
 
     const dragElement = {
       id: mockProjectStructureList[0].id,
       ref: { current: firstProjectStructureElement },
       isDraggable: true,
-    };
+    } as TargetData;
+
     const dragStartAction = setProjectStructureDraggingElements([dragElement]);
     expect(store.getActions()).toContainEqual(dragStartAction);
 
