@@ -1,6 +1,5 @@
 import React from 'react';
 import { BasicSelect, Button, IconAdd, IconTrash } from '@gpn-prototypes/vega-ui';
-import { v4 as uuidv4 } from 'uuid';
 
 import { cnStepEditor } from './cn-lc';
 
@@ -40,12 +39,12 @@ const CommonInfo: React.FC = () => {
 
   const chanceItems: Item[] = [
     {
-      id: uuidv4(),
+      id: '23ff9b35-d2f1-4af1-a766-9e6c14e162f8',
       value: { label: 'Обстановка осадконакопления, Морская', value: '1' },
       section: 'Chances',
     },
     {
-      id: uuidv4(),
+      id: 'd7590f12-4ec5-45ac-859a-0c6a95919899',
       value: { label: 'Водянистая почва', value: '2' },
       section: 'Chances',
     },
@@ -53,7 +52,7 @@ const CommonInfo: React.FC = () => {
 
   const costItems: Item[] = [
     {
-      id: uuidv4(),
+      id: '9d9d871b-9355-4515-85e1-70cfe405f8e5',
       value: { label: '10 000 000 рублей', value: '3' },
       section: 'Parameters',
     },

@@ -1,0 +1,373 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Common Info рендерится без ошибок 1`] = `
+<div
+  className={
+    Object {
+      "has": [Function],
+      "is": [Function],
+      "mix": [Function],
+      "split": [Function],
+      "state": [Function],
+      "toString": [Function],
+    }
+  }
+>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <p
+      className="StepEditor__SectionLabel"
+    >
+      Риск
+    </p>
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <div
+        className="Select Select_size_s Select_form_default Select_view_default StepEditor__ChancesSelect"
+      >
+        <div
+          aria-expanded={false}
+          aria-haspopup="listbox"
+          className="Select-Control"
+          id="23ff9b35-d2f1-4af1-a766-9e6c14e162f8"
+        >
+          <div
+            className="Select-ControlInner"
+          >
+            <div
+              className="Select-ControlValueContainer"
+            >
+              <input
+                className="Select-FakeField"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                readOnly={true}
+                type="button"
+              />
+              <span
+                className="Select-ControlValue"
+                title="Обстановка осадконакопления, Морская"
+              >
+                Обстановка осадконакопления, Морская
+              </span>
+            </div>
+          </div>
+          <span
+            className="Select-Indicators"
+          >
+            <button
+              className="Select-IndicatorsDropdown"
+              onClick={[Function]}
+              tabIndex={-1}
+              type="button"
+            >
+              <span
+                className="Icon Icon_size_xs IconSelect Select-DropdownIndicatorIcon"
+              >
+                <svg
+                  className="Icon-Svg"
+                  viewBox="0 0 12 12"
+                >
+                  <path
+                    d="M6 8.5L10 4H2l4 4.5z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </span>
+        </div>
+      </div>
+      <span
+        className="Icon Icon_size_xs Icon_view_secondary IconTrash StepEditor__RemoveBtn"
+        onClick={[Function]}
+      >
+        <svg
+          className="Icon-Svg"
+          viewBox="0 0 12 12"
+        >
+          <path
+            clipRule="evenodd"
+            d="M4 2a1 1 0 011-1h2a1 1 0 011 1h3v1h-1v7a1 1 0 01-1 1H3a1 1 0 01-1-1V3H1V2h3zm1 2H4v5h1V4zm3 0H7v5h1V4z"
+            fillRule="evenodd"
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <div
+        className="Select Select_size_s Select_form_default Select_view_default StepEditor__ChancesSelect"
+      >
+        <div
+          aria-expanded={false}
+          aria-haspopup="listbox"
+          className="Select-Control"
+          id="d7590f12-4ec5-45ac-859a-0c6a95919899"
+        >
+          <div
+            className="Select-ControlInner"
+          >
+            <div
+              className="Select-ControlValueContainer"
+            >
+              <input
+                className="Select-FakeField"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                readOnly={true}
+                type="button"
+              />
+              <span
+                className="Select-ControlValue"
+                title="Водянистая почва"
+              >
+                Водянистая почва
+              </span>
+            </div>
+          </div>
+          <span
+            className="Select-Indicators"
+          >
+            <button
+              className="Select-IndicatorsDropdown"
+              onClick={[Function]}
+              tabIndex={-1}
+              type="button"
+            >
+              <span
+                className="Icon Icon_size_xs IconSelect Select-DropdownIndicatorIcon"
+              >
+                <svg
+                  className="Icon-Svg"
+                  viewBox="0 0 12 12"
+                >
+                  <path
+                    d="M6 8.5L10 4H2l4 4.5z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </span>
+        </div>
+      </div>
+      <span
+        className="Icon Icon_size_xs Icon_view_secondary IconTrash StepEditor__RemoveBtn"
+        onClick={[Function]}
+      >
+        <svg
+          className="Icon-Svg"
+          viewBox="0 0 12 12"
+        >
+          <path
+            clipRule="evenodd"
+            d="M4 2a1 1 0 011-1h2a1 1 0 011 1h3v1h-1v7a1 1 0 01-1 1H3a1 1 0 01-1-1V3H1V2h3zm1 2H4v5h1V4zm3 0H7v5h1V4z"
+            fillRule="evenodd"
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <button
+        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon MixFocus"
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="Icon Icon_size_xs IconAdd Button-Icon Button-Icon_position_left"
+        >
+          <svg
+            className="Icon-Svg"
+            viewBox="0 0 12 12"
+          >
+            <path
+              d="M6.5 2.5h-1v3h-3v1h3v3h1v-3h3v-1h-3v-3z"
+            />
+          </svg>
+        </span>
+        <span
+          className="Button-Label"
+        >
+          Добавить риск
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <p
+      className="StepEditor__SectionLabel"
+    >
+      Параметры
+    </p>
+    <p
+      className="StepEditor__SelectLabel"
+    >
+      Стоимость
+    </p>
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <div
+        className="Select Select_size_s Select_form_default Select_view_default StepEditor__ParametersSelect"
+      >
+        <div
+          aria-expanded={false}
+          aria-haspopup="listbox"
+          className="Select-Control"
+          id="9d9d871b-9355-4515-85e1-70cfe405f8e5"
+        >
+          <div
+            className="Select-ControlInner"
+          >
+            <div
+              className="Select-ControlValueContainer"
+            >
+              <input
+                className="Select-FakeField"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                readOnly={true}
+                type="button"
+              />
+              <span
+                className="Select-ControlValue"
+                title="10 000 000 рублей"
+              >
+                10 000 000 рублей
+              </span>
+            </div>
+          </div>
+          <span
+            className="Select-Indicators"
+          >
+            <button
+              className="Select-IndicatorsDropdown"
+              onClick={[Function]}
+              tabIndex={-1}
+              type="button"
+            >
+              <span
+                className="Icon Icon_size_xs IconSelect Select-DropdownIndicatorIcon"
+              >
+                <svg
+                  className="Icon-Svg"
+                  viewBox="0 0 12 12"
+                >
+                  <path
+                    d="M6 8.5L10 4H2l4 4.5z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <button
+        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon MixFocus"
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="Icon Icon_size_xs IconAdd Button-Icon Button-Icon_position_left"
+        >
+          <svg
+            className="Icon-Svg"
+            viewBox="0 0 12 12"
+          >
+            <path
+              d="M6.5 2.5h-1v3h-3v1h3v3h1v-3h3v-1h-3v-3z"
+            />
+          </svg>
+        </span>
+        <span
+          className="Button-Label"
+        >
+          Добавить параметр
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
