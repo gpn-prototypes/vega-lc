@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, IconAdd, TargetData, Tree } from '@gpn-prototypes/vega-ui';
+import { Button, IconAdd, IconAlert, TargetData, Tree } from '@gpn-prototypes/vega-ui';
 
 import { cnObjectGroup } from './cn-objects-group';
 import { CircleSvg, SquareSvg } from './icons';
@@ -15,6 +15,7 @@ import {
   updateGroupObject,
 } from '@/redux-store/group-objects/actions';
 import { getGroupObjectsNodeList } from '@/redux-store/group-objects/selectors';
+import { setNotification } from '@/redux-store/notifications/actions';
 import { getProjectStructureDraggingElements } from '@/redux-store/project-structure/selectors';
 
 const icons = {
@@ -53,7 +54,13 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
       if (found) {
         dispatch(updateGroupObject(found.id, ids));
       } else {
-        console.error(`Object group with specified ID: ${receivingId} was not found`); // TODO: show error message
+        dispatch(
+          setNotification({
+            message: `Группа объектов с id "${receivingId}" не найдена`,
+            status: 'alert',
+            icon: IconAlert,
+          }),
+        );
       }
     }
   };

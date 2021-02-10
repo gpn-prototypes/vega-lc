@@ -1,6 +1,8 @@
-import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
+import { IconAlert, TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
+
+import { setNotification } from '../notifications/actions';
 
 import { GroupObjectsActionTypes } from './action-types';
 
@@ -147,6 +149,17 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
     }
   } catch (e) {
     console.error(e);
+    e.graphQLErrors.forEach((error: Error) => {
+      if (error.message === `There exists name "${name}" in Domain Object Groups`) {
+        dispatch(
+          setNotification({
+            message: `Группа объектов с именем "${name}" уже существует`,
+            status: 'alert',
+            icon: IconAlert,
+          }),
+        );
+      }
+    });
   }
 };
 
