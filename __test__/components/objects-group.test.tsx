@@ -11,7 +11,7 @@ import { getStore } from '../../src/redux-store';
 import * as actions from '../../src/redux-store/group-objects/actions';
 import ObjectsGroupInitialState from '../../src/redux-store/group-objects/initial-state';
 import ProjectStructureInitialState from '../../src/redux-store/project-structure/initial-state';
-import { createInitState } from '../utils/create-init-state';
+import { createInitState } from '../testing-helpers/create-init-state';
 
 beforeAll(() => {
   window.ResizeObserver = ResizeObserver;
