@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   notifications: notificationsReducer,
 });
 
-const getStore = (initialState?: StoreLC): Store =>
+export const getStore = (initialState?: StoreLC): Store =>
   createStore(
     rootReducer,
     initialState,
