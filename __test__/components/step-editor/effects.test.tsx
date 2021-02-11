@@ -2,9 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import ResizeObserver from 'resize-observer-polyfill';
 
-import '../../../src/types/global';
+import '@/types/global';
 
-import Effects from '../../../src/components/step-editor/Effects';
+import Effects from '@/components/step-editor/Effects';
 
 describe('Effects', () => {
   test('рендерится без ошибок', () => {

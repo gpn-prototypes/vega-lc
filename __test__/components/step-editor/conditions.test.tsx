@@ -2,9 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import ResizeObserver from 'resize-observer-polyfill';
 
-import '../../../src/types/global';
+import '@/types/global';
 
-import Conditions from '../../../src/components/step-editor/Conditions';
+import Conditions from '@/components/step-editor/Conditions';
 
 describe('Conditions', () => {
   test('рендерится без ошибок', () => {

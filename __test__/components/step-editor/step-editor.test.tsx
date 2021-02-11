@@ -7,27 +7,27 @@ import configureMockStore from 'redux-mock-store';
 import thunkMiddleware from 'redux-thunk';
 import ResizeObserver from 'resize-observer-polyfill';
 
-import '../../../src/types/global';
+import '@/types/global';
 
-import StepEditor from '../../../src/components/step-editor';
-import { cnStepEditor } from '../../../src/components/step-editor/cn-lc';
-import { store } from '../../../src/redux-store';
-import { LogicConstructorActionTypes } from '../../../src/redux-store/logic-constructor/action-types';
-import initialState from '../../../src/redux-store/logic-constructor/initial-state';
+import StepEditor from '@/components/step-editor';
+import { cnStepEditor } from '@/components/step-editor/cn-lc';
+import { store } from '@/redux-store';
+import { LogicConstructorActionTypes } from '@/redux-store/logic-constructor/action-types';
+import initialState from '@/redux-store/logic-constructor/initial-state';
 
-jest.mock('../../../src/components/step-editor/CommonInfo', () => {
+jest.mock('@/components/step-editor/CommonInfo', () => {
   return () => {
     return <div data-testid="common-info" />;
   };
 });
 
-jest.mock('../../../src/components/step-editor/Conditions', () => {
+jest.mock('@/components/step-editor/Conditions', () => {
   return () => {
     return <div data-testid="conditions" />;
   };
 });
 
-jest.mock('../../../src/components/step-editor/Effects', () => {
+jest.mock('@/components/step-editor/Effects', () => {
   return () => {
     return <div data-testid="effects" />;
   };

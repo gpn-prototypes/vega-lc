@@ -3,10 +3,10 @@ import renderer from 'react-test-renderer';
 import { fireEvent, render } from '@testing-library/react';
 import ResizeObserver from 'resize-observer-polyfill';
 
-import '../../../src/types/global';
+import '@/types/global';
 
-import { cnStepEditor } from '../../../src/components/step-editor/cn-lc';
-import CommonInfo from '../../../src/components/step-editor/CommonInfo';
+import { cnStepEditor } from '@/components/step-editor/cn-lc';
+import CommonInfo from '@/components/step-editor/CommonInfo';
 
 const renderComponent = () => render(<CommonInfo />);
 
