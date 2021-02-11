@@ -3,50 +3,62 @@ import each from 'jest-each';
 import { clearArrayFromDuplicates } from '../../src/utils/clear-array-from-duplicates';
 
 describe('Функция удаления дублей из массивов', () => {
-  test('Удаляет дубликаты строк', () => {
-    const inputArray = ['1', '1', '2', '3'];
-
-    const resultArray = clearArrayFromDuplicates(inputArray);
-
-    expect(resultArray).toEqual(['1', '2', '3']);
+  each([
+    [[111.111, 111.111, 111.111], [111.111]],
+    [
+      [1, 0, 0, 0, 0, 0],
+      [1, 0],
+    ],
+    [
+      [0.3, 1234, 1234, 1234.01, 0.2, 0.3],
+      [0.3, 1234, 1234.01, 0.2],
+    ],
+  ]).test("Удаляет одинаковые числа из массива '%s'", (input, expected) => {
+    expect(clearArrayFromDuplicates(input)).toStrictEqual(expected);
   });
-
-  test('Удаляет дубликаты объектов', () => {
-    const object = { test: 'test' };
-    const duplicatedObject = object;
-
-    const inputArray = [object, duplicatedObject];
-
-    const resultArray = clearArrayFromDuplicates(inputArray);
-
-    expect(resultArray.length).toBe(1);
-    expect(resultArray.find((obj) => obj.test === 'test')).toBe(duplicatedObject);
-  });
-
-  test('Удаляет дубликаты массивов', () => {
-    const array = ['test'];
-    const duplicatedArray = array;
-
-    const inputArray = [array, duplicatedArray];
-
-    inputArray.push(array);
-    inputArray.push(duplicatedArray);
-
-    const resultArray = clearArrayFromDuplicates(inputArray);
-
-    expect(resultArray.length).toBe(1);
-    expect(resultArray).toContain(duplicatedArray);
-  });
-});
-
-describe('Удаление числовых дубликатов', () => {
-  const expected = [1, 2, 3];
 
   each([
-    [[1, 1, 2, 3, 3], expected],
-    [[1, 2, 2, 3, 3], expected],
-    [[1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3], expected],
-  ]).it("Когда исходный массив '%s'", (input) => {
+    [
+      ['test', '111.111', '111.111', 'test'],
+      ['test', '111.111'],
+    ],
+    [
+      ['1', '0', '0', '0', '0', '0'],
+      ['1', '0'],
+    ],
+    [
+      ['0.3', '1234', '1234', '1234.01', '0.2', '0.3'],
+      ['0.3', '1234', '1234.01', '0.2'],
+    ],
+  ]).test("Удаляет одинаковые строковые значения из массива '%s'", (input, expected) => {
     expect(clearArrayFromDuplicates(input)).toStrictEqual(expected);
+  });
+
+  describe('Удаляет дубликаты объектов', () => {
+    const object = { test: 'test' };
+    const duplicatedObject = object;
+    const anotherDuplicate = duplicatedObject;
+
+    each([
+      [[object, object, object], [object]],
+      [[object, duplicatedObject, anotherDuplicate], [object]],
+    ]).test('Из массива "%s', (input: { test: string }[]) => {
+      expect(clearArrayFromDuplicates(input).length).toBe(1);
+      expect(clearArrayFromDuplicates(input).find((obj) => obj.test === 'test')).toBe(object);
+    });
+  });
+
+  describe('Удаляет дубликаты массивов', () => {
+    const array = ['test'];
+    const duplicatedArray = array;
+    const anotherDuplicate = duplicatedArray;
+
+    each([
+      [[array, array, array], [array]],
+      [[array, duplicatedArray, anotherDuplicate], [anotherDuplicate]],
+    ]).test('Из массива "%s"', (input) => {
+      expect(clearArrayFromDuplicates(input).length).toBe(1);
+      expect(clearArrayFromDuplicates(input)).toContain(array);
+    });
   });
 });
