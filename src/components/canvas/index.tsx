@@ -1,7 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Canvas, CanvasUpdate, Change, useInterval } from '@gpn-prototypes/vega-ui';
-import { CanvasView as CanvasViewEntity } from '@gpn-prototypes/vega-ui/dist/components/canvas/entities/CanvasView';
 
 import './index.css';
 
