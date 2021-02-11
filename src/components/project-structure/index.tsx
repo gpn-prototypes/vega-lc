@@ -44,7 +44,7 @@ export const ProjectStructureWidget: React.FC = (): React.ReactElement => {
             onDragEnd={handleDragEnd}
             icons={icons}
             isContextMenuEnable
-            nodeList={projectStructure || []}
+            nodeList={projectStructure}
           />
         )}
       </>
