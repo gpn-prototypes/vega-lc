@@ -131,16 +131,9 @@ const updateGroupObject = (
   }
 };
 
-const createNewGroup = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
+const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
-  getState,
 ): Promise<void> => {
-  const { name } = getState().groupObjects.newGroupParams;
-
-  if (!name) {
-    return;
-  }
-
   try {
     const response = await objectGroupCreateMutation({
       name,
@@ -148,6 +141,7 @@ const createNewGroup = (): ThunkAction<void, StoreLC, unknown, AnyAction> => asy
 
     if (response?.data) {
       dispatch(toggleDialog(false));
+      dispatch(setNewGroupParams({ isDynamic: false, name: '' }));
 
       dispatch(fetchGroupObjectList());
     }

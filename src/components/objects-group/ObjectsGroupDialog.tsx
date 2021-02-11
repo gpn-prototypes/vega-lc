@@ -37,7 +37,11 @@ export const ObjectsGroupDialog: React.FC = () => {
   };
 
   const handleCreateObjectGroup = (): void => {
-    dispatch(createNewGroup());
+    if (!name) {
+      return;
+    }
+
+    dispatch(createNewGroup(name));
   };
 
   return (
