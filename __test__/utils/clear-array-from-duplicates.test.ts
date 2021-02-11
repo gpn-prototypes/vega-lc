@@ -1,3 +1,5 @@
+import each from 'jest-each';
+
 import { clearArrayFromDuplicates } from '../../src/utils/clear-array-from-duplicates';
 
 describe('Функция удаления дублей из массивов', () => {
@@ -7,14 +9,6 @@ describe('Функция удаления дублей из массивов', (
     const resultArray = clearArrayFromDuplicates(inputArray);
 
     expect(resultArray).toEqual(['1', '2', '3']);
-  });
-
-  test('Удаляет повторящие числа', () => {
-    const inputArray = [1, 1, 2, 3, 3];
-
-    const resultArray = clearArrayFromDuplicates(inputArray);
-
-    expect(resultArray).toEqual([1, 2, 3]);
   });
 
   test('Удаляет дубликаты объектов', () => {
@@ -42,5 +36,17 @@ describe('Функция удаления дублей из массивов', (
 
     expect(resultArray.length).toBe(1);
     expect(resultArray).toContain(duplicatedArray);
+  });
+});
+
+describe('Удаление числовых дубликатов', () => {
+  const expected = [1, 2, 3];
+
+  each([
+    [[1, 1, 2, 3, 3], expected],
+    [[1, 2, 2, 3, 3], expected],
+    [[1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3], expected],
+  ]).it("Когда исходный массив '%s'", (input) => {
+    expect(clearArrayFromDuplicates(input)).toStrictEqual(expected);
   });
 });
