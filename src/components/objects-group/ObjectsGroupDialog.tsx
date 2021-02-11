@@ -2,14 +2,14 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, IconClose, Modal, Switch, TextField, usePortal } from '@gpn-prototypes/vega-ui';
 
+import { cnObjectGroup } from './cn-objects-group';
+
 import {
   createNewGroup,
   setNewGroupParams,
   toggleDialog,
-} from '../../redux-store/group-objects/actions';
-import { getIsDialogOpened, getNewGroupParams } from '../../redux-store/group-objects/selectors';
-
-import { cnObjectGroup } from './cn-objects-group';
+} from '@/redux-store/group-objects/actions';
+import { getIsDialogOpened, getNewGroupParams } from '@/redux-store/group-objects/selectors';
 
 export const ObjectsGroupDialog: React.FC = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,6 @@ export const ObjectsGroupDialog: React.FC = () => {
     }
 
     dispatch(createNewGroup(name));
-    handleCloseDialog();
   };
 
   return (

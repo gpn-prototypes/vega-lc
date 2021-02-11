@@ -140,6 +140,9 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
     });
 
     if (response?.data) {
+      dispatch(toggleDialog(false));
+      dispatch(setNewGroupParams({ isDynamic: false, name: '' }));
+
       dispatch(fetchGroupObjectList());
     }
   } catch (e) {
