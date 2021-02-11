@@ -42,8 +42,6 @@ const StepEditor: React.FC = () => {
 
   const renderContent = (): React.ReactElement => {
     switch (val?.name) {
-      case tabs[0].name:
-        return <CommonInfo />;
       case tabs[1].name:
         return <Conditions />;
       case tabs[2].name:

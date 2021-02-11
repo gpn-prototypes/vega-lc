@@ -1,0 +1,186 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Step Editor рендерится без ошибок 1`] = `
+<div
+  className="StepEditor"
+>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <div
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+        style={
+          Object {
+            "overflowX": "hidden",
+          }
+        }
+      >
+        <div
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseMove={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+        >
+          <div
+            className="Tabs Tabs_size_s Tabs_view_clear VegaTabs__Native"
+            style={
+              Object {
+                "width": 0,
+              }
+            }
+          >
+            <div
+              className="Tabs-List"
+            >
+              <button
+                className="TabsTab TabsTab_checked MixFocus MixFocus_before Tabs-Tab"
+                role="tab"
+                type="button"
+              >
+                Общая информация
+              </button>
+              <button
+                className="TabsTab MixFocus MixFocus_before Tabs-Tab"
+                onClick={[Function]}
+                role="tab"
+                type="button"
+              >
+                Условия начала и завершения
+              </button>
+              <button
+                className="TabsTab MixFocus MixFocus_before Tabs-Tab"
+                onClick={[Function]}
+                role="tab"
+                type="button"
+              >
+                Эффекты
+              </button>
+            </div>
+            <div
+              className="Tabs-WrapperRunningLine"
+            >
+              <div
+                className="Tabs-RunningLine Tabs-RunningLine_mounted"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+      >
+        <button
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+          onClick={[Function]}
+          type="button"
+        >
+          <span
+            className="Icon Icon_size_m IconArrowRight"
+          >
+            <svg
+              className="Icon-Svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <div
+      data-testid="common-info"
+    />
+    <span
+      className="Icon Icon_size_s IconClose StepEditor__CloseBtn"
+      onClick={[Function]}
+    >
+      <svg
+        className="Icon-Svg"
+        viewBox="0 0 16 16"
+      >
+        <path
+          clipRule="evenodd"
+          d="M3.757 2.343L2.343 3.757 6.586 8l-4.243 4.243 1.414 1.414L8 9.414l4.243 4.243 1.414-1.414L9.414 8l4.243-4.243-1.414-1.414L8 6.586 3.757 2.343z"
+          fillRule="evenodd"
+        />
+      </svg>
+    </span>
+  </div>
+</div>
+`;

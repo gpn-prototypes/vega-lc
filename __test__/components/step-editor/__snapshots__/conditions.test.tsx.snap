@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Conditions рендерится без ошибок 1`] = `
+<div>
+  Conditions
+</div>
+`;
