@@ -4,8 +4,7 @@ import { GroupObjectsState, NewGroupParams, StoreLC } from '../../types/redux-st
 
 const getCurrentState = (state: StoreLC): GroupObjectsState => state.groupObjects;
 
-export const getGroupObjectsNodeList = (state: StoreLC): TreeItem[] =>
-  getCurrentState(state).nodeList;
+export const getGroupObjectsNodeList = (state: StoreLC): TreeItem[] => [];
 export const getIsDialogOpened = (state: StoreLC): boolean => getCurrentState(state).isDialogOpened;
 export const getNewGroupParams = (state: StoreLC): NewGroupParams =>
   getCurrentState(state).newGroupParams;
