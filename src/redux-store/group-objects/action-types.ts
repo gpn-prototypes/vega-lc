@@ -1,4 +1,4 @@
-import { applyActionTypesNames } from '../../utils/apply-action-types-names';
+import { applyActionTypesNames } from '@/utils/apply-action-types-names';
 
 type GroupObjectsActions =
   | 'SET_GROUP_OBJECTS_LIST'

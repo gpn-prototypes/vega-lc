@@ -60,11 +60,11 @@ export type CanvasElements = {
 };
 
 export type ActivitiesState = {
-  nodeList?: NodeList;
-  searchString?: string | null;
-  autoFocus?: boolean;
+  nodeList: NodeList;
+  searchString: string | null;
+  autoFocus: boolean;
   activitiesRef?: React.RefObject<HTMLElement> | null;
-  draggingElements?: TargetData[] | [];
+  draggingElements: TargetData[] | [];
   isDroppingOnExistingStep?: boolean;
   isActivitiesPanelOpen: boolean;
 };
@@ -94,8 +94,8 @@ export interface ProjectStructureQuery {
 }
 
 export type ProjectStructureState = {
-  nodeList?: NodeList;
-  draggingElements?: TargetData[] | [];
+  nodeList: NodeList;
+  draggingElements: TargetData[] | [];
   projectStructureQuery?: ProjectStructureQuery;
 };
 

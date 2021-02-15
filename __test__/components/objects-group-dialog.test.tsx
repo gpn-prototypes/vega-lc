@@ -10,7 +10,7 @@ import { ObjectsGroupDialog } from '../../src/components/objects-group/ObjectsGr
 import { getStore } from '../../src/redux-store';
 import * as actions from '../../src/redux-store/group-objects/actions';
 import ObjectsGroupInitialState from '../../src/redux-store/group-objects/initial-state';
-import { createInitState } from '../utils/create-init-state';
+import { createInitState } from '../testing-helpers/create-init-state';
 
 beforeAll(() => {
   window.ResizeObserver = ResizeObserver;

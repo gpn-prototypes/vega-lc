@@ -1,20 +1,19 @@
 import React from 'react';
 import { TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 
-import { ActivitiesState, StoreLC } from '../../types/redux-store';
+import { ActivitiesState, StoreLC } from '@/types/redux-store';
 
 const getCurrentState = (state: StoreLC): ActivitiesState => state.activities;
 
-export const getSearchStringValue = (state: StoreLC): string | null | undefined =>
+export const getSearchStringValue = (state: StoreLC): string | null =>
   getCurrentState(state).searchString;
 
-export const getIsAutoFocus = (state: StoreLC): boolean | undefined =>
-  getCurrentState(state).autoFocus;
+export const getIsAutoFocus = (state: StoreLC): boolean => getCurrentState(state).autoFocus;
 
 export const getActivitiesRef = (state: StoreLC): React.RefObject<HTMLElement> | null | undefined =>
   getCurrentState(state).activitiesRef;
 
-export const getActivitiesDraggingElements = (state: StoreLC): TargetData[] | undefined =>
+export const getActivitiesDraggingElements = (state: StoreLC): TargetData[] =>
   getCurrentState(state).draggingElements;
 
 export const getIsDroppingOnExistingStep = (state: StoreLC): boolean | undefined =>
@@ -25,7 +24,7 @@ export const getIsActivitiesPanelOpen = (state: StoreLC): boolean =>
 
 export const getActivitiesNodeList = (searchString: string | null | undefined) => (
   state: StoreLC,
-): TreeItem[] | undefined => {
+): TreeItem[] => {
   let { nodeList } = getCurrentState(state);
 
   if (searchString && nodeList) {

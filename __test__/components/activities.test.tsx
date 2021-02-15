@@ -8,7 +8,7 @@ import '../../src/types/global';
 
 import { ActivitiesWidget } from '../../src/components/activities';
 import { getStore } from '../../src/redux-store';
-import { createInitState } from '../utils/create-init-state';
+import { createInitState } from '../testing-helpers/create-init-state';
 
 const renderActivities = (store?: Store) => {
   return render(
