@@ -56,7 +56,7 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
       } else {
         dispatch(
           setNotification({
-            message: `Группа объектов с id "${receivingId}" не найдена`,
+            message: `Не удалось осуществить перенос. Группа объектов с id "${receivingId}" не найдена`,
             status: 'alert',
             icon: IconAlert,
           }),

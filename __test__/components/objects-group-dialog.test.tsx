@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Store } from 'redux';
 import ResizeObserver from 'resize-observer-polyfill';
 
-import '../../src/types/global';
+import '@/types/global';
 
 import { ObjectsGroupDialog } from '../../src/components/objects-group/ObjectsGroupDialog';
 import { getStore } from '../../src/redux-store';
@@ -130,5 +130,130 @@ describe('Диалог создания группы объектов', () => {
 
     expect(mockedCreateNewGroup).toBeCalledTimes(1);
     expect(mockedCreateNewGroup).toHaveBeenCalledWith([newGroupName]);
+  });
+
+  describe('Валидация названия создаваемой группы объектов', () => {
+    test('В поле ввода можно ввести не более 256 символов', () => {
+      const store = getStore(initState);
+
+      const { baseElement } = renderObjectsGroupDialog(store);
+
+      const textField = baseElement.getElementsByTagName('input')[0];
+
+      const longText = 'аааааааааа'.repeat(26);
+
+      expect(textField.value).toBe('');
+
+      fireEvent.change(textField, { target: { value: longText } });
+
+      expect(textField.value.length).toBe(256);
+
+      const errorMessage = 'Достигнуто максимальное количество символов';
+      const errorMessageLabel = screen.getByText(errorMessage);
+      expect(errorMessageLabel).toBeInTheDocument();
+    });
+
+    test('Поле вывода ошибки очищается при внесении изменений в поле ввода названия', () => {
+      const store = getStore(initState);
+
+      const { baseElement } = renderObjectsGroupDialog(store);
+
+      const textField = baseElement.getElementsByTagName('input')[0];
+
+      const longText = 'аааааааааа'.repeat(26);
+
+      expect(textField.value).toBe('');
+
+      fireEvent.change(textField, { target: { value: longText } });
+
+      expect(textField.value.length).toBe(256);
+
+      const errorMessage = 'Достигнуто максимальное количество символов';
+      const errorMessageLabel = screen.getByText(errorMessage);
+      expect(errorMessageLabel).toBeInTheDocument();
+
+      fireEvent.change(textField, { target: { value: 'new text' } });
+      expect(errorMessageLabel).toHaveTextContent('');
+    });
+
+    test('Нельзя отправить пустое название', () => {
+      const store = getStore(initState);
+
+      const { baseElement } = renderObjectsGroupDialog(store);
+
+      const textField = baseElement.getElementsByTagName('input')[0];
+      const createGroupBtn = screen.getByText('Создать группу');
+
+      const mockedCreateNewGroup = jest.fn();
+      jest
+        .spyOn(actions, 'createNewGroup')
+        .mockImplementationOnce((...args) => (): unknown => mockedCreateNewGroup(args));
+
+      expect(textField.value).toBe('');
+      fireEvent.click(createGroupBtn);
+
+      const errorMessage = 'Название группы объектов не может быть пустым';
+      const errorMessageLabel = screen.getByText(errorMessage);
+      expect(errorMessageLabel).toBeInTheDocument();
+      expect(mockedCreateNewGroup).toBeCalledTimes(0);
+    });
+
+    test('Нельзя отправить название состоящее из одного символа', () => {
+      const store = getStore(initState);
+
+      const { baseElement } = renderObjectsGroupDialog(store);
+
+      const textField = baseElement.getElementsByTagName('input')[0];
+      const createGroupBtn = screen.getByText('Создать группу');
+
+      const mockedCreateNewGroup = jest.fn();
+      jest
+        .spyOn(actions, 'createNewGroup')
+        .mockImplementationOnce((...args) => (): unknown => mockedCreateNewGroup(args));
+
+      const character = 'a';
+
+      fireEvent.change(textField, { target: { value: character } });
+
+      expect(textField.value).toBe(character);
+      fireEvent.click(createGroupBtn);
+
+      const errorMessage = 'Название группы объектов должно содержать более одного символа';
+      const errorMessageLabel = screen.getByText(errorMessage);
+      expect(errorMessageLabel).toBeInTheDocument();
+      expect(mockedCreateNewGroup).toBeCalledTimes(0);
+    });
+
+    test('Нельзя отправить название уже существующей группы объектов', () => {
+      const mockGroup = { id: 'mock id', name: 'name', nodeList: [] };
+      const groupState = createInitState({
+        groupObjects: {
+          ...ObjectsGroupInitialState,
+          nodeList: [mockGroup],
+          isDialogOpened: true,
+        },
+      });
+      const store = getStore(groupState);
+
+      const { baseElement } = renderObjectsGroupDialog(store);
+
+      const textField = baseElement.getElementsByTagName('input')[0];
+      const createGroupBtn = screen.getByText('Создать группу');
+
+      const mockedCreateNewGroup = jest.fn();
+      jest
+        .spyOn(actions, 'createNewGroup')
+        .mockImplementationOnce((...args) => (): unknown => mockedCreateNewGroup(args));
+
+      fireEvent.change(textField, { target: { value: mockGroup.name } });
+
+      expect(textField.value).toBe(mockGroup.name);
+      fireEvent.click(createGroupBtn);
+
+      const errorMessage = `Группа объектов с именем "${mockGroup.name}" уже существует`;
+      const errorMessageLabel = screen.getByText(errorMessage);
+      expect(errorMessageLabel).toBeInTheDocument();
+      expect(mockedCreateNewGroup).toBeCalledTimes(0);
+    });
   });
 });

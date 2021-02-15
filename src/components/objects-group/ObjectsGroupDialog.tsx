@@ -37,7 +37,14 @@ export const ObjectsGroupDialog: React.FC = () => {
 
   const handleChangeName = (args: { value: string | null }): void => {
     setError('');
+
     if (args.value?.search(/\s/g) === 0) {
+      return;
+    }
+
+    if (args.value && args.value.length > 256) {
+      setError('Достигнуто максимальное количество символов');
+      dispatch(setNewGroupParams({ isDynamic, name: args.value.trim().substring(0, 256) }));
       return;
     }
 
@@ -103,7 +110,6 @@ export const ObjectsGroupDialog: React.FC = () => {
           value={name}
           className={cnObjectGroup('DialogInput').toString()}
           width="full"
-          maxLength={255}
         />
         <Text view="alert" size="xs" className={cnObjectGroup('DialogError').toString()}>
           {error}
