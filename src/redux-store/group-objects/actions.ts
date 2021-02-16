@@ -6,7 +6,7 @@ import { setNotification } from '../notifications/actions';
 
 import { GroupObjectsActionTypes } from './action-types';
 
-import { NewGroupParams, StoreLC } from '@/types/redux-store';
+import { StoreLC } from '@/types/redux-store';
 import {
   groupObjectListQuery,
   objectGroupCreateMutation,
@@ -28,11 +28,6 @@ type ToggleDialog = {
   isDialogOpened: boolean;
 };
 
-type SetNewGroupParams = {
-  type: typeof GroupObjectsActionTypes.SET_NEW_GROUP_PARAMS;
-  newGroupParams: NewGroupParams;
-};
-
 const setGroupObjectsList = (nodeList: TreeItem[]): SetGroupObjectsList => ({
   type: GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST,
   nodeList,
@@ -41,11 +36,6 @@ const setGroupObjectsList = (nodeList: TreeItem[]): SetGroupObjectsList => ({
 const toggleDialog = (isDialogOpened: boolean): ToggleDialog => ({
   type: GroupObjectsActionTypes.TOGGLE_DIALOG,
   isDialogOpened,
-});
-
-const setNewGroupParams = (newGroupParams: NewGroupParams): SetNewGroupParams => ({
-  type: GroupObjectsActionTypes.SET_NEW_GROUP_PARAMS,
-  newGroupParams,
 });
 
 const setGroupObjectsDraggingElements = (draggingElements: TargetData[]): SetDraggingElements => ({
@@ -143,8 +133,6 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
 
     if (response?.data) {
       dispatch(toggleDialog(false));
-      dispatch(setNewGroupParams({ isDynamic: false, name: '' }));
-
       dispatch(fetchGroupObjectList());
     }
   } catch (e) {
@@ -168,7 +156,6 @@ export {
   setGroupObjectsList,
   createNewGroup,
   toggleDialog,
-  setNewGroupParams,
   updateGroupObject,
   setGroupObjectsDraggingElements,
 };

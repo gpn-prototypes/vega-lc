@@ -21,19 +21,6 @@ const toggleDialogStrategy = (
   isDialogOpened,
 });
 
-const setNewGroupParamsStrategy = (
-  state: GroupObjectsState,
-  {
-    newGroupParams = {
-      isDynamic: false,
-      name: '',
-    },
-  },
-): GroupObjectsState => ({
-  ...state,
-  newGroupParams,
-});
-
 const setDraggingElementsStrategy = (
   state: GroupObjectsState,
   { draggingElements = [] },
@@ -49,7 +36,6 @@ const clearStoreStrategy = (): GroupObjectsState => ({
 const strategyMap = {
   [GroupObjectsActionTypes.SET_GROUP_OBJECTS_LIST]: setGroupObjectsNodeListStrategy,
   [GroupObjectsActionTypes.TOGGLE_DIALOG]: toggleDialogStrategy,
-  [GroupObjectsActionTypes.SET_NEW_GROUP_PARAMS]: setNewGroupParamsStrategy,
   [GroupObjectsActionTypes.SET_DRAGGING_ELEMENTS]: setDraggingElementsStrategy,
   [ClearActionTypes.CLEAR_STORES]: clearStoreStrategy,
 };
