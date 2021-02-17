@@ -8,6 +8,7 @@ import groupObjectsReducer from './group-objects/reducer';
 import logicConstructorReducer from './logic-constructor/reducer';
 import notificationsReducer from './notifications/reducer';
 import projectStructureReducer from './project-structure/reducer';
+import splitPanesGridReducer from './split-panes-grid/reducer';
 import versionReducer from './version/reducer';
 
 import { StoreLC } from '@/types/redux-store';
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   logicConstructor: logicConstructorReducer,
   version: versionReducer,
   notifications: notificationsReducer,
+  splitPanesGrid: splitPanesGridReducer,
 });
 
 export const getStore = (initialState?: StoreLC): Store =>
