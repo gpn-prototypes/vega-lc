@@ -131,22 +131,4 @@ describe('Диалог создания группы объектов', () => {
     expect(mockedCreateNewGroup).toBeCalledTimes(1);
     expect(mockedCreateNewGroup).toHaveBeenCalledWith([newGroupName]);
   });
-
-  test('Не реагирует на кнопку "Создать группу" при пустом поле названия группы', () => {
-    const mockedCreateNewGroup = jest.fn();
-
-    jest
-      .spyOn(actions, 'createNewGroup')
-      .mockImplementationOnce(() => (): unknown => mockedCreateNewGroup());
-
-    const store = getStore(initState);
-
-    renderObjectsGroupDialog(store);
-
-    const createGroupBtn = screen.getByText('Создать группу');
-
-    fireEvent.click(createGroupBtn);
-
-    expect(mockedCreateNewGroup).toBeCalledTimes(0);
-  });
 });
