@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
-import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
 import ResizeObserver from 'resize-observer-polyfill';
 
@@ -9,6 +8,10 @@ import '../../src/types/global';
 import { GeologicalExploration } from '../../src/components/geological-exploration';
 import { ProjectContext } from '../../src/react-context/providers';
 import { store } from '../../src/redux-store';
+
+beforeAll(() => {
+  window.ResizeObserver = ResizeObserver;
+});
 
 jest.mock('../../src/components/logic-constructor', () => {
   return {
@@ -61,16 +64,11 @@ const renderComponent = (projectId = '', initialized = false) => {
 
 describe('Geological Exploration', () => {
   test('рендерится без ошибок', () => {
-    window.ResizeObserver = ResizeObserver;
+    const { container } = renderComponent();
 
-    const dom = renderer
-      .create(
-        <ReduxProvider store={store}>
-          <GeologicalExploration />
-        </ReduxProvider>,
-      )
-      .toJSON();
-    expect(dom).toMatchSnapshot();
+    const objectGroup = container.querySelector('.GeologicalExploration');
+
+    expect(objectGroup).toBeInTheDocument();
   });
 
   test('Основные компоненты присутствуют в DOM', () => {

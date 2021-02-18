@@ -6,6 +6,7 @@
   "exclude": ["node_modules", "**/dist/**/*"],
   "compilerOptions": {
     "sourceMap": true,
+    "target": "ES2020",
     "noImplicitThis": false,
     "baseUrl": "./",
     "moduleResolution": "node",

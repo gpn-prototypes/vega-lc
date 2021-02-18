@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { IconProcessing, SplitPanes } from '@gpn-prototypes/vega-ui';
+import { IconProcessing, SplitPanes, useResizeObserver } from '@gpn-prototypes/vega-ui';
 
 import { LogicConstructorWidget } from '../logic-constructor';
 import { ObjectsGroupWidget } from '../objects-group';
@@ -16,13 +16,18 @@ import { fetchGroupObjectList } from '@/redux-store/group-objects/actions';
 import { fetchCanvasItemsData } from '@/redux-store/logic-constructor/actions';
 import { setNotification } from '@/redux-store/notifications/actions';
 import { fetchProjectStructureList } from '@/redux-store/project-structure/actions';
+import { resizeSaverService } from '@/utils/resize-saver-service';
 
 export const GeologicalExploration = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { projectId, initialized } = useContext(ProjectContext);
 
+  const leftAngularPane = React.useRef(null);
+
   useEffect(() => {
     if (projectId) {
+      resizeSaverService.setId(projectId);
+
       dispatch(
         setNotification({
           message: 'Раздел находится в разработке',
@@ -42,12 +47,31 @@ export const GeologicalExploration = (): React.ReactElement => {
     }
   }, [dispatch, initialized]);
 
+  const { width: angularPaneWidth, height: angularPaneHeight } = useResizeObserver(leftAngularPane);
+
+  const { width: initialWidth, height: initialHeight } = resizeSaverService.getGridSize();
+
+  const handleResize = (): void => {
+    if (angularPaneWidth && angularPaneHeight)
+      resizeSaverService.setGridSize({ width: angularPaneWidth, height: angularPaneHeight });
+  };
+
   return (
     <div className={cnGeologicalExploration()}>
-      <SplitPanes split="vertical">
-        <SplitPanes.Pane aria-label="trees" initialSize="260px" min="24px" max="260px">
-          <SplitPanes split="horizontal">
-            <SplitPanes.Pane aria-label="project-structure" min="50px">
+      <SplitPanes onResize={handleResize} split="vertical">
+        <SplitPanes.Pane
+          aria-label="trees"
+          initialSize={initialWidth || '260px'}
+          min="24px"
+          max="260px"
+        >
+          <SplitPanes onResize={handleResize} split="horizontal">
+            <SplitPanes.Pane
+              initialSize={initialHeight}
+              ref={leftAngularPane}
+              aria-label="project-structure"
+              min="50px"
+            >
               <ProjectStructureWidget />
             </SplitPanes.Pane>
             <SplitPanes.Pane aria-label="objects-groups" min="140px">

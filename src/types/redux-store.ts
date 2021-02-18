@@ -20,6 +20,11 @@ export declare type StepData = {
   events: Event[];
 };
 
+export type SplitPanesGridParams = {
+  width: string;
+  height?: string;
+};
+
 export type CanvasViewEntity = CanvasView;
 
 export type StepContent = {
