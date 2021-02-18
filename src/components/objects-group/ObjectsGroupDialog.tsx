@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { Field, Form } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, IconClose, Modal, Switch, TextField, usePortal } from '@gpn-prototypes/vega-ui';
+import {
+  Button,
+  Form as VegaForm,
+  IconClose,
+  Modal,
+  Switch,
+  usePortal,
+} from '@gpn-prototypes/vega-ui';
+import createDecorator from 'final-form-focus';
+
+import { TextField as FormTextField } from '../form';
 
 import { cnObjectGroup } from './cn-objects-group';
 
-import {
-  createNewGroup,
-  setNewGroupParams,
-  toggleDialog,
-} from '@/redux-store/group-objects/actions';
-import { getIsDialogOpened, getNewGroupParams } from '@/redux-store/group-objects/selectors';
+import { createNewGroup, toggleDialog } from '@/redux-store/group-objects/actions';
+import { getGroupObjectsNodeList, getIsDialogOpened } from '@/redux-store/group-objects/selectors';
+import { NewGroupParams } from '@/types/redux-store';
+import { createValidate, validators } from '@/utils/validation';
+
+const focusOnErrors = createDecorator<NewGroupParams>();
 
 export const ObjectsGroupDialog: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,74 +28,114 @@ export const ObjectsGroupDialog: React.FC = () => {
   const { portal } = usePortal({ name: 'modalRoot' });
 
   const isDialogOpen = useSelector(getIsDialogOpened);
-  const { name, isDynamic } = useSelector(getNewGroupParams);
+  const existingGroupObjects = useSelector(getGroupObjectsNodeList);
 
-  const handleChangeName = (args: { value: string | null }): void => {
-    if (args.value?.search(/\s/g) === 0) {
-      return;
-    }
-
-    dispatch(setNewGroupParams({ isDynamic, name: args.value || '' }));
-  };
-
-  const handleToggleDynamicGroup = ({ checked }: { checked: boolean }): void => {
-    dispatch(setNewGroupParams({ isDynamic: checked, name }));
-  };
+  const validator = createValidate<Partial<NewGroupParams>>({
+    name: [
+      validators.required(undefined, () => 'Заполните обязательное поле'),
+      validators.minLength(
+        2,
+        () => 'Название проекта не может быть менее 2 символов и более 256 символов',
+      ),
+      validators.maxLength(
+        256,
+        () => 'Название проекта не может быть менее 2 символов и более 256 символов',
+      ),
+      validators.isGroupObjectAlreadyExist(existingGroupObjects),
+    ],
+  });
 
   const handleCloseDialog = (): void => {
     dispatch(toggleDialog(false));
-    dispatch(setNewGroupParams({ isDynamic: false, name: '' }));
   };
 
-  const handleCreateObjectGroup = (): void => {
-    if (!name) {
-      return;
-    }
-
-    dispatch(createNewGroup(name));
+  const handleCreateObjectGroup = (values: NewGroupParams): void => {
+    console.log('handle dispatch', values);
+    dispatch(createNewGroup(values.name.trim()));
+    handleCloseDialog();
   };
+
+  const decorators = useMemo(() => [focusOnErrors], []);
 
   return (
-    <Modal
-      className={cnObjectGroup('Dialog')}
-      portal={portal}
-      isOpen={isDialogOpen}
-      onClose={handleCloseDialog}
-      hasOverlay
-    >
-      <div className={cnObjectGroup('DialogContent')}>
-        <h4 className={cnObjectGroup('DialogTitle')}>Название группы</h4>
+    <Form
+      initialValues={{ name: '', isDynamic: false }}
+      validate={validator}
+      onSubmit={handleCreateObjectGroup}
+      decorators={decorators}
+      render={({ form, handleSubmit }): React.ReactNode => (
+        <VegaForm onSubmit={handleSubmit} className={cnObjectGroup('DialogForm')}>
+          <Modal
+            className={cnObjectGroup('Dialog')}
+            portal={portal}
+            isOpen={isDialogOpen}
+            onClose={handleCloseDialog}
+            hasOverlay
+          >
+            <div className={cnObjectGroup('DialogContent')}>
+              <h4 className={cnObjectGroup('DialogTitle')}>Название группы</h4>
+              <p className={cnObjectGroup('DialogInputLabel').toString()}>Название</p>
+              <Field
+                name="name"
+                render={({ input, meta }): React.ReactNode => {
+                  return (
+                    <FormTextField
+                      input={input}
+                      meta={meta}
+                      className={cnObjectGroup('DialogInput').toString()}
+                      placeholder="Введите название группы объектов"
+                      width="full"
+                      name="name"
+                    />
+                  );
+                }}
+              />
+              <div className={cnObjectGroup('DialogControllers')}>
+                <div className={cnObjectGroup('DialogDynamicGroupSwitcher')}>
+                  <Field
+                    name="isDynamic"
+                    type="checkbox"
+                    render={({ input }): React.ReactNode => {
+                      return (
+                        <Switch
+                          size="m"
+                          checked={input.checked}
+                          onChange={({ e }): void => input.onChange(e)}
+                          label="Динамическая"
+                        />
+                      );
+                    }}
+                  />
+                </div>
 
-        <p className={cnObjectGroup('DialogInputLabel').toString()}>Название</p>
+                <div className={cnObjectGroup('DialogButtons')}>
+                  <Button type="submit" onClick={handleSubmit} size="s" label="Создать группу" />
+                  <Button
+                    onClick={() => {
+                      form.reset();
+                      handleCloseDialog();
+                    }}
+                    size="s"
+                    view="ghost"
+                    label="Отмена"
+                  />
+                </div>
+              </div>
 
-        <TextField
-          onChange={handleChangeName}
-          autoFocus
-          value={name}
-          className={cnObjectGroup('DialogInput').toString()}
-          width="full"
-        />
-
-        <div className={cnObjectGroup('DialogControllers')}>
-          <div className={cnObjectGroup('DialogDynamicGroupSwitcher')}>
-            <Switch
-              size="m"
-              onChange={handleToggleDynamicGroup}
-              checked={isDynamic}
-              label="Динамическая"
-            />
-          </div>
-
-          <div className={cnObjectGroup('DialogButtons')}>
-            <Button onClick={handleCreateObjectGroup} size="s" label="Создать группу" />
-            <Button onClick={handleCloseDialog} size="s" view="ghost" label="Отмена" />
-          </div>
-        </div>
-
-        <button onClick={handleCloseDialog} className={cnObjectGroup('DialogCloser')} type="button">
-          <IconClose size="s" />
-        </button>
-      </div>
-    </Modal>
+              <button
+                onClick={() => {
+                  form.reset();
+                  handleCloseDialog();
+                }}
+                className={cnObjectGroup('DialogCloser')}
+                type="button"
+              >
+                <IconClose size="s" />
+              </button>
+            </div>
+          </Modal>
+        </VegaForm>
+      )}
+    />
   );
 };

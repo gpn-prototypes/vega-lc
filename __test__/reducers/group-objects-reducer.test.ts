@@ -1,13 +1,12 @@
-import { clearStores } from '../../src/redux-store/clear/actions';
+import { clearStores } from '@/redux-store/clear/actions';
 import {
   setGroupObjectsDraggingElements,
   setGroupObjectsList,
-  setNewGroupParams,
   toggleDialog,
-} from '../../src/redux-store/group-objects/actions';
-import initialState from '../../src/redux-store/group-objects/initial-state';
-import groupObjectsReducer from '../../src/redux-store/group-objects/reducer';
-import { GroupObjectsState } from '../../src/types/redux-store';
+} from '@/redux-store/group-objects/actions';
+import initialState from '@/redux-store/group-objects/initial-state';
+import groupObjectsReducer from '@/redux-store/group-objects/reducer';
+import { GroupObjectsState } from '@/types/redux-store';
 
 describe('group objects reducer test', () => {
   let mockState: GroupObjectsState;
@@ -53,12 +52,6 @@ describe('group objects reducer test', () => {
     const action = setGroupObjectsDraggingElements(mockState.draggingElements);
     const newState = groupObjectsReducer(initialState, action);
     expect(newState.draggingElements).toEqual(mockState.draggingElements);
-  });
-
-  test('устанавливаются параметры для новых групп', () => {
-    const action = setNewGroupParams(mockState.newGroupParams);
-    const newState = groupObjectsReducer(initialState, action);
-    expect(newState.newGroupParams).toEqual(mockState.newGroupParams);
   });
 
   test('устанавливается параметр isDialogOpened', () => {
