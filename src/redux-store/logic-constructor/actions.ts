@@ -35,6 +35,7 @@ import {
   canvasNodeUpdateMutation,
   getGraphqlUri,
   scenarioStepCreateMutation,
+  scenarioStepDeleteMutation,
   scenarioStepUpdateMutation,
   serviceConfig,
 } from '@/utils/graphql-request';
@@ -353,8 +354,18 @@ const syncCanvasState = (
     }
 
     if (updateData.type === 'remove-trees') {
-      await updateData.ids.reduce<Promise<any>>((promise, vid) => {
-        return promise.then(() => canvasNodeDeleteMutation({ vid })).catch(console.error);
+      dispatch(toggleStepEditor(false));
+
+      await updateData.removedTrees.reduce<Promise<any>>((promise, tree) => {
+        return promise
+          .then(async () => {
+            await canvasNodeDeleteMutation({ vid: tree.treeId });
+
+            if (tree.stepDataId) {
+              await scenarioStepDeleteMutation({ vid: tree.stepDataId });
+            }
+          })
+          .catch(console.error);
       }, Promise.resolve());
     }
   };

@@ -183,6 +183,18 @@ export const CANVAS_NODE_DELETE_MUTATION = gql`
   }
 `;
 
+export const SCENARIO_STEP_DELETE_MUTATION = gql`
+  mutation($vid: UUID!, $version: Int!) {
+    logic {
+      scenarioStep {
+        delete(vid: $vid, version: $version) {
+          ok
+        }
+      }
+    }
+  }
+`;
+
 export const PROJECT_QUERY = gql`
   query($projectId: UUID!) {
     project(vid: $projectId) {
