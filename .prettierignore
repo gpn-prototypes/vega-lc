@@ -1,1 +1,5 @@
-e2e-tests/
+dist
+node_modules
+.github
+*.md
+e2e-tests

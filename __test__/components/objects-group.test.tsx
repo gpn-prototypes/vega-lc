@@ -38,6 +38,14 @@ describe('Группы объектов', () => {
     expect(objectGroup).toBeInTheDocument();
   });
 
+  test('Если не создано ни одной группы отображается плейсхолдер', () => {
+    const { container } = renderObjectsGroup();
+
+    const placeholder = container.querySelector('.ObjectsGroupWidget__NoStructure');
+
+    expect(placeholder).toBeInTheDocument();
+  });
+
   test('При нажатии на кнопку Добавить группу isDialogOpened выставляется в true', () => {
     const store = getStore();
 
@@ -111,6 +119,11 @@ describe('Группы объектов', () => {
             isDraggable: true,
             id: 'dragging-element',
           },
+          {
+            ref: null,
+            isDraggable: false,
+            id: 'another-dragging-element',
+          },
         ],
       },
     });
@@ -130,7 +143,6 @@ describe('Группы объектов', () => {
     const objectsGroup = container.querySelector('#drop-zone') as HTMLElement;
 
     expect(store.getState().groupObjects.nodeList[0].nodeList).toHaveLength(0);
-    expect(store.getState().projectStructure.draggingElements).toHaveLength(1);
 
     fireEvent.dragEnter(objectsGroup);
     fireEvent.drop(objectsGroup);
