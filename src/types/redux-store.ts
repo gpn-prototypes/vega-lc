@@ -20,7 +20,7 @@ export declare type StepData = {
   events: Event[];
 };
 
-export type SplitPanesGridSize = {
+export type SplitPanesGridParams = {
   width: string;
   height?: string;
 };
@@ -93,10 +93,6 @@ export type GroupObjectsState = {
   draggingElements: TargetData[] | [];
 };
 
-export type SplitPanesGridState = {
-  gridSize: SplitPanesGridSize;
-};
-
 export interface ProjectStructureQuery {
   query: string;
   tree: string[];
@@ -119,7 +115,6 @@ export type StoreLC = {
   logicConstructor: LogicConstructorState;
   version: VersionState;
   notifications: NotificationState;
-  splitPanesGrid: SplitPanesGridState;
 };
 
 export type NotificationStatus = 'alert' | 'normal' | 'system' | 'success' | 'warning' | undefined;
