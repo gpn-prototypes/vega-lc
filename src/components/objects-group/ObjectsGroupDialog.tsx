@@ -88,6 +88,7 @@ export const ObjectsGroupDialog: React.FC = () => {
                     <FormTextField
                       input={input}
                       meta={meta}
+                      trimOnBlur
                       className={cnObjectGroup('DialogInput').toString()}
                       placeholder="Введите название группы объектов"
                       width="full"

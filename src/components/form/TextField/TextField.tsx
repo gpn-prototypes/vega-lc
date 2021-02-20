@@ -14,12 +14,13 @@ export type TextFieldProps<T = any> = {
   input: FieldInputProps<T>;
   meta: FieldMetaState<T>;
   testId?: string;
+  trimOnBlur?: boolean;
 } & Partial<BaseTextFieldProps>;
 
 const cnTextField = cn('VegaTextField');
 
 export const TextField: React.FC<TextFieldProps> = (props) => {
-  const { input, meta, name, placeholder, testId, ...rest } = props;
+  const { input, meta, name, placeholder, testId, trimOnBlur, ...rest } = props;
 
   const submitErrorText = meta.submitError ? meta.submitError : undefined;
   const clientErrorValidation =
@@ -45,7 +46,12 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
         autoComplete="off"
         value={input.value}
         onChange={({ e }): void => input.onChange(e)}
-        onBlur={input.onBlur}
+        onBlur={(e) => {
+          if (trimOnBlur) {
+            input.onChange(input.value.trim());
+          }
+          input.onBlur(e);
+        }}
         onFocus={input.onFocus}
         data-testid={testId}
         {...rest}
