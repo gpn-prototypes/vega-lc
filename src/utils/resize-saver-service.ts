@@ -5,11 +5,13 @@ type Size = {
   height: number;
 };
 
-class ResizeSaverService {
+export class ResizeSaverService {
   private id = '';
 
-  public setId(id: string) {
-    this.id = id;
+  public setId(id: string | undefined): void {
+    if (id && this.id !== id) {
+      this.id = id;
+    }
   }
 
   private get storageName(): string {
@@ -20,7 +22,7 @@ class ResizeSaverService {
     return 'split-pane-grid-params';
   }
 
-  public setGridSize = (size: Size) => {
+  public setGridSize = (size: Size): void => {
     sessionStorage.setItem(this.storageName, JSON.stringify(size));
   };
 
