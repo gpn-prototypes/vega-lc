@@ -1,5 +1,4 @@
 import React from 'react';
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { Root } from '@gpn-prototypes/vega-ui';
 
 import { AppView } from './AppView';
@@ -8,15 +7,10 @@ import { cnApp } from './cn-app';
 import './App.css';
 
 import { Providers } from '@/react-context/providers';
-import { Identity } from '@/types';
+import { ShellToolkit } from '@/types';
 
-interface AppProps {
-  graphqlClient?: ApolloClient<NormalizedCacheObject>;
-  identity?: Identity;
-}
-
-export const App: React.FC<AppProps> = (props) => {
-  const { graphqlClient, identity } = props;
+export const App: React.FC<ShellToolkit> = (props) => {
+  const { graphqlClient, identity, currentProject } = props;
 
   return (
     <Root
@@ -24,7 +18,7 @@ export const App: React.FC<AppProps> = (props) => {
       defaultTheme="dark"
       className={cnApp('App-Wrapper').toString()}
     >
-      <Providers graphqlClient={graphqlClient} identity={identity}>
+      <Providers currentProject={currentProject} graphqlClient={graphqlClient} identity={identity}>
         <AppView />
       </Providers>
     </Root>
