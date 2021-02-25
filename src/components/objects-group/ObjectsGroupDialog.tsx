@@ -9,6 +9,7 @@ import {
   Switch,
   usePortal,
 } from '@gpn-prototypes/vega-ui';
+import { FormApi } from 'final-form';
 import createDecorator from 'final-form-focus';
 
 import { TextField as FormTextField } from '../form';
@@ -45,14 +46,17 @@ export const ObjectsGroupDialog: React.FC = () => {
     ],
   });
 
-  const handleCloseDialog = (): void => {
+  const handleCloseDialog = (form: FormApi<NewGroupParams, Partial<NewGroupParams>>): void => {
+    setTimeout(form.reset);
     dispatch(toggleDialog(false));
   };
 
-  const handleCreateObjectGroup = (values: NewGroupParams): void => {
-    console.log('handle dispatch', values);
+  const handleCreateObjectGroup = (
+    values: NewGroupParams,
+    form: FormApi<NewGroupParams, Partial<NewGroupParams>>,
+  ): void => {
     dispatch(createNewGroup(values.name.trim()));
-    handleCloseDialog();
+    handleCloseDialog(form);
   };
 
   const decorators = useMemo(() => [focusOnErrors], []);
@@ -69,7 +73,9 @@ export const ObjectsGroupDialog: React.FC = () => {
             className={cnObjectGroup('Dialog')}
             portal={portal}
             isOpen={isDialogOpen}
-            onClose={handleCloseDialog}
+            onClose={() => {
+              handleCloseDialog(form);
+            }}
             hasOverlay
           >
             <div className={cnObjectGroup('DialogContent')}>
@@ -82,6 +88,7 @@ export const ObjectsGroupDialog: React.FC = () => {
                     <FormTextField
                       input={input}
                       meta={meta}
+                      trimOnBlur
                       className={cnObjectGroup('DialogInput').toString()}
                       placeholder="Введите название группы объектов"
                       width="full"
@@ -112,8 +119,7 @@ export const ObjectsGroupDialog: React.FC = () => {
                   <Button type="submit" onClick={handleSubmit} size="s" label="Создать группу" />
                   <Button
                     onClick={() => {
-                      form.reset();
-                      handleCloseDialog();
+                      handleCloseDialog(form);
                     }}
                     size="s"
                     view="ghost"
@@ -124,8 +130,7 @@ export const ObjectsGroupDialog: React.FC = () => {
 
               <button
                 onClick={() => {
-                  form.reset();
-                  handleCloseDialog();
+                  handleCloseDialog(form);
                 }}
                 className={cnObjectGroup('DialogCloser')}
                 type="button"

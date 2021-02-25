@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { over } from 'lodash';
 import { Store } from 'redux';
 import ResizeObserver from 'resize-observer-polyfill';
 
@@ -92,7 +93,7 @@ describe('Диалог создания группы объектов', () => {
     expect(store.getState().groupObjects.isDialogOpened).toBe(false);
   });
 
-  test('Диалоговое окно закрывается при клике на кнопку закрытия (в вернем углу)', () => {
+  test('Диалоговое окно закрывается при клике на кнопку закрытия (в верхнем углу)', () => {
     const store = getStore(initState);
 
     const { baseElement } = renderObjectsGroupDialog(store);
@@ -106,6 +107,79 @@ describe('Диалог создания группы объектов', () => {
     }
 
     expect(store.getState().groupObjects.isDialogOpened).toBe(false);
+  });
+
+  describe('Данные формы сбрасываются после закрытия', () => {
+    const checkClose = async (store: Store, button: HTMLElement, isOverlay?: boolean) => {
+      const newGroupName = 'new group name';
+
+      let textField = screen.getByPlaceholderText('Введите название группы объектов');
+
+      fireEvent.change(textField, { target: { value: newGroupName } });
+
+      expect(textField).toHaveValue(newGroupName);
+
+      if (!isOverlay) {
+        fireEvent.click(button);
+      } else {
+        fireEvent.mouseDown(button);
+      }
+
+      expect(store.getState().groupObjects.isDialogOpened).toBeFalsy();
+      await waitFor(() => expect(textField).not.toBeInTheDocument());
+
+      await store.dispatch(actions.toggleDialog(true));
+
+      expect(store.getState().groupObjects.isDialogOpened).toBeTruthy();
+
+      textField = screen.getByPlaceholderText('Введите название группы объектов');
+      await waitFor(() => expect(textField).not.toHaveValue(newGroupName));
+      expect(textField).toHaveValue('');
+    };
+
+    test('данные формы сбрасываются после закрытия по кнопке закрытия (в верхнем углу)', async () => {
+      const store = getStore(initState);
+
+      const { baseElement } = renderObjectsGroupDialog(store);
+
+      const closeBtn = baseElement.querySelector(
+        '.ObjectsGroupWidget__DialogCloser',
+      ) as HTMLElement;
+
+      await checkClose(store, closeBtn);
+    });
+
+    test('данные формы сбрасываются после закрытия по кнопке отмена', async () => {
+      const store = getStore(initState);
+
+      renderObjectsGroupDialog(store);
+
+      const closeBtn = screen.getByText('Отмена');
+
+      await checkClose(store, closeBtn);
+    });
+
+    test('данные формы сбрасываются после добавления группы объектов', async () => {
+      const store = getStore(initState);
+
+      renderObjectsGroupDialog(store);
+
+      const createGroupBtn = screen.getByText('Создать группу');
+
+      await checkClose(store, createGroupBtn);
+    });
+
+    test('данные формы сбрасываются после клика вне модального окна', async () => {
+      const store = getStore(initState);
+
+      const { baseElement } = renderObjectsGroupDialog(store);
+
+      const overlay = baseElement.querySelector(
+        '[aria-label="Оверлей модального окна"]',
+      ) as HTMLElement;
+
+      await checkClose(store, overlay, true);
+    });
   });
 
   test('Группа создается с валидным названием', () => {
@@ -216,7 +290,7 @@ describe('Диалог создания группы объектов', () => {
     test('Нельзя отправить название состоящее из одного символа', () => {
       const store = getStore(initState);
 
-      const { baseElement } = renderObjectsGroupDialog(store);
+      renderObjectsGroupDialog(store);
 
       const textField = screen.getByPlaceholderText(
         'Введите название группы объектов',
@@ -241,7 +315,7 @@ describe('Диалог создания группы объектов', () => {
       expect(mockedCreateNewGroup).toBeCalledTimes(0);
     });
 
-    test('Удаляются лишние пробелы', () => {
+    test('Удаляются лишние пробелы при создании группы', () => {
       const store = getStore(initState);
 
       renderObjectsGroupDialog(store);
@@ -264,6 +338,23 @@ describe('Диалог создания группы объектов', () => {
 
       expect(mockedCreateNewGroup).toBeCalledTimes(1);
       expect(mockedCreateNewGroup).toHaveBeenCalledWith([newGroupName.trim()]);
+    });
+
+    test('Удаляются лишние пробелы на onBlur', () => {
+      const store = getStore(initState);
+
+      renderObjectsGroupDialog(store);
+
+      const newGroupName = '           group name           ';
+
+      const textField = screen.getByPlaceholderText(
+        'Введите название группы объектов',
+      ) as HTMLInputElement;
+      fireEvent.change(textField, { target: { value: newGroupName } });
+
+      fireEvent.blur(textField);
+
+      expect(textField.value).toBe(newGroupName.trim());
     });
 
     test('Нельзя отправить название уже существующей группы объектов', () => {
