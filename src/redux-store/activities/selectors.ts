@@ -22,7 +22,7 @@ export const getIsDroppingOnExistingStep = (state: StoreLC): boolean | undefined
 export const getIsActivitiesPanelOpen = (state: StoreLC): boolean =>
   getCurrentState(state).isActivitiesPanelOpen;
 
-export const getActivitiesNodeList = (searchString: string | null | undefined) => (
+export const getActivitiesNodeList = (searchString?: string | null) => (
   state: StoreLC,
 ): TreeItem[] => {
   let { nodeList } = getCurrentState(state);

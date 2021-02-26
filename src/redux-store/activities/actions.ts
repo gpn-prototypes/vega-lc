@@ -8,29 +8,32 @@ import { ActivitiesActionTypes } from './action-types';
 import { StoreLC } from '@/types/redux-store';
 import { activityListQuery } from '@/utils/graphql-request';
 
-type SetIsAutoFocus = { type: typeof ActivitiesActionTypes.SET_IS_AUTO_FOCUS; autoFocus: boolean };
+export type SetIsAutoFocus = {
+  type: typeof ActivitiesActionTypes.SET_IS_AUTO_FOCUS;
+  autoFocus: boolean;
+};
 
-type SetDraggingElements = {
+export type SetDraggingElements = {
   type: typeof ActivitiesActionTypes.SET_DRAGGING_ELEMENTS;
   draggingElements: TargetData[];
 };
 
-type SetActivitiesRef = {
+export type SetActivitiesRef = {
   type: typeof ActivitiesActionTypes.SET_ACTIVITIES_REF;
   activitiesRef: React.RefObject<HTMLElement>;
 };
 
-type SetActivitiesList = {
+export type SetActivitiesList = {
   type: typeof ActivitiesActionTypes.SET_ACTIVITIES_LIST;
   nodeList: TreeItem[];
 };
 
-type SetIsDroppingOnExisting = {
+export type SetIsDroppingOnExisting = {
   type: typeof ActivitiesActionTypes.SET_IS_DROPPING_ON_EXISTING_STEP;
   isDroppingOnExistingStep: boolean;
 };
 
-type SetActivitiesPanelOpen = {
+export type SetActivitiesPanelOpen = {
   type: typeof ActivitiesActionTypes.SET_ACTIVITIES_PANEL_OPEN;
   isActivitiesPanelOpen: boolean;
 };
@@ -114,8 +117,6 @@ const fetchActivitiesList = (): ThunkAction<void, StoreLC, unknown, AnyAction> =
       const nodeList = Object.values(collection);
 
       dispatch(setActivitiesList(nodeList));
-    } else {
-      console.log(response);
     }
   } catch (e) {
     console.error(e);
