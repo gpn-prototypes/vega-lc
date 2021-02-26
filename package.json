@@ -61,10 +61,8 @@
     "redux-thunk": "^2.3.0",
     "single-spa-react": "^3.1.0",
     "uniqid": "^5.2.0",
-    "uuid": "^8.3.1"
-  },
-  "devDependencies": {
-    "@gpn-prototypes/frontend-configs": "^1.2.12",
+    "uuid": "^8.3.1",
+    "@gpn-prototypes/frontend-configs": "1.2.16-alpha.2",
     "@graphql-codegen/cli": "1.16.3",
     "@graphql-codegen/introspection": "1.16.3",
     "@graphql-codegen/typescript": "^1.16.3",
@@ -90,20 +88,15 @@
     "@types/uuid": "^8.3.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "commitizen": "^4.2.1",
     "cross-env": "^7.0.2",
-    "cz-customizable": "^6.3.0",
     "dotenv": "^8.2.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "file-loader": "^6.1.0",
-    "husky": "^4.3.0",
     "jest": "^26.5.3",
     "jest-each": "^26.6.2",
-    "lint-staged": "^10.4.0",
-    "npm-run-all": "^4.1.5",
-    "postcss": "^8.1.10",
-    "postcss-loader": "^4.0.4",
-    "postcss-nested": "^5.0.1",
+    "postcss": "^7.0.35",
+    "postcss-loader": "^4.2.0",
+    "postcss-nested": "^4.2.3",
     "react-test-renderer": "^16.13.1",
     "redux-mock-store": "^1.5.4",
     "resize-observer-polyfill": "^1.5.1",
@@ -117,6 +110,13 @@
     "webpack-dev-server": "^3.11.0",
     "webpack-import-map-plugin": "^1.0.0-alpha0",
     "webpack-merge": "^4.2.2"
+  },
+  "devDependencies": {
+    "commitizen": "^4.2.1",
+    "cz-customizable": "^6.3.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "npm-run-all": "^4.1.5"
   },
   "resolutions": {
     "tslib": "1.13.0"
