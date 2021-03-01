@@ -26,8 +26,6 @@ export const GeologicalExploration = (): React.ReactElement => {
 
   useEffect(() => {
     if (projectId) {
-      resizeSaverService.setId(projectId);
-
       dispatch(
         setNotification({
           message: 'Раздел находится в разработке',
@@ -47,6 +45,8 @@ export const GeologicalExploration = (): React.ReactElement => {
     }
   }, [dispatch, initialized]);
 
+  resizeSaverService.setId(projectId);
+
   const { width: angularPaneWidth, height: angularPaneHeight } = useResizeObserver(leftAngularPane);
 
   const { width: initialWidth, height: initialHeight } = resizeSaverService.getGridSize();
@@ -59,12 +59,7 @@ export const GeologicalExploration = (): React.ReactElement => {
   return (
     <div className={cnGeologicalExploration()}>
       <SplitPanes onResize={handleResize} split="vertical">
-        <SplitPanes.Pane
-          aria-label="trees"
-          initialSize={initialWidth || '260px'}
-          min="24px"
-          max="260px"
-        >
+        <SplitPanes.Pane aria-label="trees" initialSize={initialWidth} min="24px" max="260px">
           <SplitPanes onResize={handleResize} split="horizontal">
             <SplitPanes.Pane
               initialSize={initialHeight}

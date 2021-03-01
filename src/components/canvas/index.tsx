@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Canvas, CanvasUpdate, Change, useInterval } from '@gpn-prototypes/vega-ui';
 import { CanvasView as CanvasViewEntity } from '@gpn-prototypes/vega-ui/dist/components/canvas/entities/CanvasView';
@@ -6,6 +6,7 @@ import { CanvasView as CanvasViewEntity } from '@gpn-prototypes/vega-ui/dist/com
 import './index.css';
 
 import { cnCanvasWidget } from '@/components/canvas/cn-canvas';
+import { ProjectContext } from '@/react-context/providers';
 import {
   mapDropEventToRelatedAction,
   setCanvasElements,
@@ -18,6 +19,8 @@ import { canvasActionsForImmediateSync } from '@/utils/constants/canvas-actions-
 
 export const CanvasWidget: React.FC = () => {
   const [changes, setChanges] = useState<CanvasUpdate[]>([]);
+
+  const { projectId } = useContext(ProjectContext);
 
   const canvasViewRef = useRef<CanvasViewEntity | null>(null);
 
@@ -61,9 +64,8 @@ export const CanvasWidget: React.FC = () => {
       }
     }
 
-    if (type === 'unselect' || type === 'remove-trees') {
+    if (type === 'unselect') {
       dispatch(toggleStepEditor(false));
-      dispatch(syncCanvasState(update));
 
       return;
     }
@@ -91,6 +93,7 @@ export const CanvasWidget: React.FC = () => {
         canvasViewAccessor={canvasViewRefSetter}
         state={canvasElements}
         onChange={updateTree}
+        savedScreenId={projectId}
       />
     </div>
   );

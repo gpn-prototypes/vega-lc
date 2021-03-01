@@ -10,6 +10,7 @@ import {
   OBJECT_GROUP_UPDATE_MUTATION,
   PROJECT_QUERY,
   SCENARIO_STEP_CREATE_MUTATION,
+  SCENARIO_STEP_DELETE_MUTATION,
   SCENARIO_STEP_UPDATE_MUTATION,
 } from './queries';
 import { getCurrentVersion, incrementVersion } from './version';
@@ -207,6 +208,23 @@ export function canvasNodeDeleteMutation(variables: DeleteCanvasNodeMutationVari
   return versionModifier(
     serviceConfig.client?.mutate({
       mutation: CANVAS_NODE_DELETE_MUTATION,
+      variables: { version: getCurrentVersion(), ...variables },
+      context: {
+        uri: getGraphqlUri(serviceConfig.projectId),
+      },
+    }),
+  );
+}
+
+export interface DeleteScenarioStepMutationVariables {
+  vid: string;
+  version?: number;
+}
+
+export function scenarioStepDeleteMutation(variables: DeleteScenarioStepMutationVariables) {
+  return versionModifier(
+    serviceConfig.client?.mutate({
+      mutation: SCENARIO_STEP_DELETE_MUTATION,
       variables: { version: getCurrentVersion(), ...variables },
       context: {
         uri: getGraphqlUri(serviceConfig.projectId),
