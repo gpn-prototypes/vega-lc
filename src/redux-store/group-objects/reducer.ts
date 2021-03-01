@@ -1,9 +1,10 @@
-import { GroupObjectsState } from '../../types/redux-store';
 import createReducer from '../../utils/create-reducer';
 import { ClearActionTypes } from '../clear/action-types';
 
 import { GroupObjectsActionTypes } from './action-types';
 import initialState from './initial-state';
+
+import { GroupObjectsState } from '@/types/redux-store';
 
 const setGroupObjectsNodeListStrategy = (
   state: GroupObjectsState,
