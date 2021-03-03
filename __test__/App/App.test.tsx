@@ -21,7 +21,20 @@ const renderApp = () => {
   const mockIdentity = {
     getToken: (): Promise<string> => new Promise((resolve) => setTimeout(() => resolve('token'))),
   };
-  return render(<App graphqlClient={mockGraphqlClient} identity={mockIdentity} />);
+
+  const mockCurrentProject = {
+    get: () => ({
+      vid: '',
+    }),
+  };
+
+  return render(
+    <App
+      currentProject={mockCurrentProject}
+      graphqlClient={mockGraphqlClient}
+      identity={mockIdentity}
+    />,
+  );
 };
 
 describe('App', () => {
