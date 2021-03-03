@@ -2,12 +2,11 @@ import { IconAlert, TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { GroupObjectsActionTypes } from './action-types';
 import { setNotification } from '../notifications/actions';
 
-import { StoreLC } from '@/types/redux-store';
+import { GroupObjectsActionTypes } from './action-types';
 
-import { NewGroupParams, StoreLC } from '@/types/redux-store';
+import { StoreLC } from '@/types/redux-store';
 import { logicConstructorService } from '@/utils/lc-service';
 
 type SetDraggingElements = {

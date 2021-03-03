@@ -18,6 +18,7 @@ import {
   OBJECT_GROUP_UPDATE_MUTATION,
   PROJECT_STRUCTURE_QUERY,
   SCENARIO_STEP_CREATE_MUTATION,
+  SCENARIO_STEP_DELETE_MUTATION,
   SCENARIO_STEP_UPDATE_MUTATION,
 } from '../queries';
 
@@ -136,8 +137,8 @@ class LogicConstructorService {
     this._isMutationConflict = false;
   }
 
-  setProjectVersion(version: number) {
-    if (version) {
+  setProjectVersion(version: number | undefined) {
+    if (typeof version === 'number') {
       this._projectVersion = version;
     }
   }
@@ -147,7 +148,9 @@ class LogicConstructorService {
   }
 
   incrementVersion() {
-    this._projectVersion += 1;
+    if (this._projectVersion) {
+      this._projectVersion += 1;
+    }
   }
 
   init({ client, identity, projectId }: ServiceInitProps): void {
@@ -231,6 +234,10 @@ class LogicConstructorService {
 
   public scenarioStepUpdateMutation(variables: ScenarioStepUpdateMutationVariables) {
     return this.mutation(SCENARIO_STEP_UPDATE_MUTATION, variables);
+  }
+
+  public scenarioStepDeleteMutation(variables: ScenarioStepUpdateMutationVariables) {
+    return this.mutation(SCENARIO_STEP_DELETE_MUTATION, variables);
   }
 
   public canvasNodeCreateMutation(variables: CreateCanvasNodeMutationVariables) {

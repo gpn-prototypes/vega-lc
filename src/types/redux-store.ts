@@ -26,8 +26,6 @@ export type SplitPanesGridParams = {
   height?: string;
 };
 
-export type CanvasViewEntity = CanvasView;
-
 export type StepContent = {
   activity?: {
     activityType: {

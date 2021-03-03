@@ -91,7 +91,7 @@ const fetchVersion = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async
     .projectStructureQuery()
     ?.then((response) => {
       if (response?.data) {
-        logicConstructorService.setProjectVersion(response.data?.project.version);
+        logicConstructorService.setProjectVersion(response.data.project?.version);
 
         const structureQuery = buildStructureQuery(
           response.data?.project.domainSchema.entityImages,
