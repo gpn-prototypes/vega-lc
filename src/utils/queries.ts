@@ -21,6 +21,7 @@ export const ACTIVITY_LIST_QUERY = gql`
         }
       }
     }
+    __typename
   }
 `;
 
@@ -36,6 +37,7 @@ export const GroupObjectListFragment = gql`
         }
       }
     }
+    __typename
   }
 `;
 
@@ -55,6 +57,8 @@ export const CanvasItemsFragment = gql`
         vid
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -76,6 +80,8 @@ export const StepListFragment = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -137,6 +143,8 @@ export const PROJECT_STRUCTURE_QUERY = gql`
         message
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -178,6 +186,8 @@ export const OBJECT_GROUP_UPDATE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -219,6 +229,8 @@ export const OBJECT_GROUP_CREATE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -297,6 +309,8 @@ export const SCENARIO_STEP_UPDATE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -336,6 +350,8 @@ export const CANVAS_NODE_DELETE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -375,6 +391,8 @@ export const SCENARIO_STEP_DELETE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -489,5 +507,6 @@ export const CANVAS_NODE_UPDATE_MUTATION = gql`
         }
       }
     }
+    __typename
   }
 `;

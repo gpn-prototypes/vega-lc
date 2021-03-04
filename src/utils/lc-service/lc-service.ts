@@ -94,6 +94,7 @@ export interface ServiceInitProps {
   client?: ApolloClient<NormalizedCacheObject>;
   identity?: Identity;
   projectId: string;
+  projectVersion: number;
 }
 
 class LogicConstructorService {
@@ -147,15 +148,10 @@ class LogicConstructorService {
     return `${config.baseApiUrl}/graphql/${this.projectId}`;
   }
 
-  incrementVersion() {
-    if (this._projectVersion) {
-      this._projectVersion += 1;
-    }
-  }
-
-  init({ client, identity, projectId }: ServiceInitProps): void {
+  init({ client, identity, projectId, projectVersion }: ServiceInitProps): void {
     this._client = client;
     this._identity = identity;
+    this._projectVersion = projectVersion;
     this._projectId = projectId;
   }
 
@@ -175,7 +171,7 @@ class LogicConstructorService {
       };
     }
 
-    return this.client?.query(request);
+    return this.client?.watchQuery(request).result();
   }
 
   async mutation(body: DocumentNode, variables: OperationVariables) {
@@ -194,8 +190,6 @@ class LogicConstructorService {
       if (response?.errors) {
         return undefined;
       }
-
-      this.incrementVersion();
 
       return response;
     } catch (err) {

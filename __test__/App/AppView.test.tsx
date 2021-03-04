@@ -9,6 +9,7 @@ import '../../src/types/global';
 import { AppView } from '../../src/App/AppView';
 import { ProjectContext } from '../../src/react-context/providers';
 import { store } from '../../src/redux-store';
+import { logicConstructorService } from '../../src/utils/lc-service';
 
 const mockClearStores = jest.fn();
 
@@ -47,6 +48,14 @@ describe('AppView', () => {
   });
 
   test('вызывается очистка store', async () => {
+    jest.spyOn(logicConstructorService, 'projectStructureQuery').mockImplementation(() => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          return resolve({ data: {}, loading: false, networkStatus: 7 });
+        });
+      });
+    });
+
     renderComponent('mock project id', true);
 
     await waitFor(() => expect(mockClearStores).toHaveBeenCalledTimes(1));

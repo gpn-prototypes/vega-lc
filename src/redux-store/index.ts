@@ -8,7 +8,6 @@ import groupObjectsReducer from './group-objects/reducer';
 import logicConstructorReducer from './logic-constructor/reducer';
 import notificationsReducer from './notifications/reducer';
 import projectStructureReducer from './project-structure/reducer';
-import versionReducer from './version/reducer';
 
 import { StoreLC } from '@/types/redux-store';
 
@@ -17,7 +16,6 @@ const rootReducer = combineReducers({
   groupObjects: groupObjectsReducer,
   projectStructure: projectStructureReducer,
   logicConstructor: logicConstructorReducer,
-  version: versionReducer,
   notifications: notificationsReducer,
 });
 
