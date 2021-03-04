@@ -190,13 +190,15 @@ const fetchProjectSchema = (): ThunkAction<void, StoreLC, unknown, AnyAction> =>
       dispatch(setNotification({ message: 'Пустой ответ сервера', status: 'alert' }));
     }
   } catch (e) {
-    const { errors } = e.networkError?.result;
-    if (
-      Array.isArray(errors) &&
-      errors.find((error) => error.message === 'badly formed hexadecimal UUID string')
-    ) {
-      const message = 'В url не корректный UUID проекта';
-      dispatch(setNotification({ message, status: 'alert' }));
+    if (e.networkError?.result) {
+      const { errors } = e.networkError?.result;
+      if (
+        Array.isArray(errors) &&
+        errors.find((error) => error.message === 'badly formed hexadecimal UUID string')
+      ) {
+        const message = 'В url не корректный UUID проекта';
+        dispatch(setNotification({ message, status: 'alert' }));
+      }
     }
   }
 };

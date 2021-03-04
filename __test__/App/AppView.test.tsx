@@ -11,6 +11,10 @@ import { ProjectContext } from '../../src/react-context/providers';
 import { store } from '../../src/redux-store';
 import { logicConstructorService } from '../../src/utils/lc-service';
 
+beforeAll(() => {
+  window.ResizeObserver = ResizeObserver;
+});
+
 const mockClearStores = jest.fn();
 
 jest.mock('../../src/redux-store/clear/actions', () => {
@@ -35,8 +39,6 @@ const renderComponent = (projectId = '', initialized = false) => {
 
 describe('AppView', () => {
   test('рендерится без ошибок', () => {
-    window.ResizeObserver = ResizeObserver;
-
     const dom = renderer
       .create(
         <Provider store={store}>

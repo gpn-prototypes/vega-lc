@@ -25,6 +25,7 @@ const renderApp = () => {
   const mockCurrentProject = {
     get: () => ({
       vid: '',
+      version: 1,
     }),
   };
 
