@@ -85,6 +85,7 @@ export const ObjectsGroupWidget: React.FC = (): React.ReactElement => {
           onPasteItem={handlePaste}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
+          isExternalDraggingElement={!!projectStructureDraggingElements.length}
         />
       ) : (
         <div className={cnObjectGroup('NoStructure')}>
