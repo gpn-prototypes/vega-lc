@@ -18,8 +18,6 @@ export const AppView = (): React.ReactElement => {
 
   const { initialized } = useContext(ProjectContext);
 
-  console.log('initialized', true);
-
   const isLoading = useSelector<StoreLC, boolean>(
     (state) => !state.projectStructure.projectStructureQuery,
   );

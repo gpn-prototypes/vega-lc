@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import renderer from 'react-test-renderer';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import ResizeObserver from 'resize-observer-polyfill';
 
 import '../../src/types/global';
@@ -38,17 +37,6 @@ const renderComponent = (projectId = '', initialized = false) => {
 };
 
 describe('AppView', () => {
-  test('рендерится без ошибок', () => {
-    const dom = renderer
-      .create(
-        <Provider store={store}>
-          <AppView />
-        </Provider>,
-      )
-      .toJSON();
-    expect(dom).toMatchSnapshot();
-  });
-
   test('вызывается очистка store', async () => {
     jest.spyOn(logicConstructorService, 'projectStructureQuery').mockImplementation(() => {
       return new Promise((resolve) => {
@@ -60,6 +48,6 @@ describe('AppView', () => {
 
     renderComponent('mock project id', true);
 
-    await waitFor(() => expect(mockClearStores).toHaveBeenCalledTimes(1));
+    expect(mockClearStores).toHaveBeenCalledTimes(1);
   });
 });
