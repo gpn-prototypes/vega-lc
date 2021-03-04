@@ -14,7 +14,6 @@ import { logicConstructorService } from '@/utils/lc-service';
 interface DomainObject {
   vid: string;
   name: string;
-  // eslint-disable-next-line no-underscore-dangle
   typename: string;
 
   [key: string]: DomainObject[] | string;
