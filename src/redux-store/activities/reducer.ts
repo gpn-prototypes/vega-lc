@@ -5,6 +5,14 @@ import createReducer from '../../utils/create-reducer';
 import { ClearActionTypes } from '../clear/action-types';
 
 import { ActivitiesActionTypes } from './action-types';
+import {
+  SetActivitiesList,
+  SetActivitiesPanelOpen,
+  SetActivitiesRef,
+  SetDraggingElements,
+  SetIsAutoFocus,
+  SetIsDroppingOnExisting,
+} from './actions';
 import initialState from './initial-state';
 
 import { ActivitiesState } from '@/types/redux-store';
@@ -17,7 +25,7 @@ const persistConfig = {
 
 const setActivitiesNodeListStrategy = (
   state: ActivitiesState,
-  { nodeList = [] },
+  { nodeList }: SetActivitiesList,
 ): ActivitiesState => ({
   ...state,
   nodeList,
@@ -25,7 +33,7 @@ const setActivitiesNodeListStrategy = (
 
 const setSearchStringStrategy = (
   state: ActivitiesState,
-  { searchString = '' },
+  { searchString }: { searchString: string },
 ): ActivitiesState => ({
   ...state,
   searchString,
@@ -33,7 +41,7 @@ const setSearchStringStrategy = (
 
 const setIsAutoFocusStrategy = (
   state: ActivitiesState,
-  { autoFocus = false },
+  { autoFocus }: SetIsAutoFocus,
 ): ActivitiesState => ({
   ...state,
   autoFocus,
@@ -41,7 +49,7 @@ const setIsAutoFocusStrategy = (
 
 const setActivitiesRefStrategy = (
   state: ActivitiesState,
-  { activitiesRef = null },
+  { activitiesRef }: SetActivitiesRef,
 ): ActivitiesState => ({
   ...state,
   activitiesRef,
@@ -49,7 +57,7 @@ const setActivitiesRefStrategy = (
 
 const setDraggingElementsStrategy = (
   state: ActivitiesState,
-  { draggingElements = [] },
+  { draggingElements }: SetDraggingElements,
 ): ActivitiesState => ({
   ...state,
   draggingElements,
@@ -57,7 +65,7 @@ const setDraggingElementsStrategy = (
 
 const setIsDroppingOnExistingStepStrategy = (
   state: ActivitiesState,
-  { isDroppingOnExistingStep = false },
+  { isDroppingOnExistingStep }: SetIsDroppingOnExisting,
 ): ActivitiesState => ({
   ...state,
   isDroppingOnExistingStep,
@@ -65,7 +73,7 @@ const setIsDroppingOnExistingStepStrategy = (
 
 const setActivitiesPanelOpenStrategy = (
   state: ActivitiesState,
-  { isActivitiesPanelOpen = false },
+  { isActivitiesPanelOpen }: SetActivitiesPanelOpen,
 ): ActivitiesState => ({
   ...state,
   isActivitiesPanelOpen,

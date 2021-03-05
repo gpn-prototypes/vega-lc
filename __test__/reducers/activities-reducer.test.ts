@@ -1,91 +1,128 @@
-import { ActivitiesActionTypes } from '../../src/redux-store/activities/action-types';
+import { Dispatch } from 'react';
+
+import { createInitState } from '../testing-helpers/create-init-state';
+
+import { getStore } from '@/redux-store';
 import {
   setActivitiesDraggingElements,
   setActivitiesList,
   setActivitiesPanelOpen,
   setIsAutoFocus,
   setIsDroppingOnExistingStep,
-} from '../../src/redux-store/activities/actions';
-import initialState from '../../src/redux-store/activities/initial-state';
-import activitiesReducer from '../../src/redux-store/activities/reducer';
-import { clearStores } from '../../src/redux-store/clear/actions';
-import { ActivitiesState } from '../../src/types/redux-store';
+  setSearchString,
+} from '@/redux-store/activities/actions';
+import initialState from '@/redux-store/activities/initial-state';
+import { clearStores } from '@/redux-store/clear/actions';
 
 describe('activities reducer test', () => {
-  let mockState: ActivitiesState;
-
-  beforeEach(() => {
-    mockState = {
-      ...initialState,
+  const mockState = {
+    activities: {
+      isActivitiesPanelOpen: true,
       nodeList: [
         {
           name: 'mock',
           id: '1',
-          nodeList: [],
+          nodeList: [
+            {
+              name: 'mock-2',
+              id: '2',
+              nodeList: [],
+            },
+          ],
         },
       ],
+      searchString: 'test string',
+      autoFocus: true,
       draggingElements: [
         {
           ref: null,
-          id: 'mock id',
+          id: 'drag element id',
           isDraggable: true,
         },
       ],
-      autoFocus: true,
-      searchString: 'search',
-      isActivitiesPanelOpen: false,
-      isDroppingOnExistingStep: true,
-    };
+      isDroppingOnExistingStep: false,
+    },
+  };
+
+  test('устанавливается заполненный список активностей', () => {
+    const initState = createInitState(mockState);
+
+    const store = getStore(initState);
+    const action = setActivitiesList(mockState.activities.nodeList);
+    store.dispatch(action);
+    expect(store.getState().activities.nodeList).toEqual(mockState.activities.nodeList);
   });
 
   test('устанавливается пустой список активностей', () => {
+    const initState = createInitState(mockState);
+
+    const store = getStore(initState);
     const action = setActivitiesList([]);
-    const newState = activitiesReducer(undefined, action);
-    expect(newState.nodeList).toEqual([]);
-  });
 
-  test('устанавливается заполненный список активностей', () => {
-    const action = setActivitiesList(mockState.nodeList);
-    const newState = activitiesReducer({ nodeList: 'unexpected data type' }, action);
-    expect(newState.nodeList).toEqual(mockState.nodeList);
-  });
-
-  test('устанавливается список dragging elements', () => {
-    const action = setActivitiesDraggingElements(mockState.draggingElements);
-    const newState = activitiesReducer(initialState, action);
-    expect(newState.draggingElements).toEqual(mockState.draggingElements);
-  });
-
-  test('устанавливается параметр isActivitiesPanelOpen', () => {
-    const action = setActivitiesPanelOpen(false);
-    const newState = activitiesReducer(initialState, action);
-    expect(newState.isActivitiesPanelOpen).toBe(false);
-  });
-
-  test('устанавливается autofocus', () => {
-    const action = setIsAutoFocus(mockState.autoFocus);
-    const newState = activitiesReducer(initialState, action);
-    expect(newState.autoFocus).toBe(mockState.autoFocus);
-  });
-
-  test('устанавливается строка поиска', () => {
-    const action = {
-      type: ActivitiesActionTypes.SET_SEARCH_STRING,
-      searchString: mockState.searchString,
-    };
-    const newState = activitiesReducer(initialState, action);
-    expect(newState.searchString).toBe(mockState.searchString);
+    store.dispatch(action);
+    expect(store.getState().activities.nodeList).toEqual([]);
   });
 
   test('устанавливается параметр isDroppingOnExistingStep', () => {
+    const initState = createInitState(mockState);
+
+    const store = getStore(initState);
     const action = setIsDroppingOnExistingStep(true);
-    const newState = activitiesReducer(initialState, action);
-    expect(newState.isDroppingOnExistingStep).toBe(mockState.isDroppingOnExistingStep);
+
+    store.dispatch(action);
+    expect(store.getState().activities.isDroppingOnExistingStep).toBe(true);
+  });
+
+  test('устанавливается строка поиска', () => {
+    const initState = createInitState(mockState);
+
+    const store = getStore(initState);
+    setSearchString(mockState.activities.searchString)(
+      store.dispatch as Dispatch<unknown>,
+      store.getState,
+    );
+    expect(store.getState().activities.searchString).toBe(mockState.activities.searchString);
+  });
+
+  test('устанавливается список dragging elements', () => {
+    const initState = createInitState(mockState);
+
+    const store = getStore(initState);
+    const action = setActivitiesDraggingElements(mockState.activities.draggingElements);
+    store.dispatch(action);
+    expect(store.getState().activities.draggingElements).toEqual(
+      mockState.activities.draggingElements,
+    );
+  });
+
+  test('устанавливается параметр isActivitiesPanelOpen', () => {
+    const initState = createInitState(mockState);
+
+    const store = getStore(initState);
+    const action = setActivitiesPanelOpen(false);
+    store.dispatch(action);
+    expect(store.getState().activities.isActivitiesPanelOpen).toBe(false);
+  });
+
+  test('устанавливается autofocus', () => {
+    const initState = createInitState(mockState);
+
+    const store = getStore(initState);
+    const action = setIsAutoFocus(mockState.activities.autoFocus);
+    store.dispatch(action);
+    expect(store.getState().activities.autoFocus).toBe(mockState.activities.autoFocus);
   });
 
   test('очищается store', () => {
-    const clearAction = clearStores();
-    const newState = activitiesReducer(mockState, clearAction);
-    expect(newState).toEqual({ ...initialState, isActivitiesPanelOpen: false });
+    const initState = createInitState(mockState);
+
+    const store = getStore(initState);
+
+    const hideActivitiesPanel = setActivitiesPanelOpen(false);
+    store.dispatch(hideActivitiesPanel);
+
+    const action = clearStores();
+    store.dispatch(action);
+    expect(store.getState().activities).toEqual({ ...initialState, isActivitiesPanelOpen: false });
   });
 });
