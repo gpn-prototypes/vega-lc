@@ -97,6 +97,7 @@ const updateGroupObject = (
   let isAlreadyExists = false;
 
   const { nodeList } = getState().groupObjects;
+
   const existingObjectsNodeList = nodeList?.find((object) => groupObjectId === object.id)?.nodeList;
   const existingObjectsIds: string[] | undefined = existingObjectsNodeList?.map(
     (object) => object.id,
@@ -136,8 +137,7 @@ const createNewGroup = (name: string): ThunkAction<void, StoreLC, unknown, AnyAc
       dispatch(fetchGroupObjectList());
     }
   } catch (e) {
-    console.error(e);
-    e.graphQLErrors.forEach((error: Error) => {
+    e.graphQLErrors?.forEach((error: Error) => {
       if (error.message === `There exists name "${name}" in Domain Object Groups`) {
         dispatch(
           setNotification({
