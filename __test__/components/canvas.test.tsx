@@ -1,8 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Canvas, Change } from '@gpn-prototypes/vega-ui';
+import { Canvas, CanvasUpdate, Change } from '@gpn-prototypes/vega-ui';
 import { CanvasView } from '@gpn-prototypes/vega-ui/dist/components/canvas/entities';
-import { act, render, waitFor } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { Store } from 'redux';
 import ResizeObserver from 'resize-observer-polyfill';
 
@@ -99,7 +99,27 @@ describe('Список мероприятий', () => {
   });
 
   describe('Update Tree', () => {
+    const checkCanvasSync = (isCalled: boolean, update?: CanvasUpdate) => {
+      const mockСanvasSync = jest.fn().mockImplementation(() => ({
+        type: 'mock type',
+      }));
+      jest.spyOn(lcActions, 'syncCanvasState').mockImplementation(mockСanvasSync);
+
+      act(() => {
+        jest.runTimersToTime(2000);
+      });
+
+      if (!isCalled) {
+        expect(mockСanvasSync).not.toHaveBeenCalled();
+      } else {
+        expect(mockСanvasSync).toHaveBeenCalledTimes(1);
+        expect(mockСanvasSync).toHaveBeenCalledWith(update);
+      }
+    };
+
     test('срабатывает select event', () => {
+      jest.useFakeTimers();
+
       const store = getStore({
         logicConstructor: {
           isStepEditorOpened: false,
@@ -123,9 +143,15 @@ describe('Список мероприятий', () => {
       onChange(mockChange);
 
       expect(store.getState().logicConstructor.isStepEditorOpened).toBeTruthy();
+
+      checkCanvasSync(false);
+
+      jest.useRealTimers();
     });
 
     test('срабатывает select item', () => {
+      jest.useFakeTimers();
+
       const store = getStore(
         createInitState({
           logicConstructor: {
@@ -151,9 +177,15 @@ describe('Список мероприятий', () => {
       onChange(mockChange);
 
       expect(store.getState().logicConstructor.isStepEditorOpened).toBeFalsy();
+
+      checkCanvasSync(false);
+
+      jest.useRealTimers();
     });
 
     test('срабатывает unselect', () => {
+      jest.useFakeTimers();
+
       const store = getStore(
         createInitState({
           logicConstructor: {
@@ -175,9 +207,15 @@ describe('Список мероприятий', () => {
       onChange(mockChange);
 
       expect(store.getState().logicConstructor.isStepEditorOpened).toBeFalsy();
+
+      checkCanvasSync(false);
+
+      jest.useRealTimers();
     });
 
     test('срабатывает drop-event', () => {
+      jest.useFakeTimers();
+
       const store = getStore();
 
       renderCanvas(store);
@@ -207,6 +245,10 @@ describe('Список мероприятий', () => {
         intersectionId: 'mockId',
         position: { x: 0, y: 0 },
       });
+
+      checkCanvasSync(false);
+
+      jest.useRealTimers();
     });
 
     describe('Синхронизация canvas state', () => {
@@ -236,12 +278,13 @@ describe('Список мероприятий', () => {
         expect(mockСanvasSync).toHaveBeenCalledWith(mockChange.update);
       });
 
-      test('синхронизирует canvas state по таймеру после произведения изменений', async () => {
+      test('синхронизирует state при select с полем selected = null', () => {
+        jest.useFakeTimers();
+
         const mockСanvasSync = jest.fn().mockImplementation(() => ({
           type: 'mock type',
         }));
         jest.spyOn(lcActions, 'syncCanvasState').mockImplementation(mockСanvasSync);
-        jest.useFakeTimers();
 
         const store = getStore(
           createInitState({
@@ -253,12 +296,51 @@ describe('Список мероприятий', () => {
 
         const mockChange: Change = {
           update: {
+            type: 'select',
+            selected: null,
+          },
+          state: [],
+        };
+
+        act(() => {
+          renderCanvas(store);
+          const mockedCanvas = Canvas as jest.MockedFunction<typeof Canvas>;
+          const { onChange } = mockedCanvas.mock.calls[0][0];
+
+          onChange(mockChange);
+        });
+
+        expect(store.getState().logicConstructor.isStepEditorOpened).toBeTruthy();
+
+        checkCanvasSync(true, mockChange.update);
+
+        jest.useRealTimers();
+      });
+
+      test('синхронизирует canvas state по таймеру после произведения изменений', () => {
+        jest.useFakeTimers();
+
+        const mockСanvasSync = jest.fn().mockImplementation(() => ({
+          type: 'mock type',
+        }));
+        jest.spyOn(lcActions, 'syncCanvasState').mockImplementation(mockСanvasSync);
+
+        const mockChange: Change = {
+          update: {
             type: 'change',
             id: 'mock id',
             changes: {},
           },
           state: [],
         };
+
+        const store = getStore(
+          createInitState({
+            logicConstructor: {
+              isStepEditorOpened: true,
+            },
+          }),
+        );
 
         act(() => {
           renderCanvas(store);
@@ -267,21 +349,14 @@ describe('Список мероприятий', () => {
           const { onChange } = mockedCanvas.mock.calls[0][0];
 
           onChange(mockChange);
-
-          jest.runTimersToTime(2000);
         });
 
-        await waitFor(() => expect(mockСanvasSync).toHaveBeenCalledTimes(1));
-        expect(mockСanvasSync).toHaveBeenCalledWith(mockChange.update);
+        checkCanvasSync(true, mockChange.update);
 
         jest.useRealTimers();
       });
 
-      test('не вызывает синхронизацию canvas state по таймеру если не было изменений', async () => {
-        const mockСanvasSync = jest.fn().mockImplementation(() => ({
-          type: 'mock type',
-        }));
-        jest.spyOn(lcActions, 'syncCanvasState').mockImplementation(mockСanvasSync);
+      test('не вызывает синхронизацию canvas state по таймеру если не было изменений', () => {
         jest.useFakeTimers();
 
         const store = getStore(
@@ -294,37 +369,9 @@ describe('Список мероприятий', () => {
 
         act(() => {
           renderCanvas(store);
-
-          jest.runTimersToTime(2000);
         });
 
-        await waitFor(() => expect(mockСanvasSync).toHaveBeenCalledTimes(0));
-
-        jest.useRealTimers();
-      });
-
-      test('не вызывает синхронизацию canvas state по таймеру если не было изменений', async () => {
-        const mockСanvasSync = jest.fn().mockImplementation(() => ({
-          type: 'mock type',
-        }));
-        jest.spyOn(lcActions, 'syncCanvasState').mockImplementation(mockСanvasSync);
-        jest.useFakeTimers();
-
-        const store = getStore(
-          createInitState({
-            logicConstructor: {
-              isStepEditorOpened: true,
-            },
-          }),
-        );
-
-        act(() => {
-          renderCanvas(store);
-
-          jest.runTimersToTime(2000);
-        });
-
-        await waitFor(() => expect(mockСanvasSync).toHaveBeenCalledTimes(0));
+        checkCanvasSync(false);
 
         jest.useRealTimers();
       });
