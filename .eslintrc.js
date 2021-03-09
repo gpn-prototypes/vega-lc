@@ -18,6 +18,8 @@ module.exports = {
     '@typescript-eslint/no-redeclare': ['error'],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
+    'no-console': 'warn',
+    'no-unused-vars': 'warn',
   },
   settings: {
     'import/resolver': {
