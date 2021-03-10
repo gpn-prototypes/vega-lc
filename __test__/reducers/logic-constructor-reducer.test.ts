@@ -23,6 +23,20 @@ describe('logic constructor reducer test', () => {
       ],
       canvasElements: [
         {
+          id: 'mock id',
+          getId() {
+            return this.id;
+          },
+          getChildren() {
+            return [];
+          },
+          getParents() {
+            return [];
+          },
+          getData() {
+            return this.data;
+          },
+          data: {},
           title: 'mock title',
           type: 'step',
           position: { x: 0, y: 0 },
@@ -71,5 +85,15 @@ describe('logic constructor reducer test', () => {
     const action = clearStores();
     const newState = logicConstructorReducer(mockState, action);
     expect(newState).toEqual(initialState);
+  });
+
+  test('происходит замена ID элемента канвас', () => {
+    const action = {
+      type: LogicConstructorActionTypes.REPLACE_CANVAS_ELEMENT_ID,
+      id: 'mock id',
+      replaceId: 'replaced id',
+    };
+    const newState = logicConstructorReducer(mockState, action);
+    expect(newState.canvasElements[0].id).toEqual('replaced id');
   });
 });
