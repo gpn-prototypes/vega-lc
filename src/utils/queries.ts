@@ -109,7 +109,6 @@ export const SCENARIO_STEP_UPDATE_MUTATION = gql`
 
 export const CANVAS_NODE_CREATE_MUTATION = gql`
   mutation(
-    $vid: UUID
     $title: String
     $nodeType: String!
     $width: Float
@@ -120,7 +119,6 @@ export const CANVAS_NODE_CREATE_MUTATION = gql`
     logic {
       canvas {
         create(
-          vid: $vid
           title: $title
           width: $width
           nodeType: $nodeType
