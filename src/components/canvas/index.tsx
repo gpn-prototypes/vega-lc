@@ -40,7 +40,7 @@ export const CanvasWidget: React.FC = () => {
     if (changes.length) {
       dispatch(syncCanvasState(changes[changes.length - 1]));
 
-      setChanges([]);
+      // setChanges([]);
     }
   });
 
