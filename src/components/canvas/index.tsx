@@ -29,8 +29,6 @@ export const CanvasWidget: React.FC = () => {
   const dispatch = useDispatch();
 
   const canvasViewRefSetter = (view: CanvasViewEntity): void => {
-    if (canvasViewRef.current) return;
-
     canvasViewRef.current = view;
 
     dispatch(setCanvasViewRef(canvasViewRef));
