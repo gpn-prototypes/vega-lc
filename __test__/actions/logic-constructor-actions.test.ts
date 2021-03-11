@@ -1,5 +1,4 @@
 import { Dispatch } from 'react';
-import { IconAlert } from '@gpn-prototypes/vega-ui';
 import { waitFor } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunkMiddleware from 'redux-thunk';
@@ -8,19 +7,10 @@ import { LogicConstructorActionTypes } from '../../src/redux-store/logic-constru
 import { syncCanvasState } from '../../src/redux-store/logic-constructor/actions';
 import initialState from '../../src/redux-store/logic-constructor/initial-state';
 import { StoreLC } from '../../src/types/redux-store';
-import * as graphqlRequest from '../../src/utils/graphql-request';
+
+import { logicConstructorService } from '@/utils/lc-service/lc-service';
 
 const mockStore = configureMockStore([thunkMiddleware]);
-
-jest.mock('@/utils/graphql-request', () => {
-  const originalModule = jest.requireActual('@/utils/graphql-request');
-
-  return {
-    ...originalModule,
-    scenarioStepCreateMutation: jest.fn(),
-    canvasNodeCreateMutation: jest.fn(),
-  };
-});
 
 const mockQuery = (options: {
   method: 'scenarioStepCreateMutation' | 'canvasNodeCreateMutation';
@@ -29,7 +19,7 @@ const mockQuery = (options: {
 }) => {
   const { method, response, error = 'NetworkError' } = options;
 
-  jest.spyOn(graphqlRequest, method).mockImplementation(() => {
+  jest.spyOn(logicConstructorService, method).mockImplementation(() => {
     return new Promise((resolve, reject) => {
       if (response) {
         resolve(response);

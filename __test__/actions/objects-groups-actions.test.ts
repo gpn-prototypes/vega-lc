@@ -12,20 +12,9 @@ import {
 } from '../../src/redux-store/group-objects/actions';
 
 import initialState from '@/redux-store/group-objects/initial-state';
-import * as graphqlRequest from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service/lc-service';
 
 const mockStore = configureMockStore([thunkMiddleware]);
-
-jest.mock('@/utils/graphql-request', () => {
-  const originalModule = jest.requireActual('@/utils/graphql-request');
-
-  return {
-    ...originalModule,
-    groupObjectListQuery: jest.fn(),
-    objectGroupCreateMutation: jest.fn(),
-    objectGroupUpdateMutation: jest.fn(),
-  };
-});
 
 const mockQuery = (options: {
   method: 'objectGroupCreateMutation' | 'groupObjectListQuery' | 'objectGroupUpdateMutation';
@@ -34,7 +23,7 @@ const mockQuery = (options: {
 }) => {
   const { method, response, error = 'NetworkError' } = options;
 
-  jest.spyOn(graphqlRequest, method).mockImplementation(() => {
+  jest.spyOn(logicConstructorService, method).mockImplementation(() => {
     return new Promise((resolve, reject) => {
       if (response) {
         resolve(response);
@@ -53,19 +42,21 @@ beforeEach(() => {
 
 const mockedObjectsGroupList = {
   data: {
-    domain: {
-      objectGroupList: [
-        {
-          vid: 'group-test-vid',
-          name: 'test-name',
-          objects: [
-            {
-              vid: 'test-object-vid',
-              name: 'test-object-name',
-            },
-          ],
-        },
-      ],
+    project: {
+      domain: {
+        objectGroupList: [
+          {
+            vid: 'group-test-vid',
+            name: 'test-name',
+            objects: [
+              {
+                vid: 'test-object-vid',
+                name: 'test-object-name',
+              },
+            ],
+          },
+        ],
+      },
     },
   },
 };
