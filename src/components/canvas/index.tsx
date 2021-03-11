@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Canvas, CanvasUpdate, Change, useInterval } from '@gpn-prototypes/vega-ui';
+import { Canvas, CanvasUpdate, Change, useTimeout } from '@gpn-prototypes/vega-ui';
 import { CanvasView as CanvasViewEntity } from '@gpn-prototypes/vega-ui/dist/components/canvas/entities/CanvasView';
 
 import './index.css';
@@ -36,7 +36,7 @@ export const CanvasWidget: React.FC = () => {
     dispatch(setCanvasViewRef(canvasViewRef));
   };
 
-  useInterval(2000, () => {
+  useTimeout(2000, () => {
     if (changes.length) {
       dispatch(syncCanvasState(changes[changes.length - 1]));
 
