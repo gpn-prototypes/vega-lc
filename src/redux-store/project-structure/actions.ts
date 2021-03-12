@@ -6,7 +6,7 @@ import { ThunkAction } from 'redux-thunk';
 import { ProjectStructureActionTypes } from './action-types';
 
 import { StoreLC } from '@/types/redux-store';
-import { getGraphqlUri, serviceConfig } from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service';
 
 type SetProjectStructureList = {
   type: typeof ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST;
@@ -30,12 +30,19 @@ const setProjectStructureDraggingElements = (
   draggingElements,
 });
 
+const DEFAULT_QUERY = `{
+  domain{
+    geoEconomicAppraisalProjectList{
+      vid name
+    }
+  }
+}`;
+
 const DEFAULT_TREE = ['geoEconomicAppraisalProjectList'];
 
 interface DomainObject {
   vid: string;
   name: string;
-  // eslint-disable-next-line no-underscore-dangle
   typename: string;
 
   [key: string]: DomainObject[] | string;
@@ -51,7 +58,6 @@ function buildTree(current: DomainObject, tree: string[], level: number): TreeIt
   const key = tree[level];
   const items: DomainObject[] = current[key] as DomainObject[];
   return items.map((item) => {
-    // eslint-disable-next-line no-underscore-dangle
     const iconId = ICONS_MAP[item.typename] || 'blue-line';
     return {
       name: item.name,
@@ -69,22 +75,18 @@ const fetchProjectStructureList = (): ThunkAction<void, StoreLC, unknown, AnyAct
   try {
     const state = getState();
 
-    const query = state.projectStructure.projectStructureQuery?.query
-      ? gql(state.projectStructure.projectStructureQuery?.query)
-      : '';
+    const query = gql(state.projectStructure.projectStructureQuery?.query || DEFAULT_QUERY);
     const tree = state.projectStructure.projectStructureQuery?.tree || DEFAULT_TREE;
 
-    if (!query) return;
-
-    const response = await serviceConfig.client?.query({
+    const response = await logicConstructorService.client?.query({
       query,
       context: {
-        uri: getGraphqlUri(serviceConfig.projectId),
+        uri: logicConstructorService.getGraphQlUri(),
       },
     });
 
     if (response?.data) {
-      const { domain } = response.data;
+      const { domain } = response.data.project;
 
       const nodeList = buildTree(domain, tree, 0);
 

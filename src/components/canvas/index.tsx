@@ -1,7 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Canvas, CanvasUpdate, Change, useInterval } from '@gpn-prototypes/vega-ui';
-import { CanvasView as CanvasViewEntity } from '@gpn-prototypes/vega-ui/dist/components/canvas/entities/CanvasView';
 
 import './index.css';
 
@@ -15,6 +14,7 @@ import {
   toggleStepEditor,
 } from '@/redux-store/logic-constructor/actions';
 import { getCanvasElements } from '@/redux-store/logic-constructor/selectors';
+import { CanvasViewEntity } from '@/types/redux-store';
 import { canvasActionsForImmediateSync } from '@/utils/constants/canvas-actions-to-sync';
 
 export const CanvasWidget: React.FC = () => {

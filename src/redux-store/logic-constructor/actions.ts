@@ -12,7 +12,6 @@ import { ThunkAction } from 'redux-thunk';
 import { v4 as uuidv4 } from 'uuid';
 
 import { LogicConstructorActionTypes } from './action-types';
-import { FETCH_CANVAS_ITEMS_DATA } from './queries';
 
 import { setIsDroppingOnExistingStep } from '@/redux-store/activities/actions';
 import {
@@ -29,16 +28,8 @@ import { canvasNodeTypes } from '@/utils/constants/canvas-node-types';
 import { debounce, DebounceFunction } from '@/utils/debounce';
 import { getCanvasTreeById } from '@/utils/get-canvas-tree-by-id';
 import { getTreeNodeById } from '@/utils/get-tree-node-by-id';
-import {
-  canvasNodeCreateMutation,
-  canvasNodeDeleteMutation,
-  canvasNodeUpdateMutation,
-  getGraphqlUri,
-  scenarioStepCreateMutation,
-  scenarioStepDeleteMutation,
-  scenarioStepUpdateMutation,
-  serviceConfig,
-} from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service';
+import { CANVAS_ITEMS_QUERY } from '@/utils/queries';
 import { getStepDataFromScenarioStep } from '@/utils/step-data';
 
 const CANVAS_BASE_ELEMENTS_WIDTH = 67;
@@ -122,7 +113,7 @@ const createScenarioStep = async (
   objects?: string[],
 ): Promise<any> => {
   try {
-    return await scenarioStepCreateMutation({
+    return await logicConstructorService.scenarioStepCreateMutation({
       activity: activityId,
       objectGroup: objectsGroupId,
       objects,
@@ -140,7 +131,7 @@ const updateScenarioStep = async (
   objects?: string[],
 ): Promise<any> => {
   try {
-    return await scenarioStepUpdateMutation({
+    return await logicConstructorService.scenarioStepUpdateMutation({
       vid: scenarioStepId,
       activity: activityId !== '0' ? activityId : undefined,
       objectGroup: objectGroupId,
@@ -173,11 +164,11 @@ const addCanvasElement = (
     const scenarioStepData = await createScenarioStep(stepData.events[0].id);
 
     if (scenarioStepData) {
-      nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+      nodeRef = scenarioStepData.data.project?.logic?.scenarioStep?.create?.result?.vid;
     }
   }
 
-  const response = await canvasNodeCreateMutation({
+  const response = await logicConstructorService.canvasNodeCreateMutation({
     title: stepData?.name,
     width,
     nodeType,
@@ -194,7 +185,7 @@ const addCanvasElement = (
       : canvasDataTree;
 
     const canvasElement = Tree.of<CanvasData>({
-      id: response.data.logic?.canvas?.create?.result?.vid,
+      id: response.data.project?.logic?.canvas?.create?.result?.vid,
       data: canvasData,
     });
 
@@ -208,17 +199,17 @@ const addCanvasElement = (
 const fetchCanvasItemsData = (): ThunkAction<void, StoreLC, unknown, AnyAction> => async (
   dispatch,
 ): Promise<void> => {
-  serviceConfig.client
+  logicConstructorService.client
     ?.query({
-      query: FETCH_CANVAS_ITEMS_DATA,
-      fetchPolicy: serviceConfig.fetchPolicy,
+      query: CANVAS_ITEMS_QUERY,
+      fetchPolicy: logicConstructorService.fetchPolicy,
       context: {
-        uri: getGraphqlUri(serviceConfig.projectId),
+        uri: logicConstructorService.getGraphQlUri(),
       },
     })
     .then(async (response) => {
       if (response.networkStatus === NetworkStatus.ready) {
-        const { logic } = response.data;
+        const { logic } = response.data.project;
         const { canvas, stepList }: { canvas?: CanvasElements[]; stepList?: Step[] } = logic;
 
         const getCanvasElements = (): CanvasTree[] => {
@@ -288,7 +279,13 @@ const syncCanvasState = (
     if (updateData.type === 'change' && 'position' in updateData.changes) {
       const position = [updateData.changes.position?.x, updateData.changes.position?.y];
 
-      await canvasNodeUpdateMutation({ vid: updateData.id, position });
+      await logicConstructorService.canvasNodeUpdateMutation({ vid: updateData.id, position });
+
+      if (logicConstructorService.isMutationConflict) {
+        dispatch(fetchCanvasItemsData());
+
+        logicConstructorService.setIsMutationConflictResolved();
+      }
 
       return;
     }
@@ -301,8 +298,24 @@ const syncCanvasState = (
       });
 
       await multipleData.reduce<Promise<any>>((promise, i) => {
-        return promise.then(() => canvasNodeUpdateMutation(i)).catch(console.error);
+        return promise
+          .then(() => logicConstructorService.canvasNodeUpdateMutation(i))
+          .catch((err) => {
+            if (err.toString()?.includes('Can not find node')) {
+              dispatch(fetchCanvasItemsData());
+            } else {
+              console.error(err);
+            }
+          });
       }, Promise.resolve());
+
+      if (logicConstructorService.isMutationConflict) {
+        dispatch(fetchCanvasItemsData());
+
+        logicConstructorService.setIsMutationConflictResolved();
+      }
+
+      return;
     }
 
     if (updateData.type === 'connect-tree' || updateData.type === 'disconnect-tree') {
@@ -318,8 +331,14 @@ const syncCanvasState = (
       };
 
       try {
-        await canvasNodeUpdateMutation(childVariables);
-        await canvasNodeUpdateMutation(parentVariables);
+        await logicConstructorService.canvasNodeUpdateMutation(childVariables);
+        await logicConstructorService.canvasNodeUpdateMutation(parentVariables);
+
+        if (logicConstructorService.isMutationConflict) {
+          dispatch(fetchCanvasItemsData());
+
+          logicConstructorService.setIsMutationConflictResolved();
+        }
       } catch (e) {
         console.error(e);
       }
@@ -340,7 +359,7 @@ const syncCanvasState = (
           const scenarioStepData = await createScenarioStep();
 
           if (scenarioStepData) {
-            nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+            nodeRef = scenarioStepData.data.project?.logic?.scenarioStep?.create?.result?.vid;
           }
         }
 
@@ -351,16 +370,23 @@ const syncCanvasState = (
           tree.setData({ stepData: { id: nodeRef, name: 'Шаг', events: [] } });
         }
 
-        const response = await canvasNodeCreateMutation({
+        const response = await logicConstructorService.canvasNodeCreateMutation({
           title,
           nodeType,
           width: treeWidth,
           position: [pos.x, pos.y],
           nodeRef,
         });
+
         const id = response?.data?.logic?.canvas?.create?.result?.vid;
 
         dispatch(replaceCanvasElementId(updateData.id, id));
+
+        if (logicConstructorService.isMutationConflict) {
+          dispatch(fetchCanvasItemsData());
+
+          logicConstructorService.setIsMutationConflictResolved();
+        }
       }
 
       return;
@@ -372,14 +398,26 @@ const syncCanvasState = (
       await updateData.removedTrees.reduce<Promise<any>>((promise, tree) => {
         return promise
           .then(async () => {
-            await canvasNodeDeleteMutation({ vid: tree.treeId });
+            await logicConstructorService.canvasNodeDeleteMutation({ vid: tree.treeId });
 
             if (tree.stepDataId) {
-              await scenarioStepDeleteMutation({ vid: tree.stepDataId });
+              await logicConstructorService.scenarioStepDeleteMutation({ vid: tree.stepDataId });
             }
           })
-          .catch(console.error);
+          .catch((err) => {
+            if (err.toString()?.includes('Can not find node')) {
+              dispatch(fetchCanvasItemsData());
+            } else {
+              console.error(err);
+            }
+          });
       }, Promise.resolve());
+
+      if (logicConstructorService.isMutationConflict) {
+        dispatch(fetchCanvasItemsData());
+
+        logicConstructorService.setIsMutationConflictResolved();
+      }
     }
   };
 };
@@ -533,12 +571,12 @@ const addActivityToCanvasElement = (
       const scenarioStepData = await createScenarioStep(activity?.id);
 
       if (scenarioStepData) {
-        nodeRef = scenarioStepData.data.logic?.scenarioStep?.create?.result?.vid;
+        nodeRef = scenarioStepData.data.project?.logic?.scenarioStep?.create?.result?.vid;
 
         stepData.id = nodeRef || '0';
       }
 
-      await canvasNodeUpdateMutation({
+      await logicConstructorService.canvasNodeUpdateMutation({
         vid: CanvasTreeId,
         nodeRef,
       });

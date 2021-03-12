@@ -1,5 +1,7 @@
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -27,10 +29,6 @@ export type Query = {
   projectLibrary?: Maybe<ProjectLibrary>;
   projectLibraryCategoriesList?: Maybe<Array<Maybe<ProjectLibraryCategory>>>;
   projectLibraryCategories?: Maybe<ProjectLibraryCategory>;
-  domainList?: Maybe<Array<Maybe<Domain>>>;
-  domain?: Maybe<Domain>;
-  domainCategoriesList?: Maybe<Array<Maybe<DomainLibraryCategory>>>;
-  domainCategories?: Maybe<DomainLibraryCategory>;
   componentList?: Maybe<Array<Maybe<Component>>>;
   component?: Maybe<Component>;
   componentCategoriesList?: Maybe<Array<Maybe<ComponentLibraryCategory>>>;
@@ -45,8 +43,8 @@ export type Query = {
   activityCategories?: Maybe<ActivityLibraryCategory>;
   domainTemplatelist?: Maybe<Array<Maybe<DomainTemplate>>>;
   domainTemplate?: Maybe<DomainTemplate>;
-  domainTemplateCategoriesList?: Maybe<Array<Maybe<DomainLibraryCategory>>>;
-  domainTemplateCategories?: Maybe<DomainLibraryCategory>;
+  domainTemplateCategoriesList?: Maybe<Array<Maybe<DomainTemplateLibraryCategory>>>;
+  domainTemplateCategories?: Maybe<DomainTemplateLibraryCategory>;
   userList?: Maybe<Array<Maybe<User>>>;
   user?: Maybe<User>;
   projectRoleList?: Maybe<Array<Maybe<ProjectRole>>>;
@@ -57,16 +55,14 @@ export type Query = {
   userGroup?: Maybe<UserGroup>;
   organizationList?: Maybe<Array<Maybe<Organization>>>;
   organization?: Maybe<Organization>;
+  organizationUnitList?: Maybe<Array<Maybe<OrganizationUnit>>>;
+  organizationUnit?: Maybe<OrganizationUnit>;
   countryList?: Maybe<Array<Maybe<Country>>>;
   country?: Maybe<Country>;
   regionList?: Maybe<Array<Maybe<Region>>>;
   region?: Maybe<Region>;
-  coordinateSystemList?: Maybe<Array<Maybe<CoordinateSystem>>>;
-  coordinateSystem?: Maybe<CoordinateSystem>;
   attachmentList?: Maybe<Array<Maybe<Attachment>>>;
   attachment?: Maybe<Attachment>;
-  projectFileList?: Maybe<Array<Maybe<ProjectFile>>>;
-  projectFile?: Maybe<ProjectFile>;
   domainEntityList?: Maybe<Array<Maybe<DomainEntity>>>;
   domainEntity?: Maybe<DomainEntity>;
   project?: Maybe<ProjectOrError>;
@@ -74,101 +70,117 @@ export type Query = {
   me?: Maybe<User>;
 };
 
+
 export type QueryProjectLibraryArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type QueryProjectLibraryCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
-export type QueryDomainArgs = {
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type QueryDomainCategoriesArgs = {
-  vid?: Maybe<Scalars['UUID']>;
-};
 
 export type QueryComponentArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type QueryComponentCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type QueryAssemblyArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type QueryAssemblyCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type QueryActivityArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type QueryActivityCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type QueryDomainTemplateArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type QueryDomainTemplateCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type QueryUserArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type QueryProjectRoleArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type QueryAttachmentTypeArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type QueryUserGroupArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type QueryOrganizationArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
+export type QueryOrganizationUnitArgs = {
+  vid?: Maybe<Scalars['UUID']>;
+};
+
+
 export type QueryCountryArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type QueryRegionArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
-export type QueryCoordinateSystemArgs = {
-  vid?: Maybe<Scalars['UUID']>;
-};
 
 export type QueryAttachmentArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
-export type QueryProjectFileArgs = {
-  vid?: Maybe<Scalars['UUID']>;
-};
 
 export type QueryDomainEntityArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type QueryProjectArgs = {
   vid?: Maybe<Scalars['UUID']>;
   version?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryProjectListArgs = {
+  includeBlank?: Maybe<Scalars['Boolean']>;
+  pageNumber?: Maybe<Scalars['Int']>;
+  pageSize?: Maybe<Scalars['Int']>;
 };
 
 export type ProjectLibrary = {
@@ -176,6 +188,7 @@ export type ProjectLibrary = {
   category?: Maybe<ProjectLibraryCategory>;
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
@@ -187,35 +200,19 @@ export type ProjectLibraryCategory = {
   __typename?: 'ProjectLibraryCategory';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   parent?: Maybe<ProjectLibraryCategory>;
 };
 
-export type Domain = {
-  __typename?: 'Domain';
-  category?: Maybe<DomainLibraryCategory>;
-  vid?: Maybe<Scalars['ID']>;
-  code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  name?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-};
 
-export type DomainLibraryCategory = {
-  __typename?: 'DomainLibraryCategory';
-  vid?: Maybe<Scalars['ID']>;
-  code?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  parent?: Maybe<DomainLibraryCategory>;
-};
 
 export type Component = {
   __typename?: 'Component';
   category?: Maybe<ComponentLibraryCategory>;
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
@@ -227,6 +224,7 @@ export type ComponentLibraryCategory = {
   __typename?: 'ComponentLibraryCategory';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   parent?: Maybe<ComponentLibraryCategory>;
 };
@@ -236,6 +234,7 @@ export type Assembly = {
   category?: Maybe<AssemblyLibraryCategory>;
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
@@ -247,6 +246,7 @@ export type AssemblyLibraryCategory = {
   __typename?: 'AssemblyLibraryCategory';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   parent?: Maybe<AssemblyLibraryCategory>;
 };
@@ -256,6 +256,7 @@ export type Activity = {
   category?: Maybe<ActivityLibraryCategory>;
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
@@ -267,16 +268,18 @@ export type ActivityLibraryCategory = {
   __typename?: 'ActivityLibraryCategory';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   parent?: Maybe<ActivityLibraryCategory>;
 };
 
 export type DomainTemplate = {
   __typename?: 'DomainTemplate';
-  category?: Maybe<DomainLibraryCategory>;
+  category?: Maybe<DomainTemplateLibraryCategory>;
   entity?: Maybe<DomainEntity>;
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
@@ -285,10 +288,20 @@ export type DomainTemplate = {
   attributes?: Maybe<Array<Maybe<PropertyMeta>>>;
 };
 
+export type DomainTemplateLibraryCategory = {
+  __typename?: 'DomainTemplateLibraryCategory';
+  vid?: Maybe<Scalars['ID']>;
+  code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  parent?: Maybe<DomainTemplateLibraryCategory>;
+};
+
 export type DomainEntity = {
   __typename?: 'DomainEntity';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
@@ -314,6 +327,7 @@ export type PropertyMeta = {
   unit?: Maybe<Scalars['String']>;
   validationRules?: Maybe<ValidationRules>;
   description?: Maybe<Scalars['String']>;
+  required?: Maybe<Scalars['Boolean']>;
 };
 
 /**
@@ -333,6 +347,7 @@ export type User = {
   name?: Maybe<Scalars['String']>;
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   login?: Maybe<Scalars['String']>;
@@ -342,22 +357,50 @@ export type User = {
   adId?: Maybe<Scalars['String']>;
   role?: Maybe<Scalars['String']>;
   favoriteProjects?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  organizationUnits?: Maybe<Array<Maybe<OrganizationUnit>>>;
   groups?: Maybe<Array<Maybe<UserGroup>>>;
+  tokenJti?: Maybe<Scalars['String']>;
+};
+
+export type OrganizationUnit = {
+  __typename?: 'OrganizationUnit';
+  vid?: Maybe<Scalars['ID']>;
+  code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  editedAt?: Maybe<Scalars['DateTime']>;
+  name?: Maybe<Scalars['String']>;
+  organization?: Maybe<Organization>;
+  parentOu?: Maybe<OrganizationUnit>;
+  adId?: Maybe<Scalars['String']>;
+};
+
+export type Organization = {
+  __typename?: 'Organization';
+  vid?: Maybe<Scalars['ID']>;
+  code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  editedAt?: Maybe<Scalars['DateTime']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type UserGroup = {
   __typename?: 'UserGroup';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
+  project?: Maybe<Scalars['ID']>;
 };
 
 export type ProjectRole = {
   __typename?: 'ProjectRole';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
@@ -368,15 +411,7 @@ export type AttachmentType = {
   __typename?: 'AttachmentType';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-export type Organization = {
-  __typename?: 'Organization';
-  vid?: Maybe<Scalars['ID']>;
-  code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
@@ -386,30 +421,23 @@ export type Country = {
   __typename?: 'Country';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
+  coordinateSystems?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type Region = {
   __typename?: 'Region';
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
   fullName?: Maybe<Scalars['String']>;
   country?: Maybe<Country>;
-};
-
-export type CoordinateSystem = {
-  __typename?: 'CoordinateSystem';
-  vid?: Maybe<Scalars['ID']>;
-  code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  name?: Maybe<Scalars['String']>;
-  coordsNumber?: Maybe<Scalars['Int']>;
 };
 
 export type Attachment = {
@@ -418,6 +446,7 @@ export type Attachment = {
   uri?: Maybe<Scalars['String']>;
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   name?: Maybe<Scalars['String']>;
@@ -431,21 +460,6 @@ export type Attachment = {
   size?: Maybe<Scalars['Int']>;
 };
 
-/** ??? */
-export type ProjectFile = {
-  __typename?: 'ProjectFile';
-  vid?: Maybe<Scalars['ID']>;
-  code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  name?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Int']>;
-  extension?: Maybe<Scalars['String']>;
-  category?: Maybe<Scalars['String']>;
-  comment?: Maybe<Scalars['String']>;
-  uri?: Maybe<Scalars['String']>;
-};
-
 export type ProjectOrError = Project | Error;
 
 export type Project = {
@@ -457,28 +471,36 @@ export type Project = {
   attendees?: Maybe<Array<Maybe<Attendee>>>;
   yearEnd?: Maybe<Scalars['Int']>;
   domainSchema?: Maybe<DomainSchema>;
-  versions?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  versions: Array<Maybe<Scalars['Int']>>;
   myRoles?: Maybe<Array<Maybe<ProjectRole>>>;
+  recentlyEdited: Scalars['Boolean'];
   vid?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
-  type?: Maybe<Scalars['String']>;
+  type?: Maybe<ProjectTypeEnum>;
   createdBy?: Maybe<User>;
   editedBy?: Maybe<User>;
-  authorUnit?: Maybe<Scalars['String']>;
+  adId?: Maybe<Scalars['String']>;
+  authorOu?: Maybe<OrganizationUnit>;
   region?: Maybe<Region>;
   coordinates?: Maybe<Scalars['String']>;
-  coordinateSystem?: Maybe<CoordinateSystem>;
+  coordinateSystem?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   rootEntity?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['String']>;
+  status?: Maybe<ProjectStatusEnum>;
   resourceId?: Maybe<Scalars['String']>;
-  planningHorizon?: Maybe<Scalars['String']>;
   yearStart?: Maybe<Scalars['Int']>;
   years?: Maybe<Scalars['Int']>;
   version?: Maybe<Scalars['Int']>;
+};
+
+
+export type ProjectAttendeesArgs = {
+  orderBy?: Maybe<Array<Maybe<AttendeeOrderBy>>>;
+  sortBy?: Maybe<SortType>;
 };
 
 export type Attendee = {
@@ -486,6 +508,19 @@ export type Attendee = {
   user?: Maybe<User>;
   roles?: Maybe<Array<Maybe<ProjectRole>>>;
 };
+
+export enum AttendeeOrderBy {
+  FirstName = 'FIRST_NAME',
+  Patronym = 'PATRONYM',
+  LastName = 'LAST_NAME',
+  Name = 'NAME',
+  Role = 'ROLE'
+}
+
+export enum SortType {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
 
 export type DomainSchema = {
   __typename?: 'DomainSchema';
@@ -503,6 +538,17 @@ export type DomainEntityImage = {
   attributes?: Maybe<Array<Maybe<PropertyMeta>>>;
   description?: Maybe<Scalars['String']>;
 };
+
+/** An enumeration. */
+export enum ProjectTypeEnum {
+  Geo = 'GEO'
+}
+
+/** An enumeration. */
+export enum ProjectStatusEnum {
+  Blank = 'BLANK',
+  Unpublished = 'UNPUBLISHED'
+}
 
 /** Common error-object class. */
 export type Error = ErrorInterface & {
@@ -525,61 +571,60 @@ export type ErrorInterface = {
   payload?: Maybe<Scalars['DictType']>;
 };
 
-/** An enumeration. */
+/** Error codes list. */
 export enum ErrorCodes {
   /** Проект не найден */
   ProjectNotFound = 'PROJECT_NOT_FOUND',
-  /** Проект уже удалён */
-  ProjectAlreadyRemoved = 'PROJECT_ALREADY_REMOVED',
   /** Ошибка при обновлении проекта */
   ProjectUpdateError = 'PROJECT_UPDATE_ERROR',
   /** Объект справочника не найден */
   ReferenceItemNotFound = 'REFERENCE_ITEM_NOT_FOUND',
-  /** Объект библиотеки не найден */
-  LibraryItemNotFound = 'LIBRARY_ITEM_NOT_FOUND',
   /** Ошибка */
   Error = 'ERROR',
-  /** Некорректная версия проекта */
+  /** Не корректная версия проекта */
   IncorrectProjectVersion = 'INCORRECT_PROJECT_VERSION',
   /** Расхождение версий проекта */
   ProjectVersionDiffError = 'PROJECT_VERSION_DIFF_ERROR',
-  /** Попытка создания объекта с повторяющися vid */
-  DoubleIdCreation = 'DOUBLE_ID_CREATION',
-  /** Объект не найден */
-  ObjectNotFound = 'OBJECT_NOT_FOUND',
-  /** Использованы излишние параметры */
-  TooManyParameters = 'TOO_MANY_PARAMETERS',
-  /** Объект не соответсвует требованиям к данным */
-  ValidationError = 'VALIDATION_ERROR',
   /** Проект с таким именем уже существует */
   ProjectNameAlreadyExists = 'PROJECT_NAME_ALREADY_EXISTS',
   /** Пустое имя проекта */
   EmptyProjectName = 'EMPTY_PROJECT_NAME',
+  /** Имя проекта превышает лимит в 256 символов */
+  TooLongProjectName = 'TOO_LONG_PROJECT_NAME',
+  /** Имя проекта должно содержать минимум 2 символа */
+  TooShortProjectName = 'TOO_SHORT_PROJECT_NAME',
+  /** Год начала планирования не может быть меньше текущего календарного года */
+  YearStartError = 'YEAR_START_ERROR',
+  /** Отрицательное число лет планирования недопустимо */
+  YearsCountError = 'YEARS_COUNT_ERROR',
   /** Пользователь не обладает провами для совершения операции */
   NoRights = 'NO_RIGHTS',
-  /** FEM instance not found */
-  FemInstanceNotFound = 'FEM_INSTANCE_NOT_FOUND',
-  /** Year value not found */
-  YearValueNotFound = 'YEAR_VALUE_NOT_FOUND',
-  /** Wrong date tracked value type */
-  DateTrackedValueType = 'DATE_TRACKED_VALUE_TYPE',
-  /** CAPEX deserialization error */
-  CapexDeserialization = 'CAPEX_DESERIALIZATION',
-  /** Autoexport is already set in OPEX */
-  AutoexportIsAlreadySet = 'AUTOEXPORT_IS_ALREADY_SET',
-  /** Autoexport is not set in OPEX */
-  AutoexportIsNotSet = 'AUTOEXPORT_IS_NOT_SET',
-  /** MKOS is already set in OPEX */
-  MkosIsAlreadySet = 'MKOS_IS_ALREADY_SET',
-  /** MKOS is not set in OPEX */
-  MkosIsNotSet = 'MKOS_IS_NOT_SET',
-  /** OPEX deserialization error */
-  OpexDeserialization = 'OPEX_DESERIALIZATION',
-  /** Необходимо указать либо набор, либо группу объектов. */
-  LcScenarioStepWrongData = 'LC_SCENARIO_STEP_WRONG_DATA',
-  /** Указанные объекты отсутствуют в проекте. */
-  LcScenarioObjectListError = 'LC_SCENARIO_OBJECT_LIST_ERROR',
+  /** Объект не найден */
+  ObjectNotFound = 'OBJECT_NOT_FOUND',
+  /** Отсутствует роль */
+  EmptyAttendeeRole = 'EMPTY_ATTENDEE_ROLE',
+  /** Удаляемый участник не найден в проекте  */
+  NoAttendeeToRemove = 'NO_ATTENDEE_TO_REMOVE',
+  /** Некорректный формат UUID */
+  IncorrectUuid = 'INCORRECT_UUID',
+  /** Статус проекта нельзя очистить */
+  ProjectStatusCannotBeNull = 'PROJECT_STATUS_CANNOT_BE_NULL',
+  /** Участник проекта не найден */
+  ProjectAttendeeNotFound = 'PROJECT_ATTENDEE_NOT_FOUND',
+  /** Участник проекта уже обладет данной ролью */
+  ProjectAttendeeAlreadyHasRole = 'PROJECT_ATTENDEE_ALREADY_HAS_ROLE',
+  /** Рольу участника проекта не найдена */
+  ProjectAttendeeUserRoleNotFound = 'PROJECT_ATTENDEE_USER_ROLE_NOT_FOUND',
+  /** Невозможно сохранить проект - не найден менеджер проекта */
+  ProjectManagerNotFound = 'PROJECT_MANAGER_NOT_FOUND',
+  /** Проект нельзя возвращать в статус заготовки. */
+  CannotBringBlankBack = 'CANNOT_BRING_BLANK_BACK',
+  /** Отсутствует год начала планирования проекта */
+  ProjectYearstartCannotBeNull = 'PROJECT_YEARSTART_CANNOT_BE_NULL',
+  /** Неверный номер страницы */
+  InvalidPageNumber = 'INVALID_PAGE_NUMBER'
 }
+
 
 export type ProjectListOrError = ProjectList | Error;
 
@@ -596,12 +641,6 @@ export type Mutation = {
   createProjectLibraryCategories?: Maybe<CreateProjectLibraryCategories>;
   deleteProjectLibraryCategories?: Maybe<DeleteProjectLibraryCategories>;
   updateProjectLibraryCategories?: Maybe<UpdateProjectLibraryCategories>;
-  createDomain?: Maybe<CreateDomain>;
-  deleteDomain?: Maybe<DeleteDomain>;
-  updateDomain?: Maybe<UpdateDomain>;
-  createDomainCategories?: Maybe<CreateDomainCategories>;
-  deleteDomainCategories?: Maybe<DeleteDomainCategories>;
-  updateDomainCategories?: Maybe<UpdateDomainCategories>;
   createComponent?: Maybe<CreateComponent>;
   deleteComponent?: Maybe<DeleteComponent>;
   updateComponent?: Maybe<UpdateComponent>;
@@ -641,30 +680,30 @@ export type Mutation = {
   createOrganization?: Maybe<CreateOrganization>;
   deleteOrganization?: Maybe<DeleteOrganization>;
   updateOrganization?: Maybe<UpdateOrganization>;
+  createOrganizationUnit?: Maybe<CreateOrganizationUnit>;
+  deleteOrganizationUnit?: Maybe<DeleteOrganizationUnit>;
+  updateOrganizationUnit?: Maybe<UpdateOrganizationUnit>;
   createCountry?: Maybe<CreateCountry>;
   deleteCountry?: Maybe<DeleteCountry>;
   updateCountry?: Maybe<UpdateCountry>;
   createRegion?: Maybe<CreateRegion>;
   deleteRegion?: Maybe<DeleteRegion>;
   updateRegion?: Maybe<UpdateRegion>;
-  createCoordinateSystem?: Maybe<CreateCoordinateSystem>;
-  deleteCoordinateSystem?: Maybe<DeleteCoordinateSystem>;
-  updateCoordinateSystem?: Maybe<UpdateCoordinateSystem>;
   createAttachment?: Maybe<CreateAttachment>;
   deleteAttachment?: Maybe<DeleteAttachment>;
   updateAttachment?: Maybe<UpdateAttachment>;
-  createProjectFile?: Maybe<CreateProjectFile>;
-  deleteProjectFile?: Maybe<DeleteProjectFile>;
-  updateProjectFile?: Maybe<UpdateProjectFile>;
   createDomainEntity?: Maybe<CreateDomainEntity>;
   deleteDomainEntity?: Maybe<DeleteDomainEntity>;
   updateDomainEntity?: Maybe<UpdateDomainEntity>;
-  createProject?: Maybe<ProjectOrError>;
-  deleteProject?: Maybe<UuidOrError>;
-  updateProject?: Maybe<ProjectDiffOrError>;
-  addAttendees?: Maybe<AttendeeListOrError>;
-  removeAttendees?: Maybe<AttendeeListOrError>;
+  createProject?: Maybe<CreateProject>;
+  deleteProject?: Maybe<DeleteProject>;
+  updateProject?: Maybe<UpdateProject>;
+  addAttendees?: Maybe<AddAttendees>;
+  removeAttendees?: Maybe<RemoveAttendees>;
+  addAttendeeRole?: Maybe<AttendeeTypeOrError>;
+  removeAttendeeRole?: Maybe<AttendeeTypeOrError>;
 };
+
 
 export type MutationCreateProjectLibraryArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -678,9 +717,11 @@ export type MutationCreateProjectLibraryArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteProjectLibraryArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateProjectLibraryArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -694,6 +735,7 @@ export type MutationUpdateProjectLibraryArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationCreateProjectLibraryCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
   isDeleted?: Maybe<Scalars['Boolean']>;
@@ -702,9 +744,11 @@ export type MutationCreateProjectLibraryCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteProjectLibraryCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateProjectLibraryCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
@@ -714,53 +758,6 @@ export type MutationUpdateProjectLibraryCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
-export type MutationCreateDomainArgs = {
-  category?: Maybe<Scalars['UUID']>;
-  code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type MutationDeleteDomainArgs = {
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type MutationUpdateDomainArgs = {
-  category?: Maybe<Scalars['UUID']>;
-  code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type MutationCreateDomainCategoriesArgs = {
-  code?: Maybe<Scalars['String']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  parent?: Maybe<Scalars['UUID']>;
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type MutationDeleteDomainCategoriesArgs = {
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type MutationUpdateDomainCategoriesArgs = {
-  code?: Maybe<Scalars['String']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  parent?: Maybe<Scalars['UUID']>;
-  vid?: Maybe<Scalars['UUID']>;
-};
 
 export type MutationCreateComponentArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -774,9 +771,11 @@ export type MutationCreateComponentArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteComponentArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateComponentArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -790,6 +789,7 @@ export type MutationUpdateComponentArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationCreateComponentCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
   isDeleted?: Maybe<Scalars['Boolean']>;
@@ -798,9 +798,11 @@ export type MutationCreateComponentCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteComponentCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateComponentCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
@@ -809,6 +811,7 @@ export type MutationUpdateComponentCategoriesArgs = {
   parent?: Maybe<Scalars['UUID']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationCreateAssemblyArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -822,9 +825,11 @@ export type MutationCreateAssemblyArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteAssemblyArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateAssemblyArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -838,6 +843,7 @@ export type MutationUpdateAssemblyArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationCreateAssemblyCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
   isDeleted?: Maybe<Scalars['Boolean']>;
@@ -846,9 +852,11 @@ export type MutationCreateAssemblyCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteAssemblyCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateAssemblyCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
@@ -857,6 +865,7 @@ export type MutationUpdateAssemblyCategoriesArgs = {
   parent?: Maybe<Scalars['UUID']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationCreateActivityArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -870,9 +879,11 @@ export type MutationCreateActivityArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteActivityArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateActivityArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -886,6 +897,7 @@ export type MutationUpdateActivityArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationCreateActivityCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
   isDeleted?: Maybe<Scalars['Boolean']>;
@@ -894,9 +906,11 @@ export type MutationCreateActivityCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteActivityCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateActivityCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
@@ -905,6 +919,7 @@ export type MutationUpdateActivityCategoriesArgs = {
   parent?: Maybe<Scalars['UUID']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationCreateDomainTemplateArgs = {
   attributes?: Maybe<Array<Maybe<PropertyMetaInputType>>>;
@@ -920,9 +935,11 @@ export type MutationCreateDomainTemplateArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteDomainTemplateArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateDomainTemplateArgs = {
   attributes?: Maybe<Array<Maybe<PropertyMetaInputType>>>;
@@ -938,6 +955,7 @@ export type MutationUpdateDomainTemplateArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationCreateDomainTemplateCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
   isDeleted?: Maybe<Scalars['Boolean']>;
@@ -946,9 +964,11 @@ export type MutationCreateDomainTemplateCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteDomainTemplateCategoriesArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateDomainTemplateCategoriesArgs = {
   code?: Maybe<Scalars['String']>;
@@ -957,6 +977,7 @@ export type MutationUpdateDomainTemplateCategoriesArgs = {
   parent?: Maybe<Scalars['UUID']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationCreateUserArgs = {
   adId?: Maybe<Scalars['String']>;
@@ -970,14 +991,18 @@ export type MutationCreateUserArgs = {
   lastName?: Maybe<Scalars['String']>;
   login?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  organizationUnits?: Maybe<Array<Maybe<Scalars['UUID']>>>;
   patronym?: Maybe<Scalars['String']>;
   role?: Maybe<Scalars['String']>;
+  tokenJti?: Maybe<Scalars['String']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationDeleteUserArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateUserArgs = {
   adId?: Maybe<Scalars['String']>;
@@ -991,10 +1016,13 @@ export type MutationUpdateUserArgs = {
   lastName?: Maybe<Scalars['String']>;
   login?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  organizationUnits?: Maybe<Array<Maybe<Scalars['UUID']>>>;
   patronym?: Maybe<Scalars['String']>;
   role?: Maybe<Scalars['String']>;
+  tokenJti?: Maybe<Scalars['String']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationCreateProjectRoleArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1006,9 +1034,11 @@ export type MutationCreateProjectRoleArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteProjectRoleArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateProjectRoleArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1020,6 +1050,7 @@ export type MutationUpdateProjectRoleArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationCreateAttachmentTypeArgs = {
   code?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
@@ -1029,9 +1060,11 @@ export type MutationCreateAttachmentTypeArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteAttachmentTypeArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateAttachmentTypeArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1042,18 +1075,22 @@ export type MutationUpdateAttachmentTypeArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationCreateUserGroupArgs = {
   code?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   isDeleted?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
+  project?: Maybe<Scalars['UUID']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationDeleteUserGroupArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateUserGroupArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1061,8 +1098,10 @@ export type MutationUpdateUserGroupArgs = {
   editedAt?: Maybe<Scalars['DateTime']>;
   isDeleted?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
+  project?: Maybe<Scalars['UUID']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationCreateOrganizationArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1073,9 +1112,11 @@ export type MutationCreateOrganizationArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteOrganizationArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateOrganizationArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1086,27 +1127,64 @@ export type MutationUpdateOrganizationArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
+export type MutationCreateOrganizationUnitArgs = {
+  adId?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  editedAt?: Maybe<Scalars['DateTime']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  organization?: Maybe<Scalars['UUID']>;
+  parentOu?: Maybe<Scalars['UUID']>;
+  vid?: Maybe<Scalars['UUID']>;
+};
+
+
+export type MutationDeleteOrganizationUnitArgs = {
+  vid?: Maybe<Scalars['UUID']>;
+};
+
+
+export type MutationUpdateOrganizationUnitArgs = {
+  adId?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  editedAt?: Maybe<Scalars['DateTime']>;
+  isDeleted?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  organization?: Maybe<Scalars['UUID']>;
+  parentOu?: Maybe<Scalars['UUID']>;
+  vid?: Maybe<Scalars['UUID']>;
+};
+
+
 export type MutationCreateCountryArgs = {
   code?: Maybe<Scalars['String']>;
+  coordinateSystems?: Maybe<Array<Maybe<Scalars['String']>>>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   isDeleted?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationDeleteCountryArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationUpdateCountryArgs = {
   code?: Maybe<Scalars['String']>;
+  coordinateSystems?: Maybe<Array<Maybe<Scalars['String']>>>;
   createdAt?: Maybe<Scalars['DateTime']>;
   editedAt?: Maybe<Scalars['DateTime']>;
   isDeleted?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationCreateRegionArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1119,9 +1197,11 @@ export type MutationCreateRegionArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteRegionArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateRegionArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1134,29 +1214,6 @@ export type MutationUpdateRegionArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
-export type MutationCreateCoordinateSystemArgs = {
-  code?: Maybe<Scalars['String']>;
-  coordsNumber?: Maybe<Scalars['Int']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type MutationDeleteCoordinateSystemArgs = {
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type MutationUpdateCoordinateSystemArgs = {
-  code?: Maybe<Scalars['String']>;
-  coordsNumber?: Maybe<Scalars['Int']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  vid?: Maybe<Scalars['UUID']>;
-};
 
 export type MutationCreateAttachmentArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -1175,9 +1232,11 @@ export type MutationCreateAttachmentArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteAttachmentArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateAttachmentArgs = {
   category?: Maybe<Scalars['UUID']>;
@@ -1196,37 +1255,6 @@ export type MutationUpdateAttachmentArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
-export type MutationCreateProjectFileArgs = {
-  category?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-  comment?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  extension?: Maybe<Scalars['String']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Int']>;
-  uri?: Maybe<Scalars['String']>;
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type MutationDeleteProjectFileArgs = {
-  vid?: Maybe<Scalars['UUID']>;
-};
-
-export type MutationUpdateProjectFileArgs = {
-  category?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-  comment?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  editedAt?: Maybe<Scalars['DateTime']>;
-  extension?: Maybe<Scalars['String']>;
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Int']>;
-  uri?: Maybe<Scalars['String']>;
-  vid?: Maybe<Scalars['UUID']>;
-};
 
 export type MutationCreateDomainEntityArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1237,9 +1265,11 @@ export type MutationCreateDomainEntityArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationDeleteDomainEntityArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationUpdateDomainEntityArgs = {
   code?: Maybe<Scalars['String']>;
@@ -1250,18 +1280,22 @@ export type MutationUpdateDomainEntityArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationCreateProjectArgs = {
   data?: Maybe<ProjectInputType>;
 };
+
 
 export type MutationDeleteProjectArgs = {
   vid?: Maybe<Scalars['UUID']>;
 };
 
+
 export type MutationUpdateProjectArgs = {
   data?: Maybe<ProjectUpdateType>;
   vid?: Maybe<Scalars['UUID']>;
 };
+
 
 export type MutationAddAttendeesArgs = {
   attendees: Array<Maybe<AttendeeInputType>>;
@@ -1269,9 +1303,26 @@ export type MutationAddAttendeesArgs = {
   version: Scalars['Int'];
 };
 
+
 export type MutationRemoveAttendeesArgs = {
   attendees: Array<Maybe<Scalars['UUID']>>;
   projectId: Scalars['UUID'];
+  version: Scalars['Int'];
+};
+
+
+export type MutationAddAttendeeRoleArgs = {
+  projectId: Scalars['UUID'];
+  role: Scalars['UUID'];
+  user: Scalars['UUID'];
+  version: Scalars['Int'];
+};
+
+
+export type MutationRemoveAttendeeRoleArgs = {
+  projectId: Scalars['UUID'];
+  role: Scalars['UUID'];
+  user: Scalars['UUID'];
   version: Scalars['Int'];
 };
 
@@ -1303,36 +1354,6 @@ export type DeleteProjectLibraryCategories = {
 export type UpdateProjectLibraryCategories = {
   __typename?: 'UpdateProjectLibraryCategories';
   result?: Maybe<ProjectLibrary>;
-};
-
-export type CreateDomain = {
-  __typename?: 'CreateDomain';
-  result?: Maybe<Domain>;
-};
-
-export type DeleteDomain = {
-  __typename?: 'DeleteDomain';
-  result?: Maybe<Scalars['Boolean']>;
-};
-
-export type UpdateDomain = {
-  __typename?: 'UpdateDomain';
-  result?: Maybe<Domain>;
-};
-
-export type CreateDomainCategories = {
-  __typename?: 'CreateDomainCategories';
-  result?: Maybe<DomainLibraryCategory>;
-};
-
-export type DeleteDomainCategories = {
-  __typename?: 'DeleteDomainCategories';
-  result?: Maybe<Scalars['Boolean']>;
-};
-
-export type UpdateDomainCategories = {
-  __typename?: 'UpdateDomainCategories';
-  result?: Maybe<Domain>;
 };
 
 export type CreateComponent = {
@@ -1457,7 +1478,7 @@ export type UpdateDomainTemplate = {
 
 export type CreateDomainTemplateCategories = {
   __typename?: 'CreateDomainTemplateCategories';
-  result?: Maybe<DomainLibraryCategory>;
+  result?: Maybe<DomainTemplateLibraryCategory>;
 };
 
 export type DeleteDomainTemplateCategories = {
@@ -1545,6 +1566,21 @@ export type UpdateOrganization = {
   result?: Maybe<Organization>;
 };
 
+export type CreateOrganizationUnit = {
+  __typename?: 'CreateOrganizationUnit';
+  result?: Maybe<OrganizationUnit>;
+};
+
+export type DeleteOrganizationUnit = {
+  __typename?: 'DeleteOrganizationUnit';
+  result?: Maybe<Scalars['Boolean']>;
+};
+
+export type UpdateOrganizationUnit = {
+  __typename?: 'UpdateOrganizationUnit';
+  result?: Maybe<OrganizationUnit>;
+};
+
 export type CreateCountry = {
   __typename?: 'CreateCountry';
   result?: Maybe<Country>;
@@ -1575,21 +1611,6 @@ export type UpdateRegion = {
   result?: Maybe<Region>;
 };
 
-export type CreateCoordinateSystem = {
-  __typename?: 'CreateCoordinateSystem';
-  result?: Maybe<CoordinateSystem>;
-};
-
-export type DeleteCoordinateSystem = {
-  __typename?: 'DeleteCoordinateSystem';
-  result?: Maybe<Scalars['Boolean']>;
-};
-
-export type UpdateCoordinateSystem = {
-  __typename?: 'UpdateCoordinateSystem';
-  result?: Maybe<CoordinateSystem>;
-};
-
 export type CreateAttachment = {
   __typename?: 'CreateAttachment';
   result?: Maybe<Attachment>;
@@ -1603,21 +1624,6 @@ export type DeleteAttachment = {
 export type UpdateAttachment = {
   __typename?: 'UpdateAttachment';
   result?: Maybe<Attachment>;
-};
-
-export type CreateProjectFile = {
-  __typename?: 'CreateProjectFile';
-  result?: Maybe<ProjectFile>;
-};
-
-export type DeleteProjectFile = {
-  __typename?: 'DeleteProjectFile';
-  result?: Maybe<Scalars['Boolean']>;
-};
-
-export type UpdateProjectFile = {
-  __typename?: 'UpdateProjectFile';
-  result?: Maybe<ProjectFile>;
 };
 
 export type CreateDomainEntity = {
@@ -1635,24 +1641,38 @@ export type UpdateDomainEntity = {
   result?: Maybe<DomainEntity>;
 };
 
+export type CreateProject = {
+  __typename?: 'CreateProject';
+  result?: Maybe<ProjectOrError>;
+};
+
 export type ProjectInputType = {
   name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
+  type?: Maybe<ProjectTypeEnum>;
   region?: Maybe<Scalars['ID']>;
-  coordinateSystem?: Maybe<Scalars['ID']>;
+  coordinateSystem?: Maybe<Scalars['String']>;
   coordinates?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   resourceId?: Maybe<Scalars['String']>;
-  planningHorizon?: Maybe<Scalars['String']>;
   yearStart?: Maybe<Scalars['Int']>;
   years?: Maybe<Scalars['Int']>;
 };
 
-export type UuidOrError = UuidType | Error;
+export type DeleteProject = {
+  __typename?: 'DeleteProject';
+  result?: Maybe<UuidOrError>;
+};
 
-export type UuidType = {
-  __typename?: 'UuidType';
+export type UuidOrError = Result | Error;
+
+export type Result = {
+  __typename?: 'Result';
   vid?: Maybe<Scalars['UUID']>;
+};
+
+export type UpdateProject = {
+  __typename?: 'UpdateProject';
+  result?: Maybe<ProjectDiffOrError>;
 };
 
 export type ProjectDiffOrError = Project | UpdateProjectDiff | Error;
@@ -1667,28 +1687,23 @@ export type UpdateProjectDiff = {
 
 export type ProjectUpdateType = {
   name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  region?: Maybe<Scalars['ID']>;
-  coordinateSystem?: Maybe<Scalars['ID']>;
+  region?: Maybe<Scalars['UUID']>;
+  coordinateSystem?: Maybe<Scalars['String']>;
   coordinates?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  status: ProjectStatus;
+  status?: Maybe<ProjectStatusEnum>;
   isFavorite?: Maybe<Scalars['Boolean']>;
   resourceId?: Maybe<Scalars['String']>;
-  planningHorizon?: Maybe<Scalars['String']>;
   yearStart?: Maybe<Scalars['Int']>;
   years?: Maybe<Scalars['Int']>;
   /** Version of the original project. */
   version: Scalars['Int'];
 };
 
-export enum ProjectStatus {
-  Draft = 'DRAFT',
-  InProgress = 'IN_PROGRESS',
-  Completed = 'COMPLETED',
-  Paused = 'PAUSED',
-  Removed = 'REMOVED',
-}
+export type AddAttendees = {
+  __typename?: 'AddAttendees';
+  result?: Maybe<AttendeeListOrError>;
+};
 
 export type AttendeeListOrError = AttendeeList | UpdateProjectDiff | Error;
 
@@ -1701,3 +1716,12 @@ export type AttendeeInputType = {
   user: Scalars['UUID'];
   roles: Array<Maybe<Scalars['UUID']>>;
 };
+
+export type RemoveAttendees = {
+  __typename?: 'RemoveAttendees';
+  result?: Maybe<AttendeeListOrError>;
+};
+
+export type AttendeeTypeOrError = Attendee | UpdateProjectDiff | Error;
+
+

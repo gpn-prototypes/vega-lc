@@ -9,21 +9,12 @@ import '@/types/global';
 import { ActivitiesActionTypes } from '@/redux-store/activities/action-types';
 import { fetchActivitiesList } from '@/redux-store/activities/actions';
 import initialState from '@/redux-store/activities/initial-state';
-import * as graphqlRequest from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service/lc-service';
 
 const mockStore = configureMockStore([thunkMiddleware]);
 
-jest.mock('@/utils/graphql-request', () => {
-  const originalModule = jest.requireActual('@/utils/graphql-request');
-
-  return {
-    ...originalModule,
-    activityListQuery: jest.fn(),
-  };
-});
-
 const mockActivityListQuery = (response: any) => {
-  jest.spyOn(graphqlRequest, 'activityListQuery').mockImplementation(() => {
+  jest.spyOn(logicConstructorService, 'activityListQuery').mockImplementation(() => {
     return new Promise((resolve) => {
       setTimeout(() => {
         return resolve(response);

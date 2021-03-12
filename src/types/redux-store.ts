@@ -1,6 +1,5 @@
 import React from 'react';
-import { CanvasData, CanvasTree, TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
-import { CanvasView } from '@gpn-prototypes/vega-ui/dist/components/canvas/entities/CanvasView';
+import { CanvasData, CanvasTree, entities, TargetData, TreeItem } from '@gpn-prototypes/vega-ui';
 
 type NodeList = TreeItem[];
 
@@ -20,12 +19,12 @@ export declare type StepData = {
   events: Event[];
 };
 
+export type CanvasViewEntity = entities.CanvasView;
+
 export type SplitPanesGridParams = {
   width: string;
   height?: string;
 };
-
-export type CanvasViewEntity = CanvasView;
 
 export type StepContent = {
   activity?: {

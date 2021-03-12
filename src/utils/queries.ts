@@ -24,8 +24,8 @@ export const ACTIVITY_LIST_QUERY = gql`
   }
 `;
 
-export const GROUP_OBJECT_LIST_QUERY = gql`
-  {
+export const GroupObjectListFragment = gql`
+  fragment GroupObjectList on ProjectInner {
     domain {
       objectGroupList {
         vid
@@ -39,161 +39,71 @@ export const GROUP_OBJECT_LIST_QUERY = gql`
   }
 `;
 
-export const OBJECT_GROUP_UPDATE_MUTATION = gql`
-  mutation($vid: UUID!, $vids: [UUID], $version: Int!) {
-    domain {
-      objectGroup {
-        update(vid: $vid, vids: $vids, version: $version) {
-          ok
+export const CanvasItemsFragment = gql`
+  fragment CanvasItems on Logic {
+    canvas {
+      vid
+      title
+      position
+      nodeRef
+      nodeType
+      width
+      children {
+        vid
+      }
+      parents {
+        vid
+      }
+    }
+  }
+`;
+
+export const StepListFragment = gql`
+  fragment StepList on Logic {
+    stepList {
+      vid
+      name
+      itemList {
+        activity {
+          activityType {
+            vid
+          }
           name
-          vids
         }
-      }
-    }
-  }
-`;
-
-export const OBJECT_GROUP_CREATE_MUTATION = gql`
-  mutation($version: Int!, $name: String!) {
-    domain {
-      objectGroup {
-        create(name: $name, version: $version) {
+        object {
           vid
-          ok
-          vids
+          name
         }
       }
     }
   }
 `;
 
-export const SCENARIO_STEP_CREATE_MUTATION = gql`
-  mutation($version: Int!, $activity: UUID, $name: String, $objectGroup: UUID, $objects: [UUID]) {
-    logic {
-      scenarioStep {
-        create(
-          activity: $activity
-          version: $version
-          name: $name
-          objectGroup: $objectGroup
-          objects: $objects
-        ) {
-          result {
-            vid
-          }
-        }
+export const GROUP_OBJECT_LIST_QUERY = gql`
+  ${GroupObjectListFragment}
+
+  {
+    project {
+      ...GroupObjectList
+    }
+  }
+`;
+
+export const CANVAS_ITEMS_QUERY = gql`
+  ${CanvasItemsFragment}
+  ${StepListFragment}
+
+  {
+    project {
+      logic {
+        ...CanvasItems
+        ...StepList
       }
     }
   }
 `;
 
-export const SCENARIO_STEP_UPDATE_MUTATION = gql`
-  mutation($vid: UUID!, $version: Int!, $activity: UUID, $objectGroup: UUID, $objects: [UUID]) {
-    logic {
-      scenarioStep {
-        update(
-          vid: $vid
-          activity: $activity
-          version: $version
-          objectGroup: $objectGroup
-          objects: $objects
-        ) {
-          result {
-            vid
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const CANVAS_NODE_CREATE_MUTATION = gql`
-  mutation(
-    $title: String
-    $nodeType: String!
-    $width: Float
-    $position: [Float]
-    $nodeRef: UUID
-    $version: Int!
-  ) {
-    logic {
-      canvas {
-        create(
-          title: $title
-          width: $width
-          nodeType: $nodeType
-          nodeRef: $nodeRef
-          position: $position
-          version: $version
-        ) {
-          result {
-            vid
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const CANVAS_NODE_UPDATE_MUTATION = gql`
-  mutation(
-    $vid: UUID!
-    $title: String
-    $nodeType: String
-    $width: Float
-    $position: [Float]
-    $nodeRef: UUID
-    $childrenVids: [UUID]
-    $parentVids: [UUID]
-    $version: Int!
-  ) {
-    logic {
-      canvas {
-        update(
-          vid: $vid
-          title: $title
-          width: $width
-          nodeType: $nodeType
-          nodeRef: $nodeRef
-          position: $position
-          childrenVids: $childrenVids
-          parentVids: $parentVids
-          version: $version
-        ) {
-          result {
-            vid
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const CANVAS_NODE_DELETE_MUTATION = gql`
-  mutation($vid: UUID!, $version: Int!) {
-    logic {
-      canvas {
-        delete(vid: $vid, version: $version) {
-          ok
-        }
-      }
-    }
-  }
-`;
-
-export const SCENARIO_STEP_DELETE_MUTATION = gql`
-  mutation($vid: UUID!, $version: Int!) {
-    logic {
-      scenarioStep {
-        delete(vid: $vid, version: $version) {
-          ok
-        }
-      }
-    }
-  }
-`;
-
-export const PROJECT_QUERY = gql`
+export const PROJECT_STRUCTURE_QUERY = gql`
   query($projectId: UUID!) {
     project(vid: $projectId) {
       __typename
@@ -225,6 +135,360 @@ export const PROJECT_QUERY = gql`
       ... on Error {
         code
         message
+      }
+    }
+  }
+`;
+
+export const OBJECT_GROUP_UPDATE_MUTATION = gql`
+  ${GroupObjectListFragment}
+
+  mutation($vid: UUID!, $vids: [UUID], $version: Int!) {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        domain {
+          objectGroup {
+            update(vid: $vid, vids: $vids) {
+              ok
+              name
+              vids
+            }
+          }
+        }
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...GroupObjectList
+          }
+        }
+        localProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...GroupObjectList
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const OBJECT_GROUP_CREATE_MUTATION = gql`
+  ${GroupObjectListFragment}
+
+  mutation($version: Int!, $name: String!) {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        domain {
+          objectGroup {
+            create(name: $name) {
+              vid
+              ok
+              vids
+            }
+          }
+        }
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...GroupObjectList
+          }
+        }
+        localProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...GroupObjectList
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const SCENARIO_STEP_CREATE_MUTATION = gql`
+  ${StepListFragment}
+
+  mutation($version: Int!, $activity: UUID, $name: String, $objectGroup: UUID, $objects: [UUID]) {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          scenarioStep {
+            create(activity: $activity, name: $name, objectGroup: $objectGroup, objects: $objects) {
+              result {
+                vid
+              }
+            }
+          }
+        }
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          logic {
+            ...StepList
+          }
+        }
+        localProject {
+          logic {
+            ...StepList
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const SCENARIO_STEP_UPDATE_MUTATION = gql`
+  ${StepListFragment}
+
+  mutation($vid: UUID!, $version: Int!, $activity: UUID, $objectGroup: UUID, $objects: [UUID]) {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          scenarioStep {
+            update(vid: $vid, activity: $activity, objectGroup: $objectGroup, objects: $objects) {
+              result {
+                vid
+              }
+            }
+          }
+        }
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          vid
+          version
+          logic {
+            ...StepList
+          }
+        }
+        localProject {
+          vid
+          version
+          logic {
+            ...StepList
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const SCENARIO_STEP_DELETE_MUTATION = gql`
+  ${StepListFragment}
+
+  mutation($vid: UUID!, $version: Int!) {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          scenarioStep {
+            delete(vid: $vid, version: $version) {
+              ok
+            }
+          }
+        }
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          vid
+          version
+          logic {
+            ...StepList
+          }
+        }
+        localProject {
+          vid
+          version
+          logic {
+            ...StepList
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const CANVAS_NODE_CREATE_MUTATION = gql`
+  ${CanvasItemsFragment}
+
+  mutation(
+    $title: String
+    $nodeType: String!
+    $width: Float
+    $position: [Float]
+    $nodeRef: UUID
+    $version: Int!
+  ) {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          canvas {
+            create(
+              title: $title
+              width: $width
+              nodeType: $nodeType
+              nodeRef: $nodeRef
+              position: $position
+              version: $version
+            ) {
+              result {
+                vid
+              }
+            }
+          }
+        }
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          vid
+          version
+          logic {
+            ...CanvasItems
+          }
+        }
+        localProject {
+          vid
+          version
+          logic {
+            ...CanvasItems
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const CANVAS_NODE_UPDATE_MUTATION = gql`
+  ${CanvasItemsFragment}
+
+  mutation(
+    $vid: UUID!
+    $title: String
+    $nodeType: String
+    $width: Float
+    $position: [Float]
+    $nodeRef: UUID
+    $childrenVids: [UUID]
+    $parentVids: [UUID]
+    $version: Int!
+  ) {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          canvas {
+            update(
+              vid: $vid
+              title: $title
+              width: $width
+              nodeType: $nodeType
+              nodeRef: $nodeRef
+              position: $position
+              childrenVids: $childrenVids
+              parentVids: $parentVids
+              version: $version
+            ) {
+              result {
+                vid
+              }
+            }
+          }
+        }
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          vid
+          version
+          logic {
+            ...CanvasItems
+          }
+        }
+        localProject {
+          vid
+          version
+          logic {
+            ...CanvasItems
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const CANVAS_NODE_DELETE_MUTATION = gql`
+  ${CanvasItemsFragment}
+
+  mutation($vid: UUID!, $version: Int!) {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          canvas {
+            delete(vid: $vid) {
+              ok
+            }
+          }
+        }
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          vid
+          version
+          logic {
+            ...CanvasItems
+          }
+        }
+        localProject {
+          vid
+          version
+          logic {
+            ...CanvasItems
+          }
+        }
       }
     }
   }

@@ -40,7 +40,7 @@ module.exports = (webpackConfigEnv) => {
   }, {});
 
   if (!process.env.BASE_API_URL) {
-    throw new Error('env.BASE_API_URL is empty')
+    throw new Error('env.BASE_API_URL is empty');
   }
 
   const config = webpackMerge.smart(defaultConfig, {

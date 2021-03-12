@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { ShellToolkit } from '@/types';
-import { initServiceConfig } from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service';
 
 export interface ProjectContextData {
   projectId: string;
@@ -21,11 +21,12 @@ const ProjectProvider: React.FC<ShellToolkit> = (props) => {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    initServiceConfig({
+    logicConstructorService.init({
       client: graphqlClient,
       projectId,
       identity,
     });
+
     setInitialized(true);
   }, [identity, graphqlClient, projectId]);
 

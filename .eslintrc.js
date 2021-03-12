@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'no-console': 'warn',
     'no-unused-vars': 'warn',
+    'no-underscore-dangle': 'off',
   },
   settings: {
     'import/resolver': {
