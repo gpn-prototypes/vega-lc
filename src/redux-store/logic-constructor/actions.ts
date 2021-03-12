@@ -87,6 +87,7 @@ const toggleStepEditor = (
     isStepEditorOpened,
   });
 };
+
 const replaceCanvasElementId = (id: string, replaceId: string): ReplaceCanvasElementId => ({
   type: LogicConstructorActionTypes.REPLACE_CANVAS_ELEMENT_ID,
   id,
@@ -378,9 +379,9 @@ const syncCanvasState = (
           nodeRef,
         });
 
-        const id = response?.data?.logic?.canvas?.create?.result?.vid;
+        const newId = response?.data?.project?.logic?.canvas?.create?.result?.vid;
 
-        dispatch(replaceCanvasElementId(updateData.id, id));
+        dispatch(replaceCanvasElementId(updateData.id, newId));
 
         if (logicConstructorService.isMutationConflict) {
           dispatch(fetchCanvasItemsData());

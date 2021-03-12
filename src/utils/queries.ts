@@ -300,6 +300,45 @@ export const SCENARIO_STEP_UPDATE_MUTATION = gql`
   }
 `;
 
+export const CANVAS_NODE_DELETE_MUTATION = gql`
+  ${CanvasItemsFragment}
+
+  mutation($vid: UUID!, $version: Int!) {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on ProjectMutation {
+        logic {
+          canvas {
+            delete(vid: $vid) {
+              ok
+            }
+          }
+        }
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          vid
+          version
+          logic {
+            ...CanvasItems
+          }
+        }
+        localProject {
+          vid
+          version
+          logic {
+            ...CanvasItems
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const SCENARIO_STEP_DELETE_MUTATION = gql`
   ${StepListFragment}
 
@@ -313,7 +352,7 @@ export const SCENARIO_STEP_DELETE_MUTATION = gql`
       ... on ProjectMutation {
         logic {
           scenarioStep {
-            delete(vid: $vid, version: $version) {
+            delete(vid: $vid) {
               ok
             }
           }
@@ -365,7 +404,6 @@ export const CANVAS_NODE_CREATE_MUTATION = gql`
               nodeType: $nodeType
               nodeRef: $nodeRef
               position: $position
-              version: $version
             ) {
               result {
                 vid
@@ -426,50 +464,10 @@ export const CANVAS_NODE_UPDATE_MUTATION = gql`
               position: $position
               childrenVids: $childrenVids
               parentVids: $parentVids
-              version: $version
             ) {
               result {
                 vid
               }
-            }
-          }
-        }
-      }
-      ... on UpdateProjectInnerDiff {
-        remoteProject {
-          vid
-          version
-          logic {
-            ...CanvasItems
-          }
-        }
-        localProject {
-          vid
-          version
-          logic {
-            ...CanvasItems
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const CANVAS_NODE_DELETE_MUTATION = gql`
-  ${CanvasItemsFragment}
-
-  mutation($vid: UUID!, $version: Int!) {
-    project(version: $version) {
-      __typename
-      ... on Error {
-        code
-        message
-      }
-      ... on ProjectMutation {
-        logic {
-          canvas {
-            delete(vid: $vid) {
-              ok
             }
           }
         }

@@ -45,7 +45,7 @@ const setProjectStructureQuery = (projectStructureQuery: ProjectStructureQuery) 
 
 function buildStructureQuery(entityImages: EntityImage[]): ProjectStructureQuery {
   const image = entityImages.find((ei) => ei.name === 'GeoEconomicAppraisalProject');
-  let query = `{ project { domain { geoEconomicAppraisalProjectList { typename:__typename vid name `;
+  let query = `{ project { vid domain { geoEconomicAppraisalProjectList { typename:__typename vid name `;
   const tree = ['geoEconomicAppraisalProjectList'];
   const loadedImages: string[] = [];
 

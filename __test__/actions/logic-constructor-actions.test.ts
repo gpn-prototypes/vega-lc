@@ -38,11 +38,13 @@ beforeEach(() => {
 
 const mockedCreateCanvasNode = {
   data: {
-    logic: {
-      canvas: {
-        create: {
-          result: {
-            vid: 'created_canvas_node_id',
+    project: {
+      logic: {
+        canvas: {
+          create: {
+            result: {
+              vid: 'created_canvas_node_id',
+            },
           },
         },
       },
@@ -52,11 +54,13 @@ const mockedCreateCanvasNode = {
 
 const mockedCreateScenarioStep = {
   data: {
-    logic: {
-      scenarioStep: {
-        create: {
-          result: {
-            vid: 'scenario_step_id',
+    project: {
+      logic: {
+        scenarioStep: {
+          create: {
+            result: {
+              vid: 'scenario_step_id',
+            },
           },
         },
       },

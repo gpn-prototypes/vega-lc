@@ -31,9 +31,12 @@ const setProjectStructureDraggingElements = (
 });
 
 const DEFAULT_QUERY = `{
-  domain{
-    geoEconomicAppraisalProjectList{
-      vid name
+  project {
+    vid
+    domain{
+      geoEconomicAppraisalProjectList{
+        vid name
+      }
     }
   }
 }`;
