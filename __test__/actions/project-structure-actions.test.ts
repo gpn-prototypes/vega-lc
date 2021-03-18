@@ -1,6 +1,7 @@
 import { Dispatch } from 'react';
-import { gql, NetworkStatus } from '@apollo/client';
+import { ApolloClient, createHttpLink, gql, InMemoryCache, NetworkStatus } from '@apollo/client';
 import { waitFor } from '@testing-library/react';
+import fetch from 'cross-fetch';
 import configureMockStore from 'redux-mock-store';
 import thunkMiddleware from 'redux-thunk';
 
@@ -9,26 +10,36 @@ import '@/types/global';
 import { ProjectStructureActionTypes } from '@/redux-store/project-structure/action-types';
 import { fetchProjectStructureList } from '@/redux-store/project-structure/actions';
 import initialState from '@/redux-store/project-structure/initial-state';
-import { getGraphqlUri, serviceConfig } from '@/utils/graphql-request';
+import { logicConstructorService } from '@/utils/lc-service';
 
 const mockStore = configureMockStore([thunkMiddleware]);
 
+jest.mock('@/config/config.public', () => {
+  return {
+    config: {
+      baseApiUrl: 'http://example.test',
+      authToken: 'mock-token',
+    },
+  };
+});
+
 jest.mock('@/utils/graphql-request', () => {
-  const originalModule = jest.requireActual('@/utils/graphql-request');
+  const originalModule = jest.requireActual('@/utils/lc-service');
 
   return {
     ...originalModule,
-    serviceConfig: {
+    logicConstructorService: {
+      ...originalModule.logicConstructorService,
       client: {
         query: jest.fn(),
       },
-      projectId: 'mock id',
+      projectId: 'a3333333-b111-c111-d111-e00000000009',
     },
   };
 });
 
 const mockFetchProjectStructureListQuery = (response: any) => {
-  jest.spyOn(serviceConfig.client, 'query').mockImplementation(() => {
+  jest.spyOn(logicConstructorService.client, 'query').mockImplementation(() => {
     return new Promise((resolve) => {
       setTimeout(() => {
         return resolve(response);
@@ -39,57 +50,60 @@ const mockFetchProjectStructureListQuery = (response: any) => {
 
 const successResponse = {
   data: {
-    domain: {
-      geoEconomicAppraisalProjectList: [
-        {
-          typename: 'GeoEconomicAppraisalProject_Type',
-          vid: 'a3333333-b111-c111-d111-e11000000000',
-          name: 'root object',
-          licensingRounds: [
-            {
-              typename: 'LicensingRound_A_Type',
-              vid: 'a3333333-b111-c111-d111-e21000000000',
-              name: 'L1',
-              prospects: [
-                {
-                  typename: 'Prospect_A_Type',
-                  vid: 'a3333333-b111-c111-d111-e21000000001',
-                  name: 'PR1',
-                  __typename: 'Prospect_A_Type',
-                },
-                {
-                  typename: 'Prospect_A_Type',
-                  vid: 'a3333333-b111-c111-d111-e21000000002',
-                  name: 'PR2',
-                  __typename: 'Prospect_A_Type',
-                },
-              ],
-              __typename: 'LicensingRound_A_Type',
-            },
-            {
-              typename: 'LicensingRound_A_Type',
-              vid: 'a3333333-b111-c111-d111-e22000000000',
-              name: 'L2',
-              prospects: [
-                {
-                  typename: 'Prospect_A_Type',
-                  vid: 'a3333333-b111-c111-d111-e22000000001',
-                  name: 'PR2_1',
-                  __typename: 'Prospect_A_Type',
-                },
-                {
-                  typename: 'Prospect_A_Type',
-                  vid: 'a3333333-b111-c111-d111-e22000000002',
-                  name: 'PR2_2',
-                  __typename: 'Prospect_A_Type',
-                },
-              ],
-              __typename: 'LicensingRound_A_Type',
-            },
-          ],
-        },
-      ],
-      __typename: 'DomainObjectQuery',
+    project: {
+      vid: 'a3333333-b111-c111-d111-e00000000011',
+      domain: {
+        geoEconomicAppraisalProjectList: [
+          {
+            typename: 'GeoEconomicAppraisalProject_Type',
+            vid: 'a3333333-b111-c111-d111-e11000000000',
+            name: 'root object',
+            licensingRounds: [
+              {
+                typename: 'LicensingRound_A_Type',
+                vid: 'a3333333-b111-c111-d111-e21000000000',
+                name: 'L1',
+                prospects: [
+                  {
+                    typename: 'Prospect_A_Type',
+                    vid: 'a3333333-b111-c111-d111-e21000000001',
+                    name: 'PR1',
+                    __typename: 'Prospect_A_Type',
+                  },
+                  {
+                    typename: 'Prospect_A_Type',
+                    vid: 'a3333333-b111-c111-d111-e21000000002',
+                    name: 'PR2',
+                    __typename: 'Prospect_A_Type',
+                  },
+                ],
+                __typename: 'LicensingRound_A_Type',
+              },
+              {
+                typename: 'LicensingRound_A_Type',
+                vid: 'a3333333-b111-c111-d111-e22000000000',
+                name: 'L2',
+                prospects: [
+                  {
+                    typename: 'Prospect_A_Type',
+                    vid: 'a3333333-b111-c111-d111-e22000000001',
+                    name: 'PR2_1',
+                    __typename: 'Prospect_A_Type',
+                  },
+                  {
+                    typename: 'Prospect_A_Type',
+                    vid: 'a3333333-b111-c111-d111-e22000000002',
+                    name: 'PR2_2',
+                    __typename: 'Prospect_A_Type',
+                  },
+                ],
+                __typename: 'LicensingRound_A_Type',
+              },
+            ],
+          },
+        ],
+        __typename: 'DomainObjectQuery',
+      },
     },
   },
   loading: false,
@@ -100,6 +114,15 @@ const successResponseWithNoData = {
   loading: false,
   networkStatus: NetworkStatus.ready,
 };
+
+beforeAll(() => {
+  const client = new ApolloClient({
+    link: createHttpLink({ uri: '/graphql', fetch }),
+    cache: new InMemoryCache(),
+  });
+
+  logicConstructorService.init({ client, projectId: 'a3333333-b111-c111-d111-e00000000009' });
+});
 
 beforeEach(() => {
   jest.restoreAllMocks();
@@ -214,26 +237,6 @@ describe('Project Structure actions', () => {
     await waitFor(() => expect(store.getActions()).toEqual([]));
   });
 
-  test('Не вызывает загрузку данных если нет query', () => {
-    const store = mockStore({
-      projectStructure: {
-        ...initialState,
-        projectStructureQuery: {
-          query: null,
-          tree: null,
-        },
-      },
-    });
-
-    const mockQuery = jest.fn();
-
-    jest.spyOn(serviceConfig.client, 'query').mockImplementation(mockQuery);
-
-    (store.dispatch as Dispatch<any>)(fetchProjectStructureList());
-
-    expect(mockQuery).not.toBeCalled();
-  });
-
   test('Корректно обрабатывает структуру проектов при отсутствии параметра tree в store', async () => {
     const store = mockStore({
       projectStructure: {
@@ -284,14 +287,57 @@ describe('Project Structure actions', () => {
       });
     });
 
-    jest.spyOn(serviceConfig.client, 'query').mockImplementation(mockQuery);
+    jest.spyOn(logicConstructorService.client, 'query').mockImplementation(mockQuery);
 
     (store.dispatch as Dispatch<any>)(fetchProjectStructureList());
 
     expect(mockQuery).toBeCalledWith({
       query: gql(mockProjectStuctureState.projectStructureQuery.query),
       context: {
-        uri: getGraphqlUri(serviceConfig.projectId),
+        uri: logicConstructorService.getGraphQlUri(),
+      },
+    });
+  });
+
+  test('Если нет query вызывается загрузка DEFAULT_QUERY', () => {
+    const mockProjectStuctureState = {
+      ...initialState,
+      projectStructureQuery: {
+        tree: ['geoEconomicAppraisalProjectList'],
+      },
+    };
+
+    const store = mockStore({
+      projectStructure: mockProjectStuctureState,
+    });
+
+    const mockQuery = jest.fn().mockImplementation(() => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          return resolve(successResponse);
+        });
+      });
+    });
+
+    jest.spyOn(logicConstructorService.client, 'query').mockImplementation(mockQuery);
+
+    (store.dispatch as Dispatch<any>)(fetchProjectStructureList());
+
+    expect(mockQuery).toBeCalledWith({
+      query: gql(
+        `{
+          project {
+            vid
+            domain{
+              geoEconomicAppraisalProjectList{
+                vid name
+              }
+            }
+          }
+        }`,
+      ),
+      context: {
+        uri: logicConstructorService.getGraphQlUri(),
       },
     });
   });
