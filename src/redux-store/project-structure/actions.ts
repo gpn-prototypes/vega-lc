@@ -8,12 +8,12 @@ import { ProjectStructureActionTypes } from './action-types';
 import { StoreLC } from '@/types/redux-store';
 import { logicConstructorService } from '@/utils/lc-service';
 
-type SetProjectStructureList = {
+export type SetProjectStructureList = {
   type: typeof ProjectStructureActionTypes.SET_PROJECT_STRUCTURE_LIST;
   nodeList: TreeItem[];
 };
 
-type SetDraggingElements = {
+export type SetDraggingElements = {
   type: typeof ProjectStructureActionTypes.SET_DRAGGING_ELEMENTS;
   draggingElements: TargetData[];
 };

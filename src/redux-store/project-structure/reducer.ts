@@ -2,13 +2,14 @@ import createReducer from '../../utils/create-reducer';
 import { ClearActionTypes } from '../clear/action-types';
 
 import { ProjectStructureActionTypes } from './action-types';
+import { SetDraggingElements, SetProjectStructureList } from './actions';
 import initialState from './initial-state';
 
 import { ProjectStructureQuery, ProjectStructureState } from '@/types/redux-store';
 
 const setProjectStructureNodeListStrategy = (
   state: ProjectStructureState,
-  { nodeList = [] },
+  { nodeList }: SetProjectStructureList,
 ): ProjectStructureState => ({
   ...state,
   nodeList,
@@ -16,7 +17,7 @@ const setProjectStructureNodeListStrategy = (
 
 const setDraggingElementsStrategy = (
   state: ProjectStructureState,
-  { draggingElements = [] },
+  { draggingElements }: SetDraggingElements,
 ): ProjectStructureState => ({
   ...state,
   draggingElements,
