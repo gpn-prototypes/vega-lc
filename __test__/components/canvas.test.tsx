@@ -76,26 +76,6 @@ describe('Список мероприятий', () => {
 
       expect(store.getState().logicConstructor.canvasViewRef?.current).toEqual(mockCanvasView);
     });
-
-    test('не вызывает добавление canvasViewRef если он уже установлен', () => {
-      const store = getStore();
-      renderCanvas(store);
-
-      const mockedCanvas = Canvas as jest.MockedFunction<typeof Canvas>;
-      const { canvasViewAccessor } = mockedCanvas.mock.calls[0][0];
-
-      const mockCanvasView: CanvasView = CanvasView.of(mockViewData);
-      canvasViewAccessor(mockCanvasView);
-
-      expect(store.getState().logicConstructor.canvasViewRef?.current).toEqual(mockCanvasView);
-
-      const mockSetCanvasRef = jest.fn();
-      jest.spyOn(lcActions, 'setCanvasViewRef').mockImplementation(mockSetCanvasRef);
-
-      canvasViewAccessor(mockCanvasView);
-
-      expect(mockSetCanvasRef).toHaveBeenCalledTimes(0);
-    });
   });
 
   describe('Update Tree', () => {
