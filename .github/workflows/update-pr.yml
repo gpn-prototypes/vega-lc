@@ -18,7 +18,6 @@ jobs:
           body-template: |
             ## Задача
             Задача в Jira: https://jira.konakov.tv/browse/%branch%
-            Ссылка на стенд: https://%branch%.vega-2.csssr.cloud
 
           replace-body: false
           body-prefix-newline-count: 1
