@@ -3,7 +3,6 @@ import GroupObjectsInitState from '../../src/redux-store/group-objects/initial-s
 import LogicConstructorInitState from '../../src/redux-store/logic-constructor/initial-state';
 import NotificationInitState from '../../src/redux-store/notifications/initial-state';
 import ProjectStructureInitState from '../../src/redux-store/project-structure/initial-state';
-import VersionInitState from '../../src/redux-store/version/initial-state';
 import { StoreLC } from '../../src/types/redux-store';
 
 export const createInitState = (modifier?: Partial<StoreLC>): StoreLC => {
@@ -12,7 +11,6 @@ export const createInitState = (modifier?: Partial<StoreLC>): StoreLC => {
     groupObjects: GroupObjectsInitState,
     projectStructure: ProjectStructureInitState,
     logicConstructor: LogicConstructorInitState,
-    version: VersionInitState,
     notifications: NotificationInitState,
   };
 

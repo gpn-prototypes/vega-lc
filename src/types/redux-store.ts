@@ -103,16 +103,11 @@ export type ProjectStructureState = {
   projectStructureQuery?: ProjectStructureQuery;
 };
 
-export type VersionState = {
-  version?: number;
-};
-
 export type StoreLC = {
   activities: ActivitiesState;
   groupObjects: GroupObjectsState;
   projectStructure: ProjectStructureState;
   logicConstructor: LogicConstructorState;
-  version: VersionState;
   notifications: NotificationState;
 };
 

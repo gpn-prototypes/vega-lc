@@ -31,7 +31,7 @@ jest.mock('@/utils/graphql-request', () => {
     logicConstructorService: {
       ...originalModule.logicConstructorService,
       client: {
-        query: jest.fn(),
+        watchQuery: jest.fn(),
       },
       projectId: 'a3333333-b111-c111-d111-e00000000009',
     },
@@ -39,13 +39,15 @@ jest.mock('@/utils/graphql-request', () => {
 });
 
 const mockFetchProjectStructureListQuery = (response: any) => {
-  jest.spyOn(logicConstructorService.client, 'query').mockImplementation(() => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        return resolve(response);
+  jest.spyOn(logicConstructorService.client, 'watchQuery').mockImplementation(() => ({
+    result: () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          return resolve(response);
+        });
       });
-    });
-  });
+    },
+  }));
 };
 
 const successResponse = {
@@ -279,15 +281,17 @@ describe('Project Structure actions', () => {
       projectStructure: mockProjectStuctureState,
     });
 
-    const mockQuery = jest.fn().mockImplementation(() => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          return resolve(successResponse);
+    const mockQuery = jest.fn().mockImplementation(() => ({
+      result: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            return resolve(successResponse);
+          });
         });
-      });
-    });
+      },
+    }));
 
-    jest.spyOn(logicConstructorService.client, 'query').mockImplementation(mockQuery);
+    jest.spyOn(logicConstructorService.client, 'watchQuery').mockImplementation(mockQuery);
 
     (store.dispatch as Dispatch<any>)(fetchProjectStructureList());
 
@@ -311,15 +315,17 @@ describe('Project Structure actions', () => {
       projectStructure: mockProjectStuctureState,
     });
 
-    const mockQuery = jest.fn().mockImplementation(() => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          return resolve(successResponse);
+    const mockQuery = jest.fn().mockImplementation(() => ({
+      result: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            return resolve(successResponse);
+          });
         });
-      });
-    });
+      },
+    }));
 
-    jest.spyOn(logicConstructorService.client, 'query').mockImplementation(mockQuery);
+    jest.spyOn(logicConstructorService.client, 'watchQuery').mockImplementation(mockQuery);
 
     (store.dispatch as Dispatch<any>)(fetchProjectStructureList());
 

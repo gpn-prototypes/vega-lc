@@ -8,10 +8,11 @@ type ProjectVID = string;
 
 interface Project {
   vid: ProjectVID;
+  version: number;
 }
 
 export interface CurrentProject {
-  get(): Project;
+  get(): Project | null;
 }
 
 export interface ShellToolkit {

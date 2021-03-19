@@ -21,6 +21,7 @@ export const ACTIVITY_LIST_QUERY = gql`
         }
       }
     }
+    __typename
   }
 `;
 
@@ -36,6 +37,7 @@ export const GroupObjectListFragment = gql`
         }
       }
     }
+    __typename
   }
 `;
 
@@ -55,6 +57,7 @@ export const CanvasItemsFragment = gql`
         vid
       }
     }
+    __typename
   }
 `;
 
@@ -76,6 +79,7 @@ export const StepListFragment = gql`
         }
       }
     }
+    __typename
   }
 `;
 
@@ -137,6 +141,7 @@ export const PROJECT_STRUCTURE_QUERY = gql`
         message
       }
     }
+    __typename
   }
 `;
 
@@ -178,6 +183,8 @@ export const OBJECT_GROUP_UPDATE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -219,6 +226,8 @@ export const OBJECT_GROUP_CREATE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -245,11 +254,15 @@ export const SCENARIO_STEP_CREATE_MUTATION = gql`
       }
       ... on UpdateProjectInnerDiff {
         remoteProject {
+          vid
+          version
           logic {
             ...StepList
           }
         }
         localProject {
+          vid
+          version
           logic {
             ...StepList
           }
@@ -297,6 +310,8 @@ export const SCENARIO_STEP_UPDATE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -336,6 +351,8 @@ export const CANVAS_NODE_DELETE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -375,6 +392,8 @@ export const SCENARIO_STEP_DELETE_MUTATION = gql`
         }
       }
     }
+    version
+    __typename
   }
 `;
 
@@ -489,5 +508,6 @@ export const CANVAS_NODE_UPDATE_MUTATION = gql`
         }
       }
     }
+    __typename
   }
 `;

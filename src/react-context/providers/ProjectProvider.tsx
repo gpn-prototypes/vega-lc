@@ -17,6 +17,7 @@ const ProjectProvider: React.FC<ShellToolkit> = (props) => {
   const { children, graphqlClient, identity, currentProject } = props;
 
   const projectId = currentProject?.get()?.vid || '';
+  const projectVersion = currentProject?.get()?.version || 1;
 
   const [initialized, setInitialized] = useState(false);
 
@@ -24,11 +25,12 @@ const ProjectProvider: React.FC<ShellToolkit> = (props) => {
     logicConstructorService.init({
       client: graphqlClient,
       projectId,
+      projectVersion,
       identity,
     });
 
     setInitialized(true);
-  }, [identity, graphqlClient, projectId]);
+  }, [identity, graphqlClient, projectId, projectVersion]);
 
   return (
     <ProjectContext.Provider

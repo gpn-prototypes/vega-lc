@@ -5,6 +5,7 @@ import { logicConstructorService } from './lc-service';
 
 const testURI = 'http://example.test';
 const testProjectId = 'a3333333-b111-c111-d111-e00000000009';
+const testProjectVersion = 2;
 
 jest.mock('../../config/config.public');
 
@@ -14,7 +15,11 @@ beforeAll(() => {
     cache: new InMemoryCache(),
   });
 
-  logicConstructorService.init({ client, projectId: testProjectId });
+  logicConstructorService.init({
+    client,
+    projectId: testProjectId,
+    projectVersion: testProjectVersion,
+  });
 });
 
 describe('Сервис конструктора логики: ', () => {
@@ -28,14 +33,6 @@ describe('Сервис конструктора логики: ', () => {
 
   test('URI для запросов формируется валидным', () => {
     expect(logicConstructorService.getGraphQlUri()).toBe(`${testURI}/graphql/${testProjectId}`);
-  });
-
-  test('Версия инкрементируется', async () => {
-    expect(logicConstructorService.projectVersion).toBe(1);
-
-    logicConstructorService.incrementVersion();
-
-    expect(logicConstructorService.projectVersion).toBe(2);
   });
 
   describe('Конкурентный доступ: ', () => {

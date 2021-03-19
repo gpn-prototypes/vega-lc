@@ -10,7 +10,7 @@ import '../styles/colors.css';
 import { GeologicalExploration } from '@/components/geological-exploration';
 import { Notifications } from '@/components/notifications';
 import { ProjectContext } from '@/react-context/providers';
-import { fetchVersion } from '@/redux-store/version/actions';
+import { fetchProjectSchema } from '@/redux-store/project-structure/actions';
 import { StoreLC } from '@/types/redux-store';
 
 export const AppView = (): React.ReactElement => {
@@ -24,7 +24,7 @@ export const AppView = (): React.ReactElement => {
 
   useEffect(() => {
     if (initialized) {
-      dispatch(fetchVersion());
+      dispatch(fetchProjectSchema());
     }
   }, [dispatch, initialized]);
 
