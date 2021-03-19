@@ -13,6 +13,12 @@ then
   exit 1;
 fi
 
+if [ -z "$BASE_URL" ]
+then
+  echo "BASE_URL is required to continue. Abort."
+  exit 1;
+fi
+
 if [ -z "$BASE_API_URL" ]
 then
   echo "BASE_API_URL is required to continue. Abort."
