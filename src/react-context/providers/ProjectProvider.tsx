@@ -16,7 +16,7 @@ const ProjectContext = React.createContext<ProjectContextData>({
 const ProjectProvider: React.FC<ShellToolkit> = (props) => {
   const { children, graphqlClient, identity, currentProject } = props;
 
-  const projectId = currentProject?.get()?.vid || '';4
+  const projectId = currentProject?.get()?.vid || '';
   const projectVersion = currentProject?.get()?.version || 1;
 
   const [initialized, setInitialized] = useState(false);
