@@ -57,7 +57,6 @@ export const CanvasItemsFragment = gql`
         vid
       }
     }
-    version
     __typename
   }
 `;
@@ -80,7 +79,6 @@ export const StepListFragment = gql`
         }
       }
     }
-    version
     __typename
   }
 `;
@@ -143,7 +141,6 @@ export const PROJECT_STRUCTURE_QUERY = gql`
         message
       }
     }
-    version
     __typename
   }
 `;
@@ -257,11 +254,15 @@ export const SCENARIO_STEP_CREATE_MUTATION = gql`
       }
       ... on UpdateProjectInnerDiff {
         remoteProject {
+          vid
+          version
           logic {
             ...StepList
           }
         }
         localProject {
+          vid
+          version
           logic {
             ...StepList
           }
