@@ -59,7 +59,7 @@ export const GeologicalExploration = (): React.ReactElement => {
   return (
     <div className={cnGeologicalExploration()}>
       <SplitPanes onResize={handleResize} split="vertical">
-        <SplitPanes.Pane aria-label="trees" initialSize={initialWidth} min="24px" max="260px">
+        <SplitPanes.Pane aria-label="trees" initialSize={initialWidth} min="190px" max="260px">
           <SplitPanes onResize={handleResize} split="horizontal">
             <SplitPanes.Pane
               initialSize={initialHeight}
@@ -74,7 +74,7 @@ export const GeologicalExploration = (): React.ReactElement => {
             </SplitPanes.Pane>
           </SplitPanes>
         </SplitPanes.Pane>
-        <SplitPanes.Pane aria-label="logic-constructor">
+        <SplitPanes.Pane aria-label="logic-constructor" style={{ overflow: 'auto' }}>
           <LogicConstructorWidget />
         </SplitPanes.Pane>
       </SplitPanes>
