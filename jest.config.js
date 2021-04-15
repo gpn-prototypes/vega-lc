@@ -16,4 +16,14 @@ module.exports = {
     ...config.moduleNameMapper,
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: './reports',
+        suiteName: 'Jest Tests',
+      },
+    ],
+  ],
 };
