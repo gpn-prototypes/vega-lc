@@ -1,45 +1,43 @@
-### Description
-_{Short Issue Description}_
+## Problem statement
 
-### Checks
-- [ ] Jira link attached: [VEGA-XYZ]()
-- [ ] Possible Associated Jira links:
-- [ ] Personal Vega Instance link attached: http://xx-yy-vega-builder.code013.org
-- [ ] Jira tasks for technical debt were created (if needed)
+_{Jira issue number, description or crucial excerpts}_
 
-### Type
+## Solution details
+
+_{What has been done (list of details)}_
+
+## Type
+
 - [ ] Feature
-- [ ] Alpha Feature ([Alpha] MR/PR Title)
 - [ ] Bug Fix
-- [ ] Test
 - [ ] Refactoring
+- [ ] Test
+- [ ] Other
 
-### PR/MR Requirements
-- [ ] PR/MR title meet requirements/convention
-- [ ] Target branch is correct
-- [ ] PR/MR branch was rebased at correct branch
-- [ ] Diff was checked
-- [ ] Configuration files were checked at test repositories
-- [ ] [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+## Associated issues
 
-### General
-- [ ] Exploratory Tested at Personal Vega Instance
-- [ ] Existing E2E Tests done, Screenshot attached
-- [ ] Existing Integration Tests done, Screenshot attached, Jenkins link:
-- [ ] Existing Unit Tests done, Screenshot attached
-- [ ] New E2E Tests developed
-- [ ] New Integration Tests developed
-- [ ] New Unit Tests developed
-- [ ] API documentation was fully and correctly updated
+_{Jira issues or PRs related to this one}_
 
-### E2E Suite Jenkins link
-_{link}_
+## Quality control
 
-### E2E Suite Screenshot
-_{Screenshot}_
+- [ ] PR: Based on a correct branch
+- [ ] PR: Head branch is rebased on the base branch
+- [ ] PR: Assignee chosen and necessary labels are set
+- [ ] PR: Current form is filled out (where it makes sense)
+- [ ] PR: Diff checked for irrelevant changes
+- [ ] PR: Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specs
+- [ ] PR: Checked for spelling, grammar and typos
+- [ ] JS: There's no errors/warnings in the browser dev console
+- [ ] Layout: Tested with various content amounts
+- [ ] Docs: All the important changes and features are described
+- [ ] Tests: Configuration files are checked at test repositories
+- [ ] Tests: New unit tests developed
+- [ ] Tests: New E2E tests developed
+- [ ] Tests: Existing unit tests passed successfully
+- [ ] Tests: Existing E2E tests passed successfully
+- [ ] Tests: Manually tested on personal instance
 
-### Integration Tests Screenshot
-_{Screenshot}_
-
-### Unit Tests Screenshot
-_{Screenshot}_
+## Notable statements
+- [ ] Affects configuration files
+- [ ] Brings new packages or updates existing
+- [ ] Opened follow-up tasks to resolve
